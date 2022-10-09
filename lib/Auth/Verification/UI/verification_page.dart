@@ -1,8 +1,5 @@
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
 import 'package:hungerz_store/Locale/locales.dart';

@@ -11,40 +11,16 @@ class OrderRepository {
     try {
       final QuerySnapshot documentsSnapshot =
           await orderDataProvider.fetchOrders();
-      final List<Order> allOrders = [];
+      List<Order> allOrders = [];
+      Order order;
+
       for (QueryDocumentSnapshot docSnapshot in documentsSnapshot.docs) {
         Map<String, dynamic> docData =
             docSnapshot.data() as Map<String, dynamic>;
-
-        final categoryData = (await docData['category'].get()).data();
-        if (docData['rating'] != null) {
-          for (dynamic rate in docData['rating']) {
-            final rateResp =
-                (await (rate['userId'] as DocumentReference).get()).data();
-            if (rateResp != null) {
-              dynamic rateData = rateResp as Map<String, dynamic>;
-              log(rateData);
-              rate['username'] = rateData['name'];
-            }
-          }
-        }
-
-        allOrders.add(Order(
-            createdAt: docData['createdAt'],
-            id: docSnapshot.id,
-            reference: docSnapshot.reference,
-            user: docData['user'] ?? '',
-            description: docData['description'] ?? '',
-            imageUrl: docData['imageUrl'] ?? '',
-            address: docData['address'] ?? '',
-            totalPrice: docData['price'] ?? 0,
-            lat: docData['lat'] ?? 0,
-            lng: docData['lng'] ?? 0,
-            isPopular: docData['isPopular'] ?? false,
-            categoryName: categoryData['name'],
-            rating: docData['rating'] ?? ''));
+        order = Order.fromJson(docData);
+        allOrders.add(order);
       }
-      log('Order: ${allOrders[0]}');
+      log('Order: ${allOrders[0].total}');
       return allOrders;
     } catch (error) {
       rethrow;

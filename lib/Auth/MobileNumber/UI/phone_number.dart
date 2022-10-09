@@ -8,11 +8,13 @@ import 'mobile_input.dart';
 class PhoneNumber extends StatefulWidget {
   static const String id = 'phone_number';
 
+  const PhoneNumber({super.key});
+
   @override
-  _PhoneNumberState createState() => _PhoneNumberState();
+  PhoneNumberState createState() => PhoneNumberState();
 }
 
-class _PhoneNumberState extends State<PhoneNumber> {
+class PhoneNumberState extends State<PhoneNumber> {
   @override
   void initState() {
     super.initState();

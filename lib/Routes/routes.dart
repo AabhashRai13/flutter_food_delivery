@@ -46,9 +46,9 @@ class PageRoutes {
 
   Map<String, WidgetBuilder> routes() {
     return {
-      track: (context) => TrackOrderPage(),
+      track: (context) => const TrackOrderPage(),
       locationPage: (context) => LocationPage(),
-      orderPage: (context) => OrderPage(),
+      orderPage: (context) =>const OrderPage(),
       orderInfoPage: (context) => OrderInfo(),
       accountPage: (context) => AccountPage(),
       tncPage: (context) => TncPage(),
@@ -58,7 +58,7 @@ class PageRoutes {
       chatPage: (context) => ChatPage(),
       insightPage: (context) => InsightPage(),
       storeProfile: (context) => ProfilePage(),
-      addItem: (context) => AddItem(),
+      addItem: (context) => const AddItem(),
       editItem: (context) => EditItem(),
       addToBank: (context) => AddToBank(),
       Items: (context) => ItemsPage(),
