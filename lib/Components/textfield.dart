@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class EntryFormField extends StatelessWidget {
   final String? label;
-  final String title;
-  EntryFormField(this.label, this.title);
+  final String? title;
+  final TextEditingController? textEditingController;
+  const EntryFormField(this.label, this.title,
+      {super.key, this.textEditingController});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,8 +22,9 @@ class EntryFormField extends StatelessWidget {
                   ),
                 ],
               )
-            : SizedBox.shrink(),
+            : const SizedBox.shrink(),
         TextFormField(
+          controller: textEditingController,
           decoration: InputDecoration(
               prefixStyle: Theme.of(context)
                   .textTheme
@@ -53,7 +56,7 @@ class SmallTextFormField extends StatelessWidget {
   final Icon? icon;
   final String? initial;
 
-  SmallTextFormField(this.label, this.title, [this.icon, this.initial]);
+  const SmallTextFormField(this.label, this.title, [this.icon, this.initial]);
   @override
   Widget build(BuildContext context) {
     return Padding(

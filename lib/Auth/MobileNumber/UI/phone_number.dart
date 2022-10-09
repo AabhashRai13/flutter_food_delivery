@@ -39,7 +39,7 @@ class _PhoneNumberState extends State<PhoneNumber> {
                   // scale: 3,
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -58,14 +58,14 @@ class _PhoneNumberState extends State<PhoneNumber> {
                   ),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Expanded(
                 flex: 5,
                 child: Image.asset(
                   "images/signin hero restro.png", //footer image
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: MobileInput(),
               ),

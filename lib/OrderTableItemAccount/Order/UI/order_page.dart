@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/app/di.dart';
+import 'package:hungerz_store/bloc/cubit/order_cubit.dart';
 
 class OrderPage extends StatefulWidget {
+  const OrderPage({super.key});
+
   @override
-  _OrderPageState createState() => _OrderPageState();
+  OrderPageState createState() => OrderPageState();
 }
 
-class _OrderPageState extends State<OrderPage> {
+class OrderPageState extends State<OrderPage> {
+  final OrderCubit _orderCubit = instance<OrderCubit>();
+  @override
+  void initState() {
+    _orderCubit.getAllOrders();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Tab> tabs = <Tab>[
@@ -20,7 +30,7 @@ class _OrderPageState extends State<OrderPage> {
       length: tabs.length,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(100.0),
+          preferredSize: const Size.fromHeight(100.0),
           child: AppBar(
             automaticallyImplyLeading: false,
             centerTitle: true,
@@ -29,15 +39,15 @@ class _OrderPageState extends State<OrderPage> {
               style: Theme.of(context).textTheme.bodyText1,
             ),
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(0.0),
+              preferredSize: const Size.fromHeight(0.0),
               child: TabBar(
                 tabs: tabs,
                 isScrollable: true,
                 labelColor: kMainColor,
-                labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                labelStyle: const TextStyle(fontWeight: FontWeight.bold),
                 indicatorColor: kMainColor,
                 unselectedLabelColor: kLightTextColor,
-                indicatorPadding: EdgeInsets.symmetric(horizontal: 24.0),
+                indicatorPadding: const EdgeInsets.symmetric(horizontal: 24.0),
               ),
             ),
           ),
@@ -60,7 +70,7 @@ class _OrderPageState extends State<OrderPage> {
                               onTap: () => Navigator.pushNamed(
                                   context, PageRoutes.orderInfoPage),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 20.0, vertical: 10.0),
                                 child: Column(
                                   children: [

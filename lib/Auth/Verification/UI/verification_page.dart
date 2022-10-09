@@ -1,17 +1,19 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/data/network/auth.dart';
 
 //Verification page that sends otp to the phone number entered on phone number page
 class VerificationPage extends StatelessWidget {
   final VoidCallback onVerificationDone;
 
-  VerificationPage(this.onVerificationDone);
+  const VerificationPage(this.onVerificationDone, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class VerificationPage extends StatelessWidget {
 class OtpVerify extends StatefulWidget {
   final VoidCallback onVerificationDone;
 
-  OtpVerify(this.onVerificationDone);
+  const OtpVerify(this.onVerificationDone, {super.key});
 
   @override
   _OtpVerifyState createState() => _OtpVerifyState();
@@ -55,17 +57,18 @@ class OtpVerify extends StatefulWidget {
 
 class _OtpVerifyState extends State<OtpVerify> {
   final TextEditingController _controller = TextEditingController();
+  final AuthProvider _authProvider = AuthProvider();
 
   // VerificationBloc _verificationBloc;
   bool isDialogShowing = false;
   int _counter = 20;
   late Timer _timer;
-
+  var code = "";
   _startTimer() {
     //shows timer
     _counter = 20; //time counter
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _counter > 0 ? _counter-- : _timer.cancel();
       });
@@ -101,7 +104,7 @@ class _OtpVerifyState extends State<OtpVerify> {
               thickness: 8.0,
             ),
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Text(
                 AppLocalizations.of(context)!.enterVerification!,
                 style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -110,22 +113,24 @@ class _OtpVerifyState extends State<OtpVerify> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               // child: EntryField(
-              //  // controller: _controller,
+              //   // controller: _controller,
               //   readOnly: false,
-              //   label: AppLocalizations.of(context).verificationCode,
+              //   label: AppLocalizations.of(context)!.verificationCode,
               //   maxLength: 6,
               //   keyboardType: TextInputType.number,
               //   initialValue: '123456',
               // ),
               child: EntryFormField(
-                  AppLocalizations.of(context)!.verificationCode,
-                  '5 7 9 6 4 4'),
+                AppLocalizations.of(context)!.verificationCode,
+                '5 7 9 6 4 4',
+                textEditingController: _controller,
+              ),
             ),
           ],
         ),
@@ -139,7 +144,7 @@ class _OtpVerifyState extends State<OtpVerify> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
                       '00:$_counter min',
                       style: Theme.of(context).textTheme.headline4,
@@ -147,27 +152,29 @@ class _OtpVerifyState extends State<OtpVerify> {
                   ),
                   TextButton(
                       style: TextButton.styleFrom(
-                        shape: RoundedRectangleBorder(side: BorderSide.none),
-                        padding: EdgeInsets.all(24.0),
+                        shape:
+                            const RoundedRectangleBorder(side: BorderSide.none),
+                        padding: const EdgeInsets.all(24.0),
                       ),
+                      onPressed: _counter < 1
+                          ? () {
+                              verifyPhoneNumber();
+                            }
+                          : null,
                       child: Text(
                         AppLocalizations.of(context)!.resend!,
                         style: TextStyle(
                           fontSize: 16.7,
                           color: kMainColor,
                         ),
-                      ),
-                      onPressed: _counter < 1
-                          ? () {
-                              verifyPhoneNumber();
-                            }
-                          : null),
+                      )),
                 ],
               ),
               BottomBar(
                   text: AppLocalizations.of(context)!.continueText,
                   onTap: () {
-                    widget.onVerificationDone();
+                    _authProvider.otpVerfication(
+                        _controller.text, widget.onVerificationDone);
                   }),
             ],
           ),

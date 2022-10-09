@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "935252545745",
+    "project_id": "renterii-a287d",
+    "storage_bucket": "renterii-a287d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935252545745:android:eb9f118a9c98d0d32735f0",
+        "android_client_info": {
+          "package_name": "com.renterii.renterii"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "935252545745-1t5me3ctnhktsd2kgqbn2p1be3or4enf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.renterii.renterii",
+            "certificate_hash": "3f2fa7f73c9f55a64cdbcb212f3d2509842811a4"
+          }
+        },
+        {
+          "client_id": "935252545745-5antf1ksdl7tc870hvm9vpp9h2pgluhu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.renterii.renterii",
+            "certificate_hash": "65b0663c08362133c70a26e1afe53bb7c261cdf2"
+          }
+        },
+        {
+          "client_id": "935252545745-pl80ktstiagfmlmdcufvp51mq6a9ac27.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.renterii.renterii",
+            "certificate_hash": "eba634d93d83e6917767cc8eafbce43c9c18b7d9"
+          }
+        },
+        {
+          "client_id": "935252545745-5jfn1ne021qd0q48jiqd05ninqkj0hum.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBitL1NLUayFvHWeBuZ_yQEhDhfFZzLjuQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "935252545745-5jfn1ne021qd0q48jiqd05ninqkj0hum.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "935252545745-n1udvdvv00r98jdtk96easous0pp61kv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.renterii"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

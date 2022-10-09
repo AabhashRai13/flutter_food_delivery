@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/entry_field.dart';
 import 'package:hungerz_store/Components/textfield.dart';
@@ -9,11 +7,13 @@ import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 
 class AddItem extends StatefulWidget {
+  const AddItem({super.key});
+
   @override
-  _AddItemState createState() => _AddItemState();
+  AddItemState createState() => AddItemState();
 }
 
-class _AddItemState extends State<AddItem> {
+class AddItemState extends State<AddItem> {
   bool inStock = false;
 
   @override

@@ -39,7 +39,7 @@ class EntryField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+      padding:const  EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
       child: Column(
         children: [
           TextFormField(
@@ -49,7 +49,7 @@ class EntryField extends StatelessWidget {
             onTap: onTap as void Function()?,
             autofocus: false,
             controller: controller,
-            initialValue: initialValue ?? null,
+            initialValue: initialValue,
             style: Theme.of(context).textTheme.caption,
             readOnly: readOnly ?? false,
             keyboardType: keyboardType,

@@ -1,8 +1,8 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:hungerz_store/Auth/login_navigator.dart';
 import 'package:hungerz_store/Components/entry_field.dart';
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/data/network/auth.dart';
 
 class MobileInput extends StatefulWidget {
   const MobileInput({super.key});
@@ -14,7 +14,8 @@ class MobileInput extends StatefulWidget {
 
 class _MobileInputState extends State<MobileInput> {
   final TextEditingController _controller = TextEditingController();
-  String? isoCode;
+  final AuthProvider _authProvider = AuthProvider();
+  String? isoCode = "+977";
 
   @override
   void initState() {
@@ -36,13 +37,13 @@ class _MobileInputState extends State<MobileInput> {
             isoCode = value.code;
           },
           builder: (value) => buildButton(value),
-          initialSelection: '+1',
+          initialSelection: '+977',
           textStyle: Theme.of(context).textTheme.caption,
           showFlag: false,
           showFlagDialog: true,
-          favorite: ['+91', 'US'],
+          favorite: const ['+977', 'Nep'],
         ),
-      const  SizedBox(
+        const SizedBox(
           width: 10.0,
         ),
         //takes phone number as input
@@ -73,8 +74,8 @@ class _MobileInputState extends State<MobileInput> {
               style: Theme.of(context).textTheme.button,
             ),
           ),
-          onPressed: () {
-            Navigator.pushNamed(context, LoginRoutes.registration);
+          onPressed: () async {
+            _authProvider.getOtp(isoCode! + _controller.text, context);
           },
         ),
       ],
