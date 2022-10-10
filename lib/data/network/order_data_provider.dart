@@ -15,4 +15,10 @@ class OrderDataProvider {
 
     return response;
   }
+
+  Future<dynamic> fetshopFromOrder(DocumentReference docReference) async {
+    final response = await docReference.get();
+
+    return response;
+  }
 }

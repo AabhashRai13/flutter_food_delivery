@@ -60,7 +60,6 @@ class OrderPageState extends State<OrderPage> {
             bloc: _orderCubit,
             builder: (context, state) {
               if (state is OrdersLoaded) {
-                log('Orderssss: ${state.orders[0].products![0].timeStart}');
                 return ListView(
                   children: <Widget>[
                     Divider(
