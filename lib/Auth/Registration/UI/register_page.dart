@@ -1,10 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-import 'package:hungerz_store/Auth/login_navigator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/app/di.dart';
+import 'package:hungerz_store/bloc/user/user_cubit.dart';
 
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
@@ -50,13 +53,20 @@ class RegisterForm extends StatefulWidget {
 class RegisterFormState extends State<RegisterForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-
+  final UserCubit _userCubit = instance<UserCubit>();
   // RegisterBloc _registerBloc;
-
+  String? userId;
   @override
   void initState() {
     super.initState();
     // _registerBloc = BlocProvider.of<RegisterBloc>(context);
+    setUserId();
+  }
+
+  setUserId() async {
+    // userId = await _appPreferences.getUserID("USER_ID") ?? "";
+    userId = FirebaseAuth.instance.currentUser!.uid;
+    log("user Id $userId");
   }
 
   @override
@@ -116,48 +126,51 @@ class RegisterFormState extends State<RegisterForm> {
           child: BottomBar(
               text: AppLocalizations.of(context)!.continueText,
               onTap: () {
-                Navigator.pushNamed(context, LoginRoutes.verification);
+                _userCubit.updateUser(
+                    userId: userId,
+                    email: "raiaabhash3@gmail.com",
+                    phoneNumber: "9813079216",
+                    name: "Aabhash Rai",
+                    photoUrl:
+                        "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
               }),
         )
       ],
     );
   }
 
-  Container inputField(String title, String hint, String img) {
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              SizedBox(
-                height: 20,
-                child: Image(
-                  image: AssetImage(
-                    img,
-                  ),
-                  color: kMainColor,
+  inputField(String title, String hint, String img) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              height: 20,
+              child: Image(
+                image: AssetImage(
+                  img,
                 ),
+                color: kMainColor,
               ),
+            ),
+            const SizedBox(
+              width: 13,
+            ),
+            Text(title, style: TextStyle(color: Colors.grey[600], fontSize: 12))
+          ],
+        ),
+        Container(
+          padding: const EdgeInsets.only(left: 25),
+          child: Column(
+            children: [
+              SmallTextFormField(null, hint, null, hint),
               const SizedBox(
-                width: 13,
+                height: 10,
               ),
-              Text(title,
-                  style: TextStyle(color: Colors.grey[600], fontSize: 12))
             ],
           ),
-          Container(
-            padding: const EdgeInsets.only(left: 25),
-            child: Column(
-              children: [
-                SmallTextFormField(null, hint, null, hint),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:hungerz_store/Auth/MobileNumber/UI/phone_number.dart';
 import 'package:hungerz_store/Auth/Registration/UI/register_page.dart';
 import 'package:hungerz_store/Auth/Verification/UI/verification_page.dart';
 import 'package:hungerz_store/Auth/social.dart';
-import 'package:hungerz_store/Routes/routes.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -42,21 +41,16 @@ class LoginNavigator extends StatelessWidget {
           late WidgetBuilder builder;
           switch (settings.name) {
             case LoginRoutes.loginRoot:
-              builder = (BuildContext _) =>const PhoneNumber();
+              builder = (BuildContext _) => const PhoneNumber();
               break;
             case LoginRoutes.social:
               builder = (BuildContext _) => SocialLogIn();
               break;
             case LoginRoutes.registration:
-              builder = (BuildContext _) => RegisterPage();
+              builder = (BuildContext _) => const RegisterPage();
               break;
             case LoginRoutes.verification:
-              builder = (BuildContext _) => VerificationPage(
-                    () {
-                      Navigator.popAndPushNamed(
-                          context, PageRoutes.OrderTableItemAccountPage);
-                    },
-                  );
+              builder = (BuildContext _) => const VerificationPage();
               break;
           }
           return MaterialPageRoute(builder: builder, settings: settings);

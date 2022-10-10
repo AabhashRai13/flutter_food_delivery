@@ -2,7 +2,6 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Components/entry_field.dart';
 import 'package:hungerz_store/Locale/locales.dart';
-import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/data/network/auth.dart';
 
 class MobileInput extends StatefulWidget {

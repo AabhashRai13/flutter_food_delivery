@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/settings_page.dart';
-import 'package:hungerz_store/OrderTableItemAccount/Order/UI/order_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/order_table_item_account.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/language_cubit.dart';
