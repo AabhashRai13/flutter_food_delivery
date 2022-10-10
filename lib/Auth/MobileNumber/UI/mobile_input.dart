@@ -17,6 +17,7 @@ class _MobileInputState extends State<MobileInput> {
   final AuthProvider _authProvider = AuthProvider();
   final TextEditingController _controller = TextEditingController();
   String? isoCode = "+977";
+  GlobalKey<FormState> signupKey = GlobalKey();
 
   @override
   void initState() {
@@ -31,57 +32,70 @@ class _MobileInputState extends State<MobileInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        CountryCodePicker(
-          onChanged: (value) {
-            isoCode = value.code;
-          },
-          builder: (value) => buildButton(value),
-          initialSelection: '+977',
-          textStyle: Theme.of(context).textTheme.caption,
-          showFlag: false,
-          showFlagDialog: true,
-          favorite: const ['+977', 'Nep'],
-        ),
-        const SizedBox(
-          width: 10.0,
-        ),
-        //takes phone number as input
-        Expanded(
-          child: EntryField(
-            controller: _controller,
-            keyboardType: TextInputType.number,
-            readOnly: false,
-            hint: AppLocalizations.of(context)!.mobileText,
-            maxLength: 10,
-            border: InputBorder.none,
+    return Form(
+      key: signupKey,
+      child: Row(
+        children: <Widget>[
+          CountryCodePicker(
+            onChanged: (value) {
+              isoCode = value.code;
+            },
+            builder: (value) => buildButton(value),
+            initialSelection: '+977',
+            textStyle: Theme.of(context).textTheme.caption,
+            showFlag: false,
+            showFlagDialog: true,
+            favorite: const ['+977', 'Nep'],
           ),
-        ),
+          const SizedBox(
+            width: 10.0,
+          ),
+          //takes phone number as input
+          Expanded(
+            child: EntryField(
+              controller: _controller,
+              keyboardType: TextInputType.number,
+              readOnly: false,
+              hint: AppLocalizations.of(context)!.mobileText,
+              maxLength: 10,
+              border: InputBorder.none,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Number is required';
+                } else {
+                  return null;
+                }
+              },
+            ),
+          ),
 
-        //if phone number is valid, button gets enabled and takes to register screen
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).primaryColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+          //if phone number is valid, button gets enabled and takes to register screen
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
             ),
-          ),
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-            child: Text(
-              AppLocalizations.of(context)!.continueText!,
-              style: Theme.of(context).textTheme.button,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              child: Text(
+                AppLocalizations.of(context)!.continueText!,
+                style: Theme.of(context).textTheme.button,
+              ),
             ),
+            onPressed: () async {
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => const OrderPage()));
+              if (signupKey.currentState!.validate()) {
+                signupKey.currentState!.save();
+                _authProvider.getOtp(isoCode! + _controller.text, context);
+              }
+            },
           ),
-          onPressed: () async {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => const OrderPage()));
-            _authProvider.getOtp(isoCode! + _controller.text, context);
-          },
-        ),
-      ],
+        ],
+      ),
     );
   }
 

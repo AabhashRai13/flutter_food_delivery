@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hungerz_store/Auth/Registration/UI/register_text_field.dart';
 
 import 'package:hungerz_store/Auth/login_navigator.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
@@ -50,6 +51,7 @@ class RegisterForm extends StatefulWidget {
 class RegisterFormState extends State<RegisterForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  GlobalKey<FormState> signupKey = GlobalKey();
 
   // RegisterBloc _registerBloc;
 
@@ -68,62 +70,100 @@ class RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          children: <Widget>[
-            Divider(
-              color: Theme.of(context).cardColor,
-              thickness: 8.0,
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            inputField(AppLocalizations.of(context)!.fullNamee!.toUpperCase(),
-                'Samantha Smith', 'images/icons/ic_name.png'),
-            //name textField
-            //email textField
-            inputField(
-              //controller: _emailController,
-              AppLocalizations.of(context)!.emailAddress!.toUpperCase(),
-              'samanthasmith@mail.com',
-              'images/icons/ic_mail.png',
-            ),
-
-            //phone textField
-            inputField(
-              AppLocalizations.of(context)!.mobileNumber!.toUpperCase(),
-              '+1 987 654 3210',
-              'images/icons/ic_phone.png',
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Text(
-                AppLocalizations.of(context)!.verificationText!,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(fontSize: 12.8),
+    return Form(
+      key: signupKey,
+      child: Stack(
+        children: <Widget>[
+          ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            children: <Widget>[
+              Divider(
+                color: Theme.of(context).cardColor,
+                thickness: 8.0,
               ),
-            ),
-          ],
-        ),
-        //continue button bar
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: BottomBar(
-              text: AppLocalizations.of(context)!.continueText,
-              onTap: () {
-                Navigator.pushNamed(context, LoginRoutes.verification);
-              }),
-        )
-      ],
+              const SizedBox(
+                height: 25,
+              ),
+              // inputField(AppLocalizations.of(context)!.fullNamee!.toUpperCase(),
+              //     'Samantha Smith', 'images/icons/ic_name.png'),
+              RegisterTextField(
+                title: AppLocalizations.of(context)!.fullNamee!.toUpperCase(),
+                hint: "Samantha Smith",
+                img: 'images/icons/ic_name.png',
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Name should not be empty';
+                  }
+                  return null;
+                },
+              ),
+              //name textField
+              //email textField
+
+              RegisterTextField(
+                title:
+                    AppLocalizations.of(context)!.emailAddress!.toUpperCase(),
+                hint: 'samanthasmith@mail.com',
+                img: 'images/icons/ic_mail.png',
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Email Address should not be empty';
+                  } else if (!value.isValidEmail()) {
+                    return 'Email Address is not valid';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+
+              RegisterTextField(
+                title:
+                    AppLocalizations.of(context)!.mobileNumber!.toUpperCase(),
+                hint: '+1 987 654 3210',
+                img: 'images/icons/ic_phone.png',
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Number is required';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  AppLocalizations.of(context)!.verificationText!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .copyWith(fontSize: 12.8),
+                ),
+              ),
+            ],
+          ),
+          //continue button bar
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: BottomBar(
+                text: AppLocalizations.of(context)!.continueText,
+                onTap: () {
+                  if (signupKey.currentState!.validate()) {
+                    signupKey.currentState!.save();
+                    Navigator.pushNamed(context, LoginRoutes.verification);
+                  }
+                }),
+          )
+        ],
+      ),
     );
   }
 
-  Container inputField(String title, String hint, String img) {
+  Container inputField(
+    String title,
+    String hint,
+    String img,
+  ) {
     return Container(
       child: Column(
         children: [
@@ -149,7 +189,12 @@ class RegisterFormState extends State<RegisterForm> {
             padding: const EdgeInsets.only(left: 25),
             child: Column(
               children: [
-                SmallTextFormField(null, hint, null, hint),
+                SmallTextFormField(
+                  null,
+                  hint,
+                  null,
+                  hint,
+                ),
                 const SizedBox(
                   height: 10,
                 ),
