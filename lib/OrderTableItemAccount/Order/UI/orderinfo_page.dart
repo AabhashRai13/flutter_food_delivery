@@ -4,8 +4,13 @@ import 'package:hungerz_store/Components/custom_appbar.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/models/all_data.dart';
+import 'package:intl/intl.dart';
 
 class OrderInfo extends StatefulWidget {
+  final AllData data;
+
+  const OrderInfo({super.key, required this.data});
   @override
   _OrderInfoState createState() => _OrderInfoState();
 }
@@ -13,6 +18,9 @@ class OrderInfo extends StatefulWidget {
 class _OrderInfoState extends State<OrderInfo> {
   @override
   Widget build(BuildContext context) {
+    var createdDate = widget.data.orders!.createdAt ?? '' as DateTime;
+    String formattedDate =
+        DateFormat('dd MMM yyy, hh:mm a').format(createdDate);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(110.0),
@@ -21,7 +29,7 @@ class _OrderInfoState extends State<OrderInfo> {
             icon: Icon(
               Icons.chevron_left,
               size: 30,
-            color: Theme.of(context).secondaryHeaderColor,
+              color: Theme.of(context).secondaryHeaderColor,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -34,14 +42,14 @@ class _OrderInfoState extends State<OrderInfo> {
               // padding: EdgeInsets.only(top: 12.0),
               child: ListTile(
                 title: Text(
-                  'Samantha Smith',
+                  widget.data.user!.name ?? '',
                   style: Theme.of(context)
                       .textTheme
                       .headline4!
                       .copyWith(fontSize: 14, letterSpacing: 0.07),
                 ),
                 subtitle: Text(
-                  'AE5587 | June 20, 11:35 am',
+                  'AE5587 |  ${formattedDate}',
                   style: Theme.of(context)
                       .textTheme
                       .headline6!
@@ -262,7 +270,8 @@ class _OrderInfoState extends State<OrderInfo> {
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
-                child: Text(AppLocalizations.of(context)!.payment!.toUpperCase(),
+                child: Text(
+                    AppLocalizations.of(context)!.payment!.toUpperCase(),
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                         color: kDisabledColor, fontWeight: FontWeight.bold)),
                 color: Theme.of(context).scaffoldBackgroundColor,
@@ -321,7 +330,7 @@ class _OrderInfoState extends State<OrderInfo> {
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '\$ 21.00',
+                        '\$ ${widget.data.orders!.total!.toString() ?? 0}',
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ]),

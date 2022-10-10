@@ -26,7 +26,7 @@ class PageRoutes {
   static const String OrderTableItemAccountPage = 'order_item_account';
   static const String accountPage = 'account_page';
   static const String orderPage = 'order_page';
-  static const String orderInfoPage = 'orderinfo_page';
+  // static const String orderInfoPage = 'orderinfo_page';
   static const String tncPage = 'tnc_page';
   static const String savedAddressesPage = 'saved_addresses_page';
   static const String supportPage = 'support_page';
@@ -48,8 +48,8 @@ class PageRoutes {
     return {
       track: (context) => const TrackOrderPage(),
       locationPage: (context) => LocationPage(),
-      orderPage: (context) =>const OrderPage(),
-      orderInfoPage: (context) => OrderInfo(),
+      orderPage: (context) => const OrderPage(),
+      // orderInfoPage: (context) => OrderInfo(),
       accountPage: (context) => AccountPage(),
       tncPage: (context) => TncPage(),
       supportPage: (context) => SupportPage(),
