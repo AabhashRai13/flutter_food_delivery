@@ -15,8 +15,8 @@ class MobileInput extends StatefulWidget {
 }
 
 class _MobileInputState extends State<MobileInput> {
-  final TextEditingController _controller = TextEditingController();
   final AuthProvider _authProvider = AuthProvider();
+  final TextEditingController _controller = TextEditingController();
   String? isoCode = "+977";
 
   @override
@@ -79,7 +79,7 @@ class _MobileInputState extends State<MobileInput> {
           onPressed: () async {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const OrderPage()));
-            // _authProvider.getOtp(isoCode! + _controller.text, context);
+            //  _authProvider.getOtp(isoCode! + _controller.text, context);
           },
         ),
       ],

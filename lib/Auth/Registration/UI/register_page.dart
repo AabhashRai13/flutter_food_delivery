@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:hungerz_store/Auth/login_navigator.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
@@ -9,6 +8,8 @@ import 'package:hungerz_store/Themes/colors.dart';
 
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,17 +35,19 @@ class RegisterPage extends StatelessWidget {
       ),
 
       //this column contains 3 textFields and a bottom bar
-      body: RegisterForm(),
+      body: const RegisterForm(),
     );
   }
 }
 
 class RegisterForm extends StatefulWidget {
+  const RegisterForm({super.key});
+
   @override
-  _RegisterFormState createState() => _RegisterFormState();
+  RegisterFormState createState() => RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class RegisterFormState extends State<RegisterForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
@@ -68,13 +71,13 @@ class _RegisterFormState extends State<RegisterForm> {
     return Stack(
       children: <Widget>[
         ListView(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           children: <Widget>[
             Divider(
               color: Theme.of(context).cardColor,
               thickness: 8.0,
             ),
-            SizedBox(
+            const SizedBox(
               height: 25,
             ),
             inputField(AppLocalizations.of(context)!.fullNamee!.toUpperCase(),
@@ -126,7 +129,7 @@ class _RegisterFormState extends State<RegisterForm> {
         children: [
           Row(
             children: [
-              Container(
+              SizedBox(
                 height: 20,
                 child: Image(
                   image: AssetImage(
@@ -135,7 +138,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   color: kMainColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 13,
               ),
               Text(title,
@@ -143,11 +146,11 @@ class _RegisterFormState extends State<RegisterForm> {
             ],
           ),
           Container(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             child: Column(
               children: [
                 SmallTextFormField(null, hint, null, hint),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
               ],
