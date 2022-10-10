@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Auth/Registration/UI/register_text_field.dart';
 
-import 'package:hungerz_store/Auth/login_navigator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/app/di.dart';
+import 'package:hungerz_store/bloc/user/user_cubit.dart';
 
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
@@ -52,13 +56,20 @@ class RegisterFormState extends State<RegisterForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   GlobalKey<FormState> signupKey = GlobalKey();
-
+  final UserCubit _userCubit = instance<UserCubit>();
   // RegisterBloc _registerBloc;
-
+  String? userId;
   @override
   void initState() {
     super.initState();
     // _registerBloc = BlocProvider.of<RegisterBloc>(context);
+    setUserId();
+  }
+
+  setUserId() async {
+    // userId = await _appPreferences.getUserID("USER_ID") ?? "";
+    userId = FirebaseAuth.instance.currentUser!.uid;
+    log("user Id $userId");
   }
 
   @override
@@ -147,10 +158,20 @@ class RegisterFormState extends State<RegisterForm> {
             alignment: Alignment.bottomCenter,
             child: BottomBar(
                 text: AppLocalizations.of(context)!.continueText,
-                onTap: () {
+                onTap: () async {
                   if (signupKey.currentState!.validate()) {
                     signupKey.currentState!.save();
-                    Navigator.pushNamed(context, LoginRoutes.verification);
+                    bool success = await _userCubit.updateUser(
+                        userId: userId,
+                        email: "sujan@gmail.com",
+                        phoneNumber: "9860168588",
+                        name: "Sujan Lamichhane",
+                        photoUrl:
+                            "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
+                    if (success) {
+                      // Navigator.pushNamed(context, LoginRoutes.verification);
+
+                    }
                   }
                 }),
           )
@@ -159,50 +180,40 @@ class RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  Container inputField(
+  inputField(
     String title,
     String hint,
     String img,
   ) {
-    return Container(
-      child: Column(
+    return Column(children: [
+      Row(
         children: [
-          Row(
-            children: [
-              SizedBox(
-                height: 20,
-                child: Image(
-                  image: AssetImage(
-                    img,
-                  ),
-                  color: kMainColor,
-                ),
+          SizedBox(
+            height: 20,
+            child: Image(
+              image: AssetImage(
+                img,
               ),
-              const SizedBox(
-                width: 13,
-              ),
-              Text(title,
-                  style: TextStyle(color: Colors.grey[600], fontSize: 12))
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 25),
-            child: Column(
-              children: [
-                SmallTextFormField(
-                  null,
-                  hint,
-                  null,
-                  hint,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
+              color: kMainColor,
             ),
           ),
+          const SizedBox(
+            width: 13,
+          ),
+          Text(title, style: TextStyle(color: Colors.grey[600], fontSize: 12))
         ],
       ),
-    );
+      Container(
+        padding: const EdgeInsets.only(left: 25),
+        child: Column(
+          children: [
+            SmallTextFormField(null, hint, null, hint),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      )
+    ]);
   }
 }

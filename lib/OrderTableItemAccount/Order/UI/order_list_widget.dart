@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Order/UI/orderinfo_page.dart';
-import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/models/all_data.dart';
 import 'package:intl/intl.dart';
 
@@ -67,7 +65,7 @@ class OrderListWidget extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                'Order AE5587 | ${formattedDate}',
+                                'Order AE5587 | $formattedDate',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6!
@@ -78,7 +76,7 @@ class OrderListWidget extends StatelessWidget {
                               ),
                               const Spacer(),
                               Text(
-                                '\$ ${data.orders!.total!.toString() ?? 0} | COD',
+                                '\$ ${data.orders!.total!.toString()} | COD',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6!
@@ -116,11 +114,11 @@ class OrderListWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 6.0,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     children: [
                       Text('Fried Chicken x1',
@@ -132,11 +130,11 @@ class OrderListWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 6.0,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     children: [
                       Text('WaterMelon Juice x1',
@@ -148,7 +146,7 @@ class OrderListWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8.0,
                 ),
                 Divider(
@@ -161,12 +159,12 @@ class OrderListWidget extends StatelessWidget {
           RotatedBox(
             quarterTurns: -1,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               height: 30,
               width: 140,
               decoration: BoxDecoration(
                   color: Colors.green[800],
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       bottomRight: Radius.circular(10),
                       bottomLeft: Radius.circular(10))),
               child: Row(

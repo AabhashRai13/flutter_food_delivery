@@ -8,9 +8,8 @@ import 'package:hungerz_store/data/network/auth.dart';
 
 //Verification page that sends otp to the phone number entered on phone number page
 class VerificationPage extends StatelessWidget {
-  final VoidCallback onVerificationDone;
 
-  const VerificationPage(this.onVerificationDone, {super.key});
+  const VerificationPage( {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +36,15 @@ class VerificationPage extends StatelessWidget {
               .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
-      body: OtpVerify(onVerificationDone),
+      body: OtpVerify(),
     );
   }
 }
 
 //otp verification class
 class OtpVerify extends StatefulWidget {
-  final VoidCallback onVerificationDone;
 
-  const OtpVerify(this.onVerificationDone, {super.key});
+  const OtpVerify( {super.key});
 
   @override
   _OtpVerifyState createState() => _OtpVerifyState();
@@ -171,7 +169,7 @@ class _OtpVerifyState extends State<OtpVerify> {
                   text: AppLocalizations.of(context)!.continueText,
                   onTap: () {
                     _authProvider.otpVerfication(
-                        _controller.text, widget.onVerificationDone);
+                        _controller.text, context);
                   }),
             ],
           ),
