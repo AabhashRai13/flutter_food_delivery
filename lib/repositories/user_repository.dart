@@ -5,7 +5,7 @@ class AuthRepository {
 
   AuthRepository();
 
-  Future<void> updateUserProfile({
+  Future<bool> updateUserProfile({
     String? name,
     String? email,
     String? phoneNumber,
@@ -13,12 +13,13 @@ class AuthRepository {
     required String userId,
   }) async {
     try {
-      await _authProvider.updateUserProfile(
+      bool success = await _authProvider.updateUserProfile(
           name: name,
           email: email,
           phoneNumber: phoneNumber,
           photoUrl: photoUrl,
           userId: userId);
+      return success;
     } catch (error) {
       rethrow;
     }

@@ -68,7 +68,7 @@ class PhoneNumberState extends State<PhoneNumber> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
                 child: MobileInput(),
               ),
             ],

@@ -148,7 +148,7 @@ class AuthProvider {
     });
   }
 
-  Future<void> updateUserProfile({
+  Future<bool> updateUserProfile({
     String? name,
     String? email,
     String? phoneNumber,
@@ -167,6 +167,7 @@ class AuthProvider {
         'walletBalance': 0.0,
         'isRetailer': true,
       });
+      return true;
     } catch (error) {
       rethrow;
     }

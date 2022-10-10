@@ -17,6 +17,7 @@ class EntryField extends StatelessWidget {
   final Widget? suffixIcon;
   final Function? onTap;
   final TextCapitalization? textCapitalization;
+  final String? Function(String?)? validator;
 
   EntryField({
     this.controller,
@@ -34,15 +35,17 @@ class EntryField extends StatelessWidget {
     this.onTap,
     this.textCapitalization,
     this.prefixIcon,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:const  EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
       child: Column(
         children: [
           TextFormField(
+            validator: validator,
             textCapitalization:
                 textCapitalization ?? TextCapitalization.sentences,
             cursorColor: kMainColor,
