@@ -2,7 +2,6 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Components/entry_field.dart';
 import 'package:hungerz_store/Locale/locales.dart';
-import 'package:hungerz_store/OrderTableItemAccount/Order/UI/order_page.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/data/network/auth.dart';
 
@@ -77,9 +76,9 @@ class _MobileInputState extends State<MobileInput> {
             ),
           ),
           onPressed: () async {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const OrderPage()));
-            //  _authProvider.getOtp(isoCode! + _controller.text, context);
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => const OrderPage()));
+            _authProvider.getOtp(isoCode! + _controller.text, context);
           },
         ),
       ],

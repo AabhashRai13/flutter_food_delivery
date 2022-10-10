@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/settings_page.dart';
+import 'package:hungerz_store/OrderTableItemAccount/Order/UI/order_page.dart';
+import 'package:hungerz_store/OrderTableItemAccount/order_table_item_account.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/language_cubit.dart';
 import 'package:hungerz_store/map_utils.dart';
@@ -38,8 +41,8 @@ class HungerzStore extends StatelessWidget {
         builder: (_, theme) {
           return BlocBuilder<LanguageCubit, Locale>(builder: (_, locale) {
             return MaterialApp(
-              localizationsDelegates:const [
-                 AppLocalizationsDelegate(),
+              localizationsDelegates: const [
+                AppLocalizationsDelegate(),
                 GlobalMaterialLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
@@ -48,7 +51,9 @@ class HungerzStore extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               locale: locale,
               theme: theme,
-              home: Settings(),
+              home: FirebaseAuth.instance.currentUser != null
+                  ? OrderItemAccount()
+                  : Settings(),
               // home: LoginNavigator(),
               routes: PageRoutes().routes(),
             );
