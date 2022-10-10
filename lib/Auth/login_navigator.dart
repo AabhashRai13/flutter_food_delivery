@@ -23,6 +23,8 @@ class LoginData {
 }
 
 class LoginNavigator extends StatelessWidget {
+  const LoginNavigator({super.key});
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -40,7 +42,7 @@ class LoginNavigator extends StatelessWidget {
           late WidgetBuilder builder;
           switch (settings.name) {
             case LoginRoutes.loginRoot:
-              builder = (BuildContext _) => PhoneNumber();
+              builder = (BuildContext _) =>const PhoneNumber();
               break;
             case LoginRoutes.social:
               builder = (BuildContext _) => SocialLogIn();

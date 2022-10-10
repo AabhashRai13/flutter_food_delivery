@@ -20,7 +20,7 @@ class OrderRepository {
         order = Order.fromJson(docData);
         allOrders.add(order);
       }
-      log('Order: ${allOrders[0].total}');
+
       return allOrders;
     } catch (error) {
       rethrow;

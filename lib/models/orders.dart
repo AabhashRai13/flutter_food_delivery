@@ -52,8 +52,8 @@ DocumentReference? firestoreDocRefFromJson(dynamic value) {
 dynamic firestoreDocRefToJson(dynamic value) => value;
 
 /// Deserialize Firebase Timestamp data type from Firestore
-Timestamp firestoreTimestampFromJson(dynamic value) {
-  return value != null ? Timestamp.fromMicrosecondsSinceEpoch(value) : value;
+DateTime firestoreTimestampFromJson(dynamic value) {
+  return value != null ? DateTime.parse(value.toDate().toString()) : value;
 }
 
 /// This method only stores the "timestamp" data type back in the Firestore
@@ -64,12 +64,12 @@ class Order {
   String? name;
   double? total;
   String? status;
-  dynamic product;
-  // @JsonKey(
-  //   fromJson: firestoreTimestampFromJson,
-  //   toJson: firestoreTimestampToJson,
-  // )
-  // Timestamp? createdAt;
+  List<Product>? products;
+  @JsonKey(
+    fromJson: firestoreTimestampFromJson,
+    toJson: firestoreTimestampToJson,
+  )
+  DateTime? createdAt;
 
   @JsonKey(
     toJson: firestoreDocRefToJson,
@@ -83,11 +83,47 @@ class Order {
   DocumentReference? shop;
 
   Order(
-      {this.name, this.shop, this.user, this.product, this.status, this.total});
+      {this.name,
+      this.shop,
+      this.user,
+      this.products,
+      this.status,
+      this.total,
+      this.createdAt});
 
   /// Create a Order from JSON format
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
   /// Convert an Order to JSON format
   Map<String, dynamic> toJson() => _$OrderToJson(this);
+}
+
+@JsonSerializable()
+class Product {
+  String? dateStart;
+  double? quantity;
+  String? nbrPersons;
+
+  String? timeStart;
+
+  @JsonKey(
+    toJson: firestoreDocRefToJson,
+    fromJson: firestoreDocRefFromJson,
+  )
+  DocumentReference? product;
+
+  Product({
+    this.dateStart,
+    this.nbrPersons,
+    this.quantity,
+    this.product,
+    this.timeStart,
+  });
+
+  /// Create a Product from JSON format
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
+
+  /// Convert an Product to JSON format
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
 }
