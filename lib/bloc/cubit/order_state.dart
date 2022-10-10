@@ -10,6 +10,6 @@ abstract class OrderState extends Equatable {
 class OrderInitial extends OrderState {}
 
 class OrdersLoaded extends OrderState {
-  final AllData allData;
-  const OrdersLoaded({required this.allData});
+  final List<AllData> allDatas;
+  const OrdersLoaded({required this.allDatas});
 }

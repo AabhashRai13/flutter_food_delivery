@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hungerz_store/data/network/order_data_provider.dart';
 import 'package:hungerz_store/models/all_data.dart';
@@ -9,7 +8,7 @@ import 'package:hungerz_store/models/user.dart';
 class OrderRepository {
   final OrderDataProvider orderDataProvider = OrderDataProvider();
 
-  Future<AllData> getOrders() async {
+  Future<List<AllData>> getOrders() async {
     try {
       final QuerySnapshot documentsSnapshot =
           await orderDataProvider.fetchOrders();
@@ -18,6 +17,7 @@ class OrderRepository {
       Users user;
       Shop shop;
       AllData allData = AllData();
+      List<AllData> allDatas = [];
       for (QueryDocumentSnapshot docSnapshot in documentsSnapshot.docs) {
         Map<String, dynamic> docData =
             docSnapshot.data() as Map<String, dynamic>;
@@ -25,10 +25,11 @@ class OrderRepository {
         user = await getUserFromOrder(order);
         shop = await getShopFromOrders(order);
         allOrders.add(order);
-        allData = AllData(orders: allOrders, user: user, shop: shop);
+        allData = AllData(orders: order, user: user, shop: shop);
+        allDatas.add(allData);
       }
 
-      return allData;
+      return allDatas;
     } catch (error) {
       rethrow;
     }

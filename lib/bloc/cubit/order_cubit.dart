@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hungerz_store/models/all_data.dart';
@@ -12,7 +10,7 @@ class OrderCubit extends Cubit<OrderState> {
 
   OrderCubit(this._orderRepository) : super(OrderInitial());
   Future<void> getAllOrders() async {
-    final AllData allData = await _orderRepository.getOrders();
-    emit(OrdersLoaded(allData: allData));
+    final List<AllData> allData = await _orderRepository.getOrders();
+    emit(OrdersLoaded(allDatas: allData));
   }
 }

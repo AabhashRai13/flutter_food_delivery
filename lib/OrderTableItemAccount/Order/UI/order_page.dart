@@ -83,7 +83,7 @@ class OrderPageState extends State<OrderPage> {
                                         Row(
                                           children: [
                                             Text(
-                                              'Samantha Smith',
+                                              state.allDatas[0].user!.name!,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .headline4!

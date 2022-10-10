@@ -4,7 +4,7 @@ import 'package:hungerz_store/models/user.dart';
 import 'orders.dart';
 
 class AllData {
-  List<Order>? orders;
+  Order? orders;
   Shop? shop;
   Users? user;
   AllData({this.orders, this.shop, this.user});
