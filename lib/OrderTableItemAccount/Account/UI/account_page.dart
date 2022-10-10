@@ -1,4 +1,5 @@
 // import 'package:buy_this_app/buy_this_app.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -151,7 +152,8 @@ class LogoutTile extends StatelessWidget {
                           color: kMainColor,
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        FirebaseAuth.instance.signOut();
                         Phoenix.rebirth(context);
                       })
                 ],
