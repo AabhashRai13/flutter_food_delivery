@@ -7,11 +7,13 @@ class RegisterTextField extends StatefulWidget {
       required this.title,
       required this.hint,
       required this.img,
+      required this.textEditingController,
       this.validator});
   final String title;
   final String hint;
   final String img;
   final String? Function(String?)? validator;
+  final TextEditingController textEditingController;
 
   @override
   State<RegisterTextField> createState() => _RegisterTextFieldState();
@@ -50,8 +52,8 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                   children: [
                     const SizedBox.shrink(),
                     TextFormField(
+                      controller: widget.textEditingController,
                       validator: widget.validator,
-                      initialValue: '',
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2!
@@ -78,7 +80,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                               .bodyText2!
                               .copyWith(color: Colors.grey, fontSize: 14)),
                     ),
-                const    SizedBox(
+                    const SizedBox(
                       height: 15,
                     )
                   ],
@@ -92,7 +94,6 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
         ),
       ],
     );
-    
   }
 }
 

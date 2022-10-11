@@ -1,12 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Auth/Registration/UI/register_text_field.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
@@ -54,7 +52,10 @@ class RegisterForm extends StatefulWidget {
 
 class RegisterFormState extends State<RegisterForm> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+
+  final TextEditingController _addressController = TextEditingController();
   GlobalKey<FormState> signupKey = GlobalKey();
   final UserCubit _userCubit = instance<UserCubit>();
   // RegisterBloc _registerBloc;
@@ -62,20 +63,12 @@ class RegisterFormState extends State<RegisterForm> {
   @override
   void initState() {
     super.initState();
-    // _registerBloc = BlocProvider.of<RegisterBloc>(context);
-    setUserId();
-  }
-
-  setUserId() async {
-    // userId = await _appPreferences.getUserID("USER_ID") ?? "";
-    userId = FirebaseAuth.instance.currentUser!.uid;
-    log("user Id $userId");
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _emailController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -98,8 +91,9 @@ class RegisterFormState extends State<RegisterForm> {
               // inputField(AppLocalizations.of(context)!.fullNamee!.toUpperCase(),
               //     'Samantha Smith', 'images/icons/ic_name.png'),
               RegisterTextField(
-                title: AppLocalizations.of(context)!.fullNamee!.toUpperCase(),
-                hint: "Samantha Smith",
+                textEditingController: _nameController,
+                title: "Shop Name",
+                hint: "your Shop name",
                 img: 'images/icons/ic_name.png',
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -112,15 +106,26 @@ class RegisterFormState extends State<RegisterForm> {
               //email textField
 
               RegisterTextField(
-                title:
-                    AppLocalizations.of(context)!.emailAddress!.toUpperCase(),
-                hint: 'samanthasmith@mail.com',
+                textEditingController: _addressController,
+                title: "Address",
+                hint: 'enter your address',
                 img: 'images/icons/ic_mail.png',
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Email Address should not be empty';
-                  } else if (!value.isValidEmail()) {
-                    return 'Email Address is not valid';
+                    return ' Address should not be empty';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+              RegisterTextField(
+                textEditingController: _descriptionController,
+                title: "Description",
+                hint: 'your shop description',
+                img: 'images/icons/ic_phone.png',
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'breif description is required';
                   } else {
                     return null;
                   }
@@ -128,6 +133,7 @@ class RegisterFormState extends State<RegisterForm> {
               ),
 
               RegisterTextField(
+                textEditingController: _phoneNumberController,
                 title:
                     AppLocalizations.of(context)!.mobileNumber!.toUpperCase(),
                 hint: '+1 987 654 3210',
@@ -159,18 +165,20 @@ class RegisterFormState extends State<RegisterForm> {
             child: BottomBar(
                 text: AppLocalizations.of(context)!.continueText,
                 onTap: () async {
+                  log("controller ${_addressController.text.trim()}");
                   if (signupKey.currentState!.validate()) {
                     signupKey.currentState!.save();
-                    bool success = await _userCubit.updateUser(
-                        userId: userId,
-                        email: "sujan@gmail.com",
-                        phoneNumber: "9860168588",
-                        name: "Sujan Lamichhane",
-                        photoUrl:
+                    bool success = await _userCubit.updateShop(
+                        address: _addressController.text.trim(),
+                        name: _nameController.text.trim(),
+                        description: _descriptionController.text.trim(),
+                        isPopular: true,
+                        phoneNumber: _phoneNumberController.text.trim(),
+                        imageUrl:
                             "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
                     if (success) {
-                      // Navigator.pushNamed(context, LoginRoutes.verification);
-
+                      if (!mounted) return;
+                      Navigator.pushNamed(context, PageRoutes.orderPage);
                     }
                   }
                 }),

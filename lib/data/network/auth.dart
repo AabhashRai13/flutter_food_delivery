@@ -7,6 +7,8 @@ import 'package:hungerz_store/Auth/Registration/UI/register_page.dart';
 import 'package:hungerz_store/Auth/login_navigator.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
+import 'package:hungerz_store/models/ratings.dart';
+import 'package:hungerz_store/models/shop.dart';
 
 class AuthProvider {
   static String phone = "";
@@ -28,7 +30,8 @@ class AuthProvider {
     );
   }
 
-  otpVerfication(String smsCode, BuildContext context) async {
+  otpVerfication(String smsCode, BuildContext context,
+      [bool mounted = true]) async {
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: AuthProvider.phone,
@@ -38,6 +41,7 @@ class AuthProvider {
       final UserCredential userCredentials =
           await auth.signInWithCredential(credential);
       setUserCredentials(userCredentials);
+      if (!mounted) return;
 
       Navigator.push(
         context,
@@ -57,6 +61,7 @@ class AuthProvider {
 
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     await _appPreferences.setUserId(userId);
+
     if (userCredentials.additionalUserInfo!.isNewUser) {
       await _startUserProfile(
         userId: userId,
@@ -135,8 +140,10 @@ class AuthProvider {
     String? phoneNumber,
     String? imageUrl,
   }) async {
+    var uuid = await _appPreferences.getUserID();
+    log("User Id uuid $uuid");
     final DocumentReference user =
-        FirebaseFirestore.instance.collection('users').doc(userId);
+        FirebaseFirestore.instance.collection('users').doc(uuid);
 
     user.set({
       'name': name ?? '',
@@ -148,25 +155,34 @@ class AuthProvider {
     });
   }
 
-  Future<bool> updateUserProfile({
+  Future<bool> updateShopProfile({
+    String? address,
     String? name,
-    String? email,
-    String? phoneNumber,
-    String? photoUrl,
-    required String userId,
+    double? latitude,
+    longitude,
+    String? description,
+    String? imageUrl,
+    bool? isPopular,
+    Ratings? ratings,
+    required String phoneNumber,
   }) async {
     try {
-      final DocumentReference user =
-          FirebaseFirestore.instance.collection('users').doc(userId);
+      var uuid = await _appPreferences.getUserID();
 
-      user.set({
-        'name': name ?? '',
-        'email': email ?? '',
-        'phoneNumber': phoneNumber ?? '',
-        'imageUrl': photoUrl,
-        'walletBalance': 0.0,
-        'isRetailer': true,
-      });
+      final DocumentReference shopp =
+          FirebaseFirestore.instance.collection('shops').doc(uuid);
+      Shop shop = Shop(
+          address: address,
+          name: name,
+          latitude: latitude,
+          longitude: longitude,
+          description: description,
+          imageUrl: imageUrl,
+          isPopular: isPopular);
+
+      shopp.set(shop.toJson());
+      await _appPreferences.setshopName(name!);
+
       return true;
     } catch (error) {
       rethrow;

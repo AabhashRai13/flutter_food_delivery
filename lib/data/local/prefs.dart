@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String prefsVersion = "PREFS_VERSION";
@@ -15,18 +17,26 @@ const String postImage = "POST_IMAGE_API";
 const String cameraPersmission = "CAMERA_PERMISSION";
 const String microPhonePermission = "MICROPHONE_PERMISSION";
 const String userId = "USER_ID";
+const String shopName = "ShopName";
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
 
   AppPreferences(this._sharedPreferences);
 
-  Future<void> setUserId(String userId) async {
-    _sharedPreferences.setString(userId, userId);
+  Future<void> setUserId(String userIdd) async {
+    _sharedPreferences.setString(userId, userIdd);
   }
 
-  Future<String?> getUserID(String key) async {
-    return _sharedPreferences.getString(key);
+  Future<String?> getUserID() async {
+    return _sharedPreferences.getString(userId);
+  }
+    Future<void> setshopName(String shopNamed) async {
+    _sharedPreferences.setString(shopName, shopNamed);
+  }
+
+  Future<String?> getshopName() async {
+    return _sharedPreferences.getString(shopName);
   }
 
   Future<void> setApiCounters(String key, int count) async {

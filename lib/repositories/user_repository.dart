@@ -5,20 +5,27 @@ class AuthRepository {
 
   AuthRepository();
 
-  Future<bool> updateUserProfile({
+  Future<bool> updateShopProfile({
+    String? address,
     String? name,
-    String? email,
-    String? phoneNumber,
-    String? photoUrl,
-    required String userId,
+    double? latitude,
+    longitude,
+    String? description,
+    String? imageUrl,
+    bool? isPopular,
+    required String phoneNumber,
   }) async {
     try {
-      bool success = await _authProvider.updateUserProfile(
+      bool success = await _authProvider.updateShopProfile(
+          address: address,
           name: name,
-          email: email,
-          phoneNumber: phoneNumber,
-          photoUrl: photoUrl,
-          userId: userId);
+          latitude: latitude,
+          longitude: longitude,
+          description: description,
+          imageUrl: imageUrl,
+          isPopular: isPopular,
+          phoneNumber: phoneNumber
+          );
       return success;
     } catch (error) {
       rethrow;
