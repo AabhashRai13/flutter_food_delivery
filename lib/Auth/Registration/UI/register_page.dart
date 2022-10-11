@@ -9,6 +9,8 @@ import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
 
+import '../../../OrderTableItemAccount/order_table_item_account.dart';
+
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -178,7 +180,11 @@ class RegisterFormState extends State<RegisterForm> {
                             "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
                     if (success) {
                       if (!mounted) return;
-                      Navigator.pushNamed(context, PageRoutes.orderPage);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => OrderItemAccount(),
+                        ),
+                      );
                     }
                   }
                 }),

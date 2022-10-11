@@ -576,7 +576,7 @@ class _AddState extends State<Add> {
                   listingName: _nameController.text.trim(),
                   rentalDuration: _rentalDurationController.text.trim(),
                   rentalFor: _rentalForController.text.trim(),
-                  rentalPrice: double.parse("5"),
+                  rentalPrice: double.parse(_priceController.text),
                   pickup: foodType,
                   typeOfRental: haveApp,
                   rentingRules: _rulesController.text.trim(),

@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hungerz_store/app/di.dart';
+import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/data/network/product_data_provider.dart';
 import 'package:hungerz_store/models/products.dart';
 
 class ProductRepository {
   final ProductDataProvider productDataProvider = ProductDataProvider();
-
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   Future<List<Products>> getAllProducts({required String userId}) async {
     try {
       final QuerySnapshot documentsSnapshot =
@@ -34,9 +36,9 @@ class ProductRepository {
     String? rentingRules,
     String? rentalFor,
     String? rentalDuration,
-    String? shopName,
   }) async {
     try {
+      var shopName = await _appPreferences.getshopName();
       bool success = await productDataProvider.addProducts(
         userId: userId,
         description: description,
