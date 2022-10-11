@@ -12,10 +12,10 @@ class OrderInfo extends StatefulWidget {
 
   const OrderInfo({super.key, required this.data});
   @override
-  _OrderInfoState createState() => _OrderInfoState();
+  OrderInfoState createState() => OrderInfoState();
 }
 
-class _OrderInfoState extends State<OrderInfo> {
+class OrderInfoState extends State<OrderInfo> {
   @override
   Widget build(BuildContext context) {
     var createdDate = widget.data.orders!.createdAt ?? '' as DateTime;
@@ -23,7 +23,7 @@ class _OrderInfoState extends State<OrderInfo> {
         DateFormat('dd MMM yyy, hh:mm a').format(createdDate);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(110.0),
+        preferredSize: const Size.fromHeight(110.0),
         child: CustomAppBar(
           leading: IconButton(
             icon: Icon(
@@ -330,12 +330,12 @@ class _OrderInfoState extends State<OrderInfo> {
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '\$ ${widget.data.orders!.total!.toString() ?? 0}',
+                        '\$ ${widget.data.orders!.total!.toString()}',
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ]),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 7.0,
               ),
               Container(

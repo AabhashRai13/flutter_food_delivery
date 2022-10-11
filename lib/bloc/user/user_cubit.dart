@@ -10,19 +10,25 @@ class UserCubit extends Cubit<UserState> {
   final AuthRepository _authRepository = instance<AuthRepository>();
   UserCubit() : super(UserInitial());
 
-  Future<bool> updateUser({
-    String? userId,
+  Future<bool> updateShop({
+    String? address,
     String? name,
-    String? email,
-    String? phoneNumber,
-    String? photoUrl,
+    double? latitude,
+    longitude,
+    String? description,
+    String? imageUrl,
+    bool? isPopular,
+    required String phoneNumber,
   }) async {
-    bool success = await _authRepository.updateUserProfile(
-        userId: userId!,
+    bool success = await _authRepository.updateShopProfile(
         name: name,
-        phoneNumber: phoneNumber,
-        photoUrl: photoUrl,
-        email: email);
+        address: address,
+        latitude: latitude,
+        longitude: longitude,
+        description: description,
+        imageUrl: imageUrl,
+        isPopular: isPopular,
+        phoneNumber: phoneNumber);
     return success;
   }
 }

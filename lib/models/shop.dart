@@ -11,7 +11,17 @@ class Shop {
   String? imageUrl;
   bool? isPopular;
   Ratings? ratings;
-  Shop({this.address, this.latitude, this.longitude, this.name, this.ratings});
+  String? phoneNumber;
+  Shop(
+      {this.isPopular,
+      this.imageUrl,
+      this.address,
+      this.latitude,
+      this.longitude,
+      this.name,
+      this.ratings,
+      this.description,
+      this.phoneNumber});
   factory Shop.fromJson(Map<String, dynamic> data) => _$ShopFromJson(data);
 
   Map<String, dynamic> toJson() => _$ShopToJson(this);
