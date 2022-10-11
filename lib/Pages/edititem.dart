@@ -15,7 +15,7 @@ class EditItem extends StatefulWidget {
 
 class _EditItemState extends State<EditItem> {
   bool inStock = false;
-  String? stock = "Out of Stock";
+  String? stock = "Not Available";
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,9 @@ class _EditItemState extends State<EditItem> {
             Navigator.pop(context);
           },
         ),
-        title: Text(AppLocalizations.of(context)!.edit!,
+        title: Text(
+            // AppLocalizations.of(context)!.edit!,
+            "Edit Listings",
             style: Theme.of(context).textTheme.bodyText1),
         actions: [
           Center(
@@ -52,10 +54,11 @@ class _EditItemState extends State<EditItem> {
               setState(() {
                 inStock = value;
               });
-              if (inStock == true)
-                stock = AppLocalizations.of(context)!.stock;
-              else if (inStock == false)
-                stock = AppLocalizations.of(context)!.outStock;
+              if (inStock == true) {
+                stock = "Available";
+              } else if (inStock == false) {
+                stock = "Not Available";
+              }
             },
           )
         ],
@@ -92,7 +95,8 @@ class _AddState extends State<Add> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10.0),
                     child: Text(
-                      AppLocalizations.of(context)!.image!.toUpperCase(),
+                      "Listing Image",
+                      // AppLocalizations.of(context)!.image!.toUpperCase(),
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.67,
@@ -135,7 +139,8 @@ class _AddState extends State<Add> {
                   padding:
                       EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                   child: Text(
-                    AppLocalizations.of(context)!.info!,
+                    // AppLocalizations.of(context)!.info!,
+                    "Listing Info",
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.67,

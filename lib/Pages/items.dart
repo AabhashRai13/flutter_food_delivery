@@ -54,8 +54,9 @@ class _ItemsPageState extends State<ItemsPage> {
               children: <Widget>[
                 Center(
                     child: Text(
-                  AppLocalizations.of(context)!.product!,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  // AppLocalizations.of(context)!.product!,
+                  "My Listings",
+                  style: Theme.of(context).textTheme.bodyText1,
                 )),
               ],
             ),
@@ -157,10 +158,11 @@ class _ItemsPageState extends State<ItemsPage> {
                                     inStock = value;
                                   });
                                   if (inStock == true)
-                                    stock = AppLocalizations.of(context)!.stock;
+                                    stock = "Available";
+                                  // AppLocalizations.of(context)!.stock;
                                   else if (inStock == false)
-                                    stock =
-                                        AppLocalizations.of(context)!.outStock;
+                                    stock = "Not Available";
+                                  // AppLocalizations.of(context)!.outStock;
                                 },
                               )
                             ],
