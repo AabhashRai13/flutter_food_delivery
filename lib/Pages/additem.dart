@@ -5,11 +5,14 @@ import 'package:hungerz_store/Components/entry_field.dart';
 
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/models/product_id.dart';
+import 'package:hungerz_store/models/products.dart';
 import 'package:hungerz_store/repositories/product_repository.dart';
 
 class AddItem extends StatefulWidget {
-  const AddItem({super.key});
-
+  const AddItem({super.key, required this.isEditing, this.productId});
+  final bool isEditing;
+  final ProductId? productId;
   @override
   AddItemState createState() => AddItemState();
 }
@@ -35,7 +38,7 @@ class AddItemState extends State<AddItem> {
         ),
         title: Text(
             // AppLocalizations.of(context)!.edit!,
-            "Add Listings",
+            widget.isEditing ? "Edit Listings" : "Add Listings",
             style: Theme.of(context).textTheme.bodyText1),
         actions: [
           Center(
@@ -64,28 +67,30 @@ class AddItemState extends State<AddItem> {
           )
         ],
       ),
-      body: Add(),
+      body: Add(isEditing: widget.isEditing, productId: widget.productId),
     );
   }
 }
 
 class Add extends StatefulWidget {
+  const Add({super.key, required this.isEditing, this.productId});
+  final bool isEditing;
+  final ProductId? productId;
   @override
   _AddState createState() => _AddState();
 }
 
 class _AddState extends State<Add> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _categoryController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _rulesController = TextEditingController();
-  final TextEditingController _rentalForController = TextEditingController();
-  final TextEditingController _rentalDurationController =
-      TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _categoryController = TextEditingController();
+  TextEditingController _priceController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _rulesController = TextEditingController();
+  TextEditingController _rentalForController = TextEditingController();
+  TextEditingController _rentalDurationController = TextEditingController();
 
-  int? foodType = -1;
-  int? haveApp = -1;
+  int? pickup = -1;
+  int? typeOfRental = -1;
   GlobalKey<FormState> signupKey = GlobalKey();
   // ignore: prefer_typing_uninitialized_variables
   late String? userId;
@@ -94,11 +99,33 @@ class _AddState extends State<Add> {
     // TODO: implement initState
     super.initState();
     getUserId();
+    widget.isEditing ? initializeController() : null;
   }
 
   getUserId() async {
     // ignore: await_only_futures
     userId = await FirebaseAuth.instance.currentUser!.uid;
+  }
+
+  initializeController() {
+    if (widget.isEditing == true) {
+      _nameController =
+          TextEditingController(text: widget.productId!.product.listingName);
+      _categoryController = TextEditingController(
+          text: widget.productId!.product.listingCategory);
+      _descriptionController =
+          TextEditingController(text: widget.productId!.product.description);
+      _priceController = TextEditingController(
+          text: widget.productId!.product.rentalPrice.toString());
+      pickup = widget.productId!.product.pickup;
+      typeOfRental = widget.productId!.product.typeOfRental;
+      _rulesController =
+          TextEditingController(text: widget.productId!.product.rentingRules);
+      _rentalForController =
+          TextEditingController(text: widget.productId!.product.rentalFor);
+      _rentalDurationController =
+          TextEditingController(text: widget.productId!.product.rentalDuration);
+    }
   }
 
   @override
@@ -108,14 +135,15 @@ class _AddState extends State<Add> {
         Form(
           key: signupKey,
           child: ListView(
-            padding: EdgeInsets.only(bottom: 70),
+            padding: const EdgeInsets.only(bottom: 70),
             children: <Widget>[
               Divider(
                 color: Theme.of(context).cardColor,
                 thickness: 6.7,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -133,18 +161,18 @@ class _AddState extends State<Add> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(
+                        SizedBox(
                           height: 99.0,
                           width: 99.0,
                           child: Image.asset('images/placeholder_dish.png'),
                         ),
-                        SizedBox(width: 24.0),
+                        const SizedBox(width: 24.0),
                         Icon(
                           Icons.camera_alt,
                           color: kMainColor,
                           size: 25.0,
                         ),
-                        SizedBox(width: 14.3),
+                        const SizedBox(width: 14.3),
                         Text(AppLocalizations.of(context)!.uploadPhoto!,
                             style: Theme.of(context)
                                 .textTheme
@@ -163,8 +191,8 @@ class _AddState extends State<Add> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
                     child: Text(
                       // AppLocalizations.of(context)!.info!,
                       'Listing Info',
@@ -175,7 +203,7 @@ class _AddState extends State<Add> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: EntryField(
                       textCapitalization: TextCapitalization.words,
                       hint:
@@ -192,9 +220,9 @@ class _AddState extends State<Add> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: EntryField(
-                      suffixIcon: Icon(
+                      suffixIcon: const Icon(
                         Icons.keyboard_arrow_down,
                         color: Colors.black,
                       ),
@@ -213,7 +241,7 @@ class _AddState extends State<Add> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: EntryField(
                       textCapitalization: TextCapitalization.words,
                       // label: "ITEM PRICE",
@@ -254,10 +282,10 @@ class _AddState extends State<Add> {
                       Row(
                         children: [
                           Radio(
-                            groupValue: foodType,
+                            groupValue: pickup,
                             onChanged: (dynamic value) {
                               setState(() {
-                                foodType = value;
+                                pickup = value;
                               });
                             },
                             activeColor: kMainColor,
@@ -275,10 +303,10 @@ class _AddState extends State<Add> {
                       Row(
                         children: [
                           Radio(
-                            groupValue: foodType,
+                            groupValue: pickup,
                             onChanged: (dynamic value) {
                               setState(() {
-                                foodType = value;
+                                pickup = value;
                               });
                             },
                             activeColor: kMainColor,
@@ -302,8 +330,8 @@ class _AddState extends State<Add> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
                     child: Text(
                       "TYPE OF RENTAL",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -317,10 +345,10 @@ class _AddState extends State<Add> {
                       Row(
                         children: [
                           Radio(
-                            groupValue: haveApp,
+                            groupValue: typeOfRental,
                             onChanged: (dynamic value) {
                               setState(() {
-                                haveApp = value;
+                                typeOfRental = value;
                               });
                             },
                             activeColor: kMainColor,
@@ -338,10 +366,10 @@ class _AddState extends State<Add> {
                       Row(
                         children: [
                           Radio(
-                            groupValue: haveApp,
+                            groupValue: typeOfRental,
                             onChanged: (dynamic value) {
                               setState(() {
-                                haveApp = value;
+                                typeOfRental = value;
                               });
                             },
                             activeColor: kMainColor,
@@ -359,10 +387,10 @@ class _AddState extends State<Add> {
                       Row(
                         children: [
                           Radio(
-                            groupValue: haveApp,
+                            groupValue: typeOfRental,
                             onChanged: (dynamic value) {
                               setState(() {
-                                haveApp = value;
+                                typeOfRental = value;
                               });
                             },
                             activeColor: kMainColor,
@@ -386,8 +414,8 @@ class _AddState extends State<Add> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
                     child: Text(
                       "LISTING DESCRIPTION",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -410,7 +438,7 @@ class _AddState extends State<Add> {
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   )
                 ],
@@ -423,8 +451,8 @@ class _AddState extends State<Add> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
                     child: Text(
                       "ADDITIONAL RENTING RULES",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -437,15 +465,16 @@ class _AddState extends State<Add> {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: EntryField(
                       hint: "Add Rules",
+                      controller: _rulesController,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10.0,
                   ),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text('+ add More'.toUpperCase(),
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -454,7 +483,7 @@ class _AddState extends State<Add> {
                               letterSpacing: 0.5)),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10.0,
                   ),
                 ],
@@ -467,8 +496,8 @@ class _AddState extends State<Add> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
                     child: Text(
                       "LISTING VIDEO",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -496,7 +525,7 @@ class _AddState extends State<Add> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   )
                 ],
@@ -509,8 +538,8 @@ class _AddState extends State<Add> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
                     child: Text(
                       "MORE INFO",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -569,22 +598,40 @@ class _AddState extends State<Add> {
               if (signupKey.currentState!.validate()) {
                 signupKey.currentState!.save();
 
-                bool success = await ProductRepository().addProducts(
-                  userId: userId ?? '',
-                  description: _descriptionController.text.trim(),
-                  listingCategory: _categoryController.text.trim(),
-                  listingName: _nameController.text.trim(),
-                  rentalDuration: _rentalDurationController.text.trim(),
-                  rentalFor: _rentalForController.text.trim(),
-                  rentalPrice: double.parse(_priceController.text),
-                  pickup: foodType,
-                  typeOfRental: haveApp,
-                  rentingRules: _rulesController.text.trim(),
-                );
-
-                if (success == true) {
-                  Navigator.of(context).pop();
-                }
+                if (widget.isEditing == false) {
+                  bool success = await ProductRepository().addProducts(
+                    userId: userId ?? '',
+                    description: _descriptionController.text.trim(),
+                    listingCategory: _categoryController.text.trim(),
+                    listingName: _nameController.text.trim(),
+                    rentalDuration: _rentalDurationController.text.trim(),
+                    rentalFor: _rentalForController.text.trim(),
+                    rentalPrice: double.parse(_priceController.text),
+                    pickup: pickup,
+                    typeOfRental: typeOfRental,
+                    rentingRules: _rulesController.text.trim(),
+                  );
+                  if (success == true) {
+                    Navigator.of(context).pop();
+                  }
+                } else if (widget.isEditing == true) {
+                  bool success = await ProductRepository().editProducts(
+                    userId: userId ?? '',
+                    description: _descriptionController.text.trim(),
+                    listingCategory: _categoryController.text.trim(),
+                    listingName: _nameController.text.trim(),
+                    rentalDuration: _rentalDurationController.text.trim(),
+                    rentalFor: _rentalForController.text.trim(),
+                    rentalPrice: double.parse(_priceController.text),
+                    pickup: pickup,
+                    typeOfRental: typeOfRental,
+                    rentingRules: _rulesController.text.trim(),
+                    productId: widget.productId!.id,
+                  );
+                  if (success == true) {
+                    Navigator.of(context).pop();
+                  }
+                } else {}
               }
             },
           ),

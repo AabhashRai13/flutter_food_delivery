@@ -14,6 +14,7 @@ class Products {
   String? rentingRules;
   String? rentalFor;
   String? rentalDuration;
+  bool? instock;
 
   Products({
     this.listingName,
@@ -27,6 +28,7 @@ class Products {
     this.rentingRules,
     this.rentalFor,
     this.rentalDuration,
+    this.instock,
   });
 
   /// Create a Product from JSON format

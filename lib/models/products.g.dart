@@ -18,6 +18,7 @@ Products _$ProductsFromJson(Map<String, dynamic> json) => Products(
       rentingRules: json['rentingRules'] as String?,
       rentalFor: json['rentalFor'] as String?,
       rentalDuration: json['rentalDuration'] as String?,
+      instock: json['instock'] as bool?,
     );
 
 Map<String, dynamic> _$ProductsToJson(Products instance) => <String, dynamic>{
@@ -32,4 +33,5 @@ Map<String, dynamic> _$ProductsToJson(Products instance) => <String, dynamic>{
       'rentingRules': instance.rentingRules,
       'rentalFor': instance.rentalFor,
       'rentalDuration': instance.rentalDuration,
+      'instock': instance.instock,
     };

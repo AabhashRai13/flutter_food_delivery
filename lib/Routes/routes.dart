@@ -35,8 +35,6 @@ class PageRoutes {
   static const String chatPage = 'chat_page';
   static const String insightPage = 'insight_page';
   static const String storeProfile = 'store_profile';
-  static const String addItem = 'additem';
-  static const String editItem = 'edititem';
   static const String Items = 'items';
   static const String addToBank = 'addtobank_page';
   static const String review = 'reviews';
@@ -58,8 +56,6 @@ class PageRoutes {
       chatPage: (context) => ChatPage(),
       insightPage: (context) => InsightPage(),
       storeProfile: (context) => ProfilePage(),
-      addItem: (context) => const AddItem(),
-      editItem: (context) => EditItem(),
       addToBank: (context) => AddToBank(),
       Items: (context) => ItemsPage(),
       OrderTableItemAccountPage: (context) => OrderItemAccount(),

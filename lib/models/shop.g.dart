@@ -7,6 +7,8 @@ part of 'shop.dart';
 // **************************************************************************
 
 Shop _$ShopFromJson(Map<String, dynamic> json) => Shop(
+      isPopular: json['isPopular'] as bool?,
+      imageUrl: json['imageUrl'] as String?,
       address: json['address'] as String?,
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
@@ -14,10 +16,9 @@ Shop _$ShopFromJson(Map<String, dynamic> json) => Shop(
       ratings: json['ratings'] == null
           ? null
           : Ratings.fromJson(json['ratings'] as Map<String, dynamic>),
-    )
-      ..description = json['description'] as String?
-      ..imageUrl = json['imageUrl'] as String?
-      ..isPopular = json['isPopular'] as bool?;
+      description: json['description'] as String?,
+      phoneNumber: json['phoneNumber'] as String?,
+    );
 
 Map<String, dynamic> _$ShopToJson(Shop instance) => <String, dynamic>{
       'address': instance.address,
@@ -28,4 +29,5 @@ Map<String, dynamic> _$ShopToJson(Shop instance) => <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'isPopular': instance.isPopular,
       'ratings': instance.ratings,
+      'phoneNumber': instance.phoneNumber,
     };
