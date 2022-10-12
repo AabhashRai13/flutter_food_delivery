@@ -130,7 +130,7 @@ class SupportPage extends StatelessWidget {
             padding: EdgeInsets.only(left: 25),
             child: Column(
               children: [
-                SmallTextFormField(null, hint),
+                SmallTextFormField(title: hint),
                 SizedBox(
                   height: 10,
                 ),

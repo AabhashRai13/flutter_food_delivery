@@ -1,22 +1,22 @@
 // import 'package:buy_this_app/buy_this_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hungerz_store/Components/list_tile.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
-
-import '../../../Config/app_config.dart';
-import '../../../theme_cubit.dart';
+import 'package:hungerz_store/app/di.dart';
+import 'package:hungerz_store/bloc/user/user_cubit.dart';
 
 class AccountPage extends StatelessWidget {
+  const AccountPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    late ThemeCubit _themeCubit;
-    _themeCubit = BlocProvider.of<ThemeCubit>(context);
+    // late ThemeCubit _themeCubit;
+    // _themeCubit = BlocProvider.of<ThemeCubit>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -24,33 +24,19 @@ class AccountPage extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText1),
         centerTitle: true,
       ),
-      body: Account(),
-      // floatingActionButton: AppConfig.isDemoMode
-      //     ? BuyThisApp.button(
-      //         AppConfig.appName,
-      //         'https://dashboard.vtlabs.dev/projects/envato-referral-buy-link?project_slug=hungerz_flutter',
-      //       )
-      //     : null,
-      // bottomNavigationBar: AppConfig.isDemoMode
-      //     ? Container(
-      //         padding: const EdgeInsets.all(1.0),
-      //         child: _themeCubit.isDark
-      //             ? BuyThisApp.developerRowOpusDark(
-      //                 Colors.transparent, Theme.of(context).primaryColorLight)
-      //             : BuyThisApp.developerRowOpus(Colors.transparent,
-      //                 Theme.of(context).secondaryHeaderColor),
-      //       )
-      //     : const SizedBox.shrink(),
+      body: const Account(),
     );
   }
 }
 
 class Account extends StatefulWidget {
+  const Account({super.key});
+
   @override
-  _AccountState createState() => _AccountState();
+  AccountState createState() => AccountState();
 }
 
-class _AccountState extends State<Account> {
+class AccountState extends State<Account> {
   String? number;
 
   @override
@@ -61,9 +47,9 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.only(bottom: 5),
       children: <Widget>[
-        StoreDetails(),
+        const StoreDetails(),
         Divider(
           color: Theme.of(context).cardColor,
           thickness: 8.0,
@@ -100,8 +86,8 @@ class _AccountState extends State<Account> {
             text: AppLocalizations.of(context)!.settings,
             onTap: () => Navigator.pushNamed(context, PageRoutes.setting,
                 arguments: number)),
-        LogoutTile(),
-        SizedBox(
+        const LogoutTile(),
+        const SizedBox(
           height: 5,
         ),
       ],
@@ -129,17 +115,17 @@ class LogoutTile extends StatelessWidget {
                 content: Text(AppLocalizations.of(context)!.areYouSure!),
                 actions: <Widget>[
                   TextButton(
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(color: kTransparentColor)),
+                    ),
+                    onPressed: () => Navigator.pop(context),
                     child: Text(
                       AppLocalizations.of(context)!.no!,
                       style: TextStyle(
                         color: kMainColor,
                       ),
                     ),
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(color: kTransparentColor)),
-                    ),
-                    onPressed: () => Navigator.pop(context),
                   ),
                   TextButton(
                       style: TextButton.styleFrom(
@@ -164,58 +150,77 @@ class LogoutTile extends StatelessWidget {
   }
 }
 
-class StoreDetails extends StatelessWidget {
+class StoreDetails extends StatefulWidget {
+  const StoreDetails({super.key});
+
+  @override
+  State<StoreDetails> createState() => _StoreDetailsState();
+}
+
+class _StoreDetailsState extends State<StoreDetails> {
+  final UserCubit _userCubit = instance<UserCubit>();
+  @override
+  void initState() {
+    super.initState();
+    _userCubit.fetchShopProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Row(
-        children: <Widget>[
-          Image(
-            image: AssetImage("images/Layer 1.png"),
-            height: 98.0,
-            width: 98.0,
-          ),
-          SizedBox(width: 16.0),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.all(16.0),
+      child: BlocBuilder<UserCubit, UserState>(
+        bloc: _userCubit,
+        builder: (context, state) {
+          return Row(
             children: <Widget>[
-              Text(AppLocalizations.of(context)!.store!,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(fontSize: 15.0, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8.0),
-              Row(
+              const Image(
+                image: AssetImage("images/Layer 1.png"),
+                height: 98.0,
+                width: 98.0,
+              ),
+              const SizedBox(width: 16.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Icon(
-                    Icons.location_on,
-                    color: kLightTextColor,
-                    size: 10.0,
+                  Text(AppLocalizations.of(context)!.store!,
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 15.0, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8.0),
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.location_on,
+                        color: kLightTextColor,
+                        size: 10.0,
+                      ),
+                      const SizedBox(width: 5.0),
+                      Text(AppLocalizations.of(context)!.storeAddress!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2!
+                              .copyWith(
+                                  color: const Color(0xff4a4b48),
+                                  fontSize: 13.3)),
+                    ],
                   ),
-                  SizedBox(width: 5.0),
-                  Text(AppLocalizations.of(context)!.storeAddress!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2!
-                          .copyWith(color: Color(0xff4a4b48), fontSize: 13.3)),
+
+                  GestureDetector(
+                      child: Text(
+                        '\n${AppLocalizations.of(context)!.storeProfile!}',
+                        style: TextStyle(
+                            color: kMainColor,
+                            fontSize: 13.3,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onTap: () => Navigator.pushNamed(
+                          context, PageRoutes.storeProfile)),
+                  //  Text(email, style: Theme.of(context).textTheme.subtitle2),
                 ],
               ),
-
-              GestureDetector(
-                  child: Text(
-                    '\n' + AppLocalizations.of(context)!.storeProfile!,
-                    style: TextStyle(
-                        color: kMainColor,
-                        fontSize: 13.3,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  onTap: () =>
-                      Navigator.pushNamed(context, PageRoutes.storeProfile)),
-              //  Text(email, style: Theme.of(context).textTheme.subtitle2),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }

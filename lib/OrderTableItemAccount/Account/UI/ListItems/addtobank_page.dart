@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
 
@@ -9,6 +7,8 @@ import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/Themes/style.dart';
 
 class AddToBank extends StatelessWidget {
+  const AddToBank({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,12 +30,14 @@ class AddToBank extends StatelessWidget {
           },
         ),
       ),
-      body: Add(),
+      body: const Add(),
     );
   }
 }
 
 class Add extends StatelessWidget {
+  const Add({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -94,31 +96,20 @@ class Add extends StatelessWidget {
                     ),
                   ),
                   SmallTextFormField(
-                    AppLocalizations.of(context)!
+                 label:   AppLocalizations.of(context)!
                         .accountHolderName!
                         .toUpperCase(),
-                    null,
-                    null,
-                    'Food Junction',
+                title:    null,
+               icon:     null,
+               initial:     'Food Junction',
                   ),
                   SmallTextFormField(
-                    AppLocalizations.of(context)!.bankName!.toUpperCase(),
-                    null,
-                    null,
-                    'HBNC Bank of New York',
+                 label:   AppLocalizations.of(context)!.bankName!.toUpperCase(),
+                title:   null,
+                icon:    null,
+                 initial:   'HBNC Bank of New York',
                   ),
-                  SmallTextFormField(
-                    AppLocalizations.of(context)!.branchCode!.toUpperCase(),
-                    null,
-                    null,
-                    '+1 987 654 3210',
-                  ),
-                  SmallTextFormField(
-                    AppLocalizations.of(context)!.accountNumber!.toUpperCase(),
-                    null,
-                    null,
-                    '4321 4567 6789 8901',
-                  ),
+             
                 ],
               ),
             ),
@@ -126,17 +117,7 @@ class Add extends StatelessWidget {
               color: Theme.of(context).cardColor,
               thickness: 8.0,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-              child: SmallTextFormField(
-                AppLocalizations.of(context)!
-                    .enterAmountToTransfer!
-                    .toUpperCase(),
-                null,
-                null,
-                '\$ 500',
-              ),
-            ),
+     
             SizedBox(height: 80,),
           ],
         ),

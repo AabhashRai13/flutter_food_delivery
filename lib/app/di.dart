@@ -3,6 +3,7 @@ import 'package:hungerz_store/bloc/order/order_cubit.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/repositories/order_repository.dart';
+import 'package:hungerz_store/repositories/shop_repository.dart';
 import 'package:hungerz_store/repositories/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +19,8 @@ Future<void> initAppModule() async {
 
   instance.registerFactory<OrderRepository>(() => OrderRepository());
   instance.registerFactory<AuthRepository>(() => AuthRepository());
+  instance.registerFactory<ShopRepository>(() => ShopRepository());
+
 //blocs and cubit
   instance.registerFactory<UserCubit>(() => UserCubit());
 

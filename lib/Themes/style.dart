@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 //app theme
@@ -10,20 +9,18 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
   secondaryHeaderColor: kWhiteColor,
   primaryColor: kMainColor,
   bottomAppBarColor: kMainTextColor,
-  dividerColor: Color(0x1f000000),
+  dividerColor: const Color(0x1f000000),
   disabledColor: kDisabledColor,
-  buttonColor: kMainColor,
-  cardColor: Color(0xff212321),
+  cardColor: const Color(0xff212321),
   hintColor: kLightTextColor,
   indicatorColor: kMainColor,
-  accentColor: kMainColor,
   bottomAppBarTheme: BottomAppBarTheme(color: kMainColor),
   buttonTheme: ButtonThemeData(
     textTheme: ButtonTextTheme.normal,
     height: 33,
-    padding: EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
+    padding: const EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
     shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(30.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(30.0)),
         side: BorderSide(color: kMainColor)),
     alignedDropdown: false,
     buttonColor: kMainColor,
@@ -36,7 +33,7 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
   //text theme which contains all text styles
   textTheme: GoogleFonts.openSansTextTheme().copyWith(
     //text style of 'Delivering almost everything' at phone_number page
-    bodyText1: TextStyle(
+    bodyText1: const TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 18.3,
     ),
@@ -55,7 +52,7 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
     ),
 
     //text style of 'Got Delivered' at home page
-    headline4: TextStyle(
+    headline4: const TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: 16.7,
@@ -75,7 +72,7 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
     ),
 
     //text entry text style
-    caption: TextStyle(
+    caption: const TextStyle(
       color: Colors.white,
       fontSize: 13.3,
     ),
@@ -83,7 +80,7 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
     overline: TextStyle(color: kLightTextColor, letterSpacing: 0.2),
 
     //text style of titles of card at home page
-    headline2: TextStyle(
+    headline2: const TextStyle(
       color: Colors.white,
       fontSize: 12.0,
       fontWeight: FontWeight.bold,
@@ -94,6 +91,7 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
       fontSize: 15.0,
     ),
   ),
+  colorScheme: ColorScheme.fromSwatch().copyWith(secondary: kMainColor),
 );
 
 final ThemeData appTheme = ThemeData(
@@ -102,20 +100,18 @@ final ThemeData appTheme = ThemeData(
   secondaryHeaderColor: kMainTextColor,
   primaryColor: kMainColor,
   bottomAppBarColor: kWhiteColor,
-  dividerColor: Color(0x1f000000),
+  dividerColor: const Color(0x1f000000),
   disabledColor: kDisabledColor,
-  buttonColor: kMainColor,
   cardColor: kCardBackgroundColor,
   hintColor: kLightTextColor,
   indicatorColor: kMainColor,
-  accentColor: kMainColor,
   bottomAppBarTheme: BottomAppBarTheme(color: kMainColor),
   buttonTheme: ButtonThemeData(
     textTheme: ButtonTextTheme.normal,
     height: 33,
-    padding: EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
+    padding: const EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
     shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(30.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(30.0)),
         side: BorderSide(color: kMainColor)),
     alignedDropdown: false,
     buttonColor: kMainColor,
@@ -128,7 +124,7 @@ final ThemeData appTheme = ThemeData(
   //text theme which contains all text styles
   textTheme: GoogleFonts.openSansTextTheme().copyWith(
     //text style of 'Delivering almost everything' at phone_number page
-    bodyText1: TextStyle(
+    bodyText1: const TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 18.3,
     ),
@@ -147,7 +143,7 @@ final ThemeData appTheme = ThemeData(
     ),
 
     //text style of 'Got Delivered' at home page
-    headline4: TextStyle(
+    headline4: const TextStyle(
       color: Colors.black,
       fontWeight: FontWeight.bold,
       fontSize: 16.7,
@@ -186,6 +182,7 @@ final ThemeData appTheme = ThemeData(
       fontSize: 15.0,
     ),
   ),
+  colorScheme: ColorScheme.fromSwatch().copyWith(secondary: kMainColor),
 );
 
 //text style of continue bottom bar

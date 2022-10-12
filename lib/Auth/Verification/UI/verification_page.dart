@@ -8,8 +8,7 @@ import 'package:hungerz_store/data/network/auth.dart';
 
 //Verification page that sends otp to the phone number entered on phone number page
 class VerificationPage extends StatelessWidget {
-
-  const VerificationPage( {super.key});
+  const VerificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +35,20 @@ class VerificationPage extends StatelessWidget {
               .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
-      body: OtpVerify(),
+      body:const OtpVerify(),
     );
   }
 }
 
 //otp verification class
 class OtpVerify extends StatefulWidget {
-
-  const OtpVerify( {super.key});
+  const OtpVerify({super.key});
 
   @override
-  _OtpVerifyState createState() => _OtpVerifyState();
+  OtpVerifyState createState() => OtpVerifyState();
 }
 
-class _OtpVerifyState extends State<OtpVerify> {
+class OtpVerifyState extends State<OtpVerify> {
   final TextEditingController _controller = TextEditingController();
   final AuthProvider _authProvider = AuthProvider();
 
@@ -113,14 +111,6 @@ class _OtpVerifyState extends State<OtpVerify> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              // child: EntryField(
-              //   // controller: _controller,
-              //   readOnly: false,
-              //   label: AppLocalizations.of(context)!.verificationCode,
-              //   maxLength: 6,
-              //   keyboardType: TextInputType.number,
-              //   initialValue: '123456',
-              // ),
               child: EntryFormField(
                 AppLocalizations.of(context)!.verificationCode,
                 '5 7 9 6 4 4',
@@ -168,8 +158,7 @@ class _OtpVerifyState extends State<OtpVerify> {
               BottomBar(
                   text: AppLocalizations.of(context)!.continueText,
                   onTap: () {
-                    _authProvider.otpVerfication(
-                        _controller.text, context);
+                    _authProvider.otpVerfication(_controller.text, context);
                   }),
             ],
           ),

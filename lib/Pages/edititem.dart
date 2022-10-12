@@ -262,10 +262,10 @@ class _AddState extends State<Add> {
                     children: [
                       Expanded(
                         child: SmallTextFormField(
-                          "OPTION TITLE",
-                          AppLocalizations.of(context)!.enterPrice,
-                          null,
-                          'Extra Cheese',
+                          label: "OPTION TITLE",
+                          title: AppLocalizations.of(context)!.enterPrice,
+                          icon: null,
+                          initial: 'Extra Cheese',
                         ),
                       ),
                       Expanded(

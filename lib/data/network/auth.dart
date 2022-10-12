@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hungerz_store/Auth/Registration/UI/register_page.dart';
 import 'package:hungerz_store/Auth/login_navigator.dart';
+import 'package:hungerz_store/OrderTableItemAccount/order_table_item_account.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/models/ratings.dart';
@@ -40,19 +40,15 @@ class AuthProvider {
       // Sign the user in (or link) with the credential
       final UserCredential userCredentials =
           await auth.signInWithCredential(credential);
-      setUserCredentials(userCredentials);
       if (!mounted) return;
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const RegisterPage()),
-      );
+      setUserCredentials(userCredentials, context);
     } catch (e) {
       log("error $e");
     }
   }
 
-  setUserCredentials(final UserCredential userCredentials) async {
+  setUserCredentials(final UserCredential userCredentials, BuildContext context,
+      [bool mounted = true]) async {
     log('USER CREDENTIAL $userCredentials');
 
     if (userCredentials.user == null) {
@@ -67,71 +63,52 @@ class AuthProvider {
         userId: userId,
         phoneNumber: userCredentials.user!.phoneNumber!,
       );
+      if (!mounted) return;
+      Navigator.pushNamed(context, LoginRoutes.registration);
+    }
+    if (!userCredentials.additionalUserInfo!.isNewUser) {
+      await _startUserProfile(
+        userId: userId,
+        phoneNumber: userCredentials.user!.phoneNumber!,
+      );
+      if (!mounted) return;
+      Navigator.pushReplacement<void, void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => OrderItemAccount(),
+        ),
+      );
     }
   }
-  //  Future<Map<String, dynamic>> fetchUserProfile(
-  //     {required String userId}) async {
-  //   final doc = FirebaseFirestore.instance.collection('users').doc(userId);
 
-  //   final snapshot = await doc.get();
+  Future<Map<String, dynamic>> fetchShopDataAndReference(
+      {required String userId}) async {
+    final doc = FirebaseFirestore.instance.collection('shops').doc(userId);
 
-  //   return {
-  //     'docSnapshot': snapshot,
-  //     'docReference': doc,
-  //   };
-  // }
-  //  Future<Map<String, dynamic>> fetchUserProfile({
-  //   required String userId,
-  // }) async {
-  //   final data = await fetchUserProfile(userId: userId);
-  //   final DocumentSnapshot docSnapshot = data['docSnapshot'];
-  //   final DocumentReference docReference = data['docReference'];
+    final snapshot = await doc.get();
 
-  //   if (!docSnapshot.exists) {
-  //     return {};
-  //   }
+    return {
+      'docSnapshot': snapshot,
+      'docReference': doc,
+    };
+  }
 
-  //   return {
-  //     'docData': docSnapshot.data() as Map<String, dynamic>,
-  //     'docReference': docReference,
-  //   };
-  // }
+  Future<Map<String, dynamic>> fetchShopProfile({
+    required String userId,
+  }) async {
+    final data = await fetchShopDataAndReference(userId: userId);
+    final DocumentSnapshot docSnapshot = data['docSnapshot'];
+    final DocumentReference docReference = data['docReference'];
 
-  // Future<void> _fetchUserProfile() async {
-  //   final data = await fetchUserProfile(
-  //     userId: state.user.id,
-  //   );
+    if (!docSnapshot.exists) {
+      return {};
+    }
 
-  //   final userProfileData = data['docData'];
-  //   final List<UserTransaction> transactions = [];
-
-  //   print('DATA_TRANSACTION ${userProfileData['transaction']}');
-  //   print('DATA_WALLET_BALANCE ${userProfileData['walletBalance']}');
-
-  //   if (userProfileData['transaction'] != null) {
-  //     for (dynamic transaction in userProfileData['transaction']) {
-  //       transactions.add(UserTransaction.fromMap(transaction));
-  //     }
-  //   }
-
-  //   emit(
-  //     state.copyWith(
-  //       user: state.user.copyWith(
-  //         name: userProfileData['name'],
-  //         email: userProfileData['email'],
-  //         phoneNumber: userProfileData['phoneNumber'],
-  //         photoUrl: userProfileData['photoUrl'],
-  //         address: userProfileData['address'],
-  //         addressType: userProfileData['addressType'],
-  //         latitude: userProfileData['latitude'],
-  //         longitude: userProfileData['longitude'],
-  //         walletBalance: userProfileData['walletBalance'],
-  //         firestoreDocReference: data['docReference'],
-  //         transactions: transactions,
-  //       ),
-  //     ),
-  //   );
-  // }
+    return {
+      'docData': docSnapshot.data() as Map<String, dynamic>,
+      'docReference': docReference,
+    };
+  }
 
   Future<void> _startUserProfile({
     required String userId,
@@ -143,7 +120,7 @@ class AuthProvider {
     var uuid = await _appPreferences.getUserID();
     log("User Id uuid $uuid");
     final DocumentReference user =
-        FirebaseFirestore.instance.collection('users').doc(uuid);
+        FirebaseFirestore.instance.collection('shops').doc(uuid);
 
     user.set({
       'name': name ?? '',
@@ -172,13 +149,14 @@ class AuthProvider {
       final DocumentReference shopp =
           FirebaseFirestore.instance.collection('shops').doc(uuid);
       Shop shop = Shop(
-          address: address,
-          name: name,
-          latitude: latitude,
-          longitude: longitude,
-          description: description,
-          imageUrl: imageUrl,
-          isPopular: isPopular);
+        address: address,
+        name: name,
+        latitude: latitude ?? 12.011,
+        longitude: longitude ?? 41.1211,
+        description: description,
+        imageUrl: imageUrl,
+        isPopular: isPopular,
+      );
 
       shopp.set(shop.toJson());
       await _appPreferences.setshopName(name!);

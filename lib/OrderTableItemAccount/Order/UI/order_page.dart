@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hungerz_store/Locale/locales.dart';
@@ -74,7 +73,7 @@ class OrderPageState extends State<OrderPage> {
                   ],
                 );
               } else {
-                return Center(child: const CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
             },
           ),

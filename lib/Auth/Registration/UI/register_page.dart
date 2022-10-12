@@ -2,16 +2,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Auth/Registration/UI/register_text_field.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
-import 'package:hungerz_store/Components/textfield.dart';
 import 'package:hungerz_store/Locale/locales.dart';
-import 'package:hungerz_store/Routes/routes.dart';
-import 'package:hungerz_store/Themes/colors.dart';
+
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
 
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({super.key});
+  final VoidCallback onVerificationDone;
+  const RegisterPage(this.onVerificationDone, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +37,14 @@ class RegisterPage extends StatelessWidget {
       ),
 
       //this column contains 3 textFields and a bottom bar
-      body: const RegisterForm(),
+      body: RegisterForm(onVerificationDone),
     );
   }
 }
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
+  final VoidCallback onVerificationDone;
+  const RegisterForm(this.onVerificationDone, {super.key});
 
   @override
   RegisterFormState createState() => RegisterFormState();
@@ -177,8 +177,7 @@ class RegisterFormState extends State<RegisterForm> {
                         imageUrl:
                             "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
                     if (success) {
-                      if (!mounted) return;
-                      Navigator.pushNamed(context, PageRoutes.orderPage);
+                      widget.onVerificationDone();
                     }
                   }
                 }),
@@ -188,40 +187,5 @@ class RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  inputField(
-    String title,
-    String hint,
-    String img,
-  ) {
-    return Column(children: [
-      Row(
-        children: [
-          SizedBox(
-            height: 20,
-            child: Image(
-              image: AssetImage(
-                img,
-              ),
-              color: kMainColor,
-            ),
-          ),
-          const SizedBox(
-            width: 13,
-          ),
-          Text(title, style: TextStyle(color: Colors.grey[600], fontSize: 12))
-        ],
-      ),
-      Container(
-        padding: const EdgeInsets.only(left: 25),
-        child: Column(
-          children: [
-            SmallTextFormField(null, hint, null, hint),
-            const SizedBox(
-              height: 10,
-            ),
-          ],
-        ),
-      )
-    ]);
-  }
+
 }

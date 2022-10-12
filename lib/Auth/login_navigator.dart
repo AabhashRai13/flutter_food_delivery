@@ -4,6 +4,8 @@ import 'package:hungerz_store/Auth/Registration/UI/register_page.dart';
 import 'package:hungerz_store/Auth/Verification/UI/verification_page.dart';
 import 'package:hungerz_store/Auth/social.dart';
 
+import '../Routes/routes.dart';
+
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class LoginRoutes {
@@ -11,6 +13,7 @@ class LoginRoutes {
   static const String social = 'login/social';
   static const String registration = 'login/registration';
   static const String verification = 'login/verification';
+  static const String home = 'home';
 }
 
 class LoginData {
@@ -38,22 +41,34 @@ class LoginNavigator extends StatelessWidget {
         key: navigatorKey,
         initialRoute: LoginRoutes.loginRoot,
         onGenerateRoute: (RouteSettings settings) {
-          late WidgetBuilder builder;
+          WidgetBuilder? builder;
           switch (settings.name) {
             case LoginRoutes.loginRoot:
-              builder = (BuildContext _) => const PhoneNumber();
+              builder = (BuildContext _) => PhoneNumber(
+                    () {
+                      Navigator.popAndPushNamed(
+                          context, PageRoutes.orderTableItemAccountPage);
+                    },
+                  );
               break;
             case LoginRoutes.social:
               builder = (BuildContext _) => SocialLogIn();
               break;
             case LoginRoutes.registration:
-              builder = (BuildContext _) => const RegisterPage();
+              builder = (BuildContext _) => RegisterPage(
+                    () {
+                      Navigator.popAndPushNamed(
+                          context, PageRoutes.orderTableItemAccountPage);
+                    },
+                  );
               break;
+
             case LoginRoutes.verification:
               builder = (BuildContext _) => const VerificationPage();
               break;
           }
-          return MaterialPageRoute(builder: builder, settings: settings);
+
+          return MaterialPageRoute(builder: builder!, settings: settings);
         },
         onPopPage: (Route<dynamic> route, dynamic result) {
           return route.didPop(result);

@@ -261,7 +261,7 @@ class _AddState extends State<Add> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: SmallTextFormField("OPTION TITLE", "Add Option"
+                        child: SmallTextFormField(label:"OPTION TITLE",title: "Add Option"
                             // initialValue: 'Extra Cheese',
                             ),
                       ),

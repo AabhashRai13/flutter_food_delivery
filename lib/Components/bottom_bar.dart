@@ -9,14 +9,16 @@ class BottomBar extends StatelessWidget {
   final Color? color;
   final Color? textColor;
 
-  BottomBar(
-      {required this.onTap, required this.text, this.color, this.textColor});
+  const BottomBar(
+      {super.key, required this.onTap, required this.text, this.color, this.textColor});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap as void Function()?,
       child: Container(
+        color: color ?? kMainColor,
+        height: 60.0,
         child: Center(
           child: Text(
             text!,
@@ -25,8 +27,6 @@ class BottomBar extends StatelessWidget {
                 : bottomBarTextStyle,
           ),
         ),
-        color: color ?? kMainColor,
-        height: 60.0,
       ),
     );
   }

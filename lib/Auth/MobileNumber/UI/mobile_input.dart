@@ -85,8 +85,6 @@ class _MobileInputState extends State<MobileInput> {
               ),
             ),
             onPressed: () async {
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => const OrderPage()));
               if (signupKey.currentState!.validate()) {
                 signupKey.currentState!.save();
                 _authProvider.getOtp(isoCode! + _controller.text, context);

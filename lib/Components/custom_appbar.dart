@@ -11,7 +11,8 @@ class CustomAppBar extends StatelessWidget {
   final Color? color;
   final BoxShadow? boxShadow;
 
-  CustomAppBar({
+  const CustomAppBar({
+    super.key,
     this.titleWidget,
     this.actions,
     this.leading,
@@ -32,7 +33,7 @@ class CustomAppBar extends StatelessWidget {
       actions: actions,
       bottom: bottom ??
           PreferredSize(
-            preferredSize: Size.fromHeight(0.0),
+            preferredSize: const Size.fromHeight(0.0),
             child: CustomSearchBar(
               boxShadow: boxShadow,
               color: color,

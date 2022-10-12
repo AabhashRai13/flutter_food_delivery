@@ -23,11 +23,13 @@ class LanguageList {
 }
 
 class Settings extends StatefulWidget {
+  const Settings({super.key});
+
   @override
-  _SettingsState createState() => _SettingsState();
+  SettingsState createState() => SettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class SettingsState extends State<Settings> {
   bool sliderValue = false;
   late LanguageCubit _languageCubit;
   late ThemeCubit _themeCubit;
@@ -74,13 +76,17 @@ class _SettingsState extends State<Settings> {
         ),
       ),
       body: FadedSlideAnimation(
+        beginOffset: const Offset(0.0, 0.3),
+        endOffset: const Offset(0, 0),
+        slideCurve: Curves.linearToEaseOut,
         child: Stack(
           children: [
             ListView(
+              physics: const BouncingScrollPhysics(),
               children: [
                 Container(
                   height: 57.7,
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   //color: kCardBackgroundColor,
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -97,7 +103,7 @@ class _SettingsState extends State<Settings> {
                 BlocBuilder<ThemeCubit, ThemeData>(builder: (_, theme) {
                   sliderValue = _themeCubit.isDark;
                   return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 6.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
                     child: ListTile(
                       title: Text(
                         locale.darkMode!,
@@ -122,7 +128,7 @@ class _SettingsState extends State<Settings> {
                 }),
                 Container(
                   height: 58.0,
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -139,7 +145,7 @@ class _SettingsState extends State<Settings> {
                   builder: (context, currentLocale) {
                     selectedLocal ??= currentLocale.languageCode;
                     return ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: AppConfig.languagesSupported.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) => RadioListTile(
@@ -160,11 +166,10 @@ class _SettingsState extends State<Settings> {
                     );
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
               ],
-              physics: BouncingScrollPhysics(),
             ),
             Align(
               alignment: Alignment.bottomCenter,
@@ -177,9 +182,6 @@ class _SettingsState extends State<Settings> {
             ),
           ],
         ),
-        beginOffset: Offset(0.0, 0.3),
-        endOffset: Offset(0, 0),
-        slideCurve: Curves.linearToEaseOut,
       ),
     );
   }

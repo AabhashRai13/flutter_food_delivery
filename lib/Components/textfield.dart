@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 
 class EntryFormField extends StatelessWidget {
@@ -55,8 +57,15 @@ class SmallTextFormField extends StatelessWidget {
   final String? title;
   final Icon? icon;
   final String? initial;
+  final TextEditingController? textEditingController;
 
-  const SmallTextFormField(this.label, this.title, [this.icon, this.initial]);
+  const SmallTextFormField({
+    this.label,
+    this.title,
+    this.icon,
+    this.initial,
+    this.textEditingController,
+  });
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -75,9 +84,9 @@ class SmallTextFormField extends StatelessWidget {
                     ),
                   ],
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
           TextFormField(
-            initialValue: initial,
+            controller: textEditingController,
             style: Theme.of(context)
                 .textTheme
                 .bodyText2!

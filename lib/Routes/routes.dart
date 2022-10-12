@@ -12,7 +12,6 @@ import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/tnc_pag
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/wallet_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/account_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Order/UI/order_page.dart';
-import 'package:hungerz_store/OrderTableItemAccount/Order/UI/orderinfo_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Order/UI/track_order.dart';
 import 'package:hungerz_store/OrderTableItemAccount/StoreProfile/store_profile.dart';
 import 'package:hungerz_store/OrderTableItemAccount/order_table_item_account.dart';
@@ -23,7 +22,7 @@ import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/authent
 
 class PageRoutes {
   static const String locationPage = 'location_page';
-  static const String OrderTableItemAccountPage = 'order_item_account';
+  static const String orderTableItemAccountPage = 'order_item_account';
   static const String accountPage = 'account_page';
   static const String orderPage = 'order_page';
   // static const String orderInfoPage = 'orderinfo_page';
@@ -53,7 +52,7 @@ class PageRoutes {
       accountPage: (context) => AccountPage(),
       tncPage: (context) => TncPage(),
       supportPage: (context) => SupportPage(),
-      loginNavigator: (context) => LoginNavigator(),
+      loginNavigator: (context) => const LoginNavigator(),
       walletPage: (context) => WalletPage(),
       chatPage: (context) => ChatPage(),
       insightPage: (context) => InsightPage(),
@@ -62,7 +61,7 @@ class PageRoutes {
       editItem: (context) => EditItem(),
       addToBank: (context) => AddToBank(),
       Items: (context) => ItemsPage(),
-      OrderTableItemAccountPage: (context) => OrderItemAccount(),
+      orderTableItemAccountPage: (context) => OrderItemAccount(),
       review: (context) => ReviewPage(),
       setting: (context) => Settings(),
       authentication: (context) => AuthenticationList(),

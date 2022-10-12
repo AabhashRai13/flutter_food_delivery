@@ -4,6 +4,8 @@ import 'package:hungerz_store/Components/textfield.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 
 class AuthenticationList extends StatelessWidget {
+  const AuthenticationList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +21,7 @@ class AuthenticationList extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           "Authentication",
           style: TextStyle(fontSize: 16.7, fontWeight: FontWeight.bold),
         ),
@@ -27,7 +29,7 @@ class AuthenticationList extends StatelessWidget {
       body: Stack(
         children: [
           ListView(
-            padding: EdgeInsets.only(bottom: 70),
+            padding: const EdgeInsets.only(bottom: 70),
             children: <Widget>[
               Divider(
                 color: Theme.of(context).cardColor,
@@ -37,8 +39,8 @@ class AuthenticationList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
                     child: Text(
                       "KITCHEN APP",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -48,24 +50,19 @@ class AuthenticationList extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Column(
-                        children: [
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
+                        children: const [
+                          SmallTextFormField(initial: "+1 987 654 3210"),
                         ],
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 10.0,
                   ),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text('+ add More'.toUpperCase(),
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -74,7 +71,7 @@ class AuthenticationList extends StatelessWidget {
                               letterSpacing: 0.5)),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10.0,
                   ),
                 ],
@@ -101,8 +98,8 @@ class AuthenticationList extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: Column(
                       children: [
-                        SmallTextFormField(null, null, null, "+1 987 654 3210"),
-                        SmallTextFormField(null, null, null, "+1 987 654 3210"),
+                          SmallTextFormField(initial: "+1 987 654 3210"),
+                          SmallTextFormField(initial: "+1 987 654 3210"),
                       ],
                     ),
                   ),
@@ -148,14 +145,14 @@ class AuthenticationList extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.0),
                       child: Column(
                         children: [
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
+                                                   SmallTextFormField(initial: "+1 987 654 3210"),
+
+                                                   SmallTextFormField(initial: "+1 987 654 3210"),
+
+                                                   SmallTextFormField(initial: "+1 987 654 3210"),
+
+                                                   SmallTextFormField(initial: "+1 987 654 3210"),
+
                         ],
                       )),
                   SizedBox(
@@ -200,12 +197,12 @@ class AuthenticationList extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.0),
                       child: Column(
                         children: [
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
+                                                  SmallTextFormField(initial: "+1 987 654 3210"),
+
+                                                  SmallTextFormField(initial: "+1 987 654 3210"),
+
+                                                  SmallTextFormField(initial: "+1 987 654 3210"),
+
                         ],
                       )),
                   SizedBox(
@@ -250,10 +247,10 @@ class AuthenticationList extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.0),
                       child: Column(
                         children: [
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
-                          SmallTextFormField(
-                              null, null, null, "+1 987 654 3210"),
+                                                   SmallTextFormField(initial: "+1 987 654 3210"),
+
+                                                   SmallTextFormField(initial: "+1 987 654 3210"),
+
                         ],
                       )),
                   SizedBox(

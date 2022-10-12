@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/Themes/style.dart';
 
 class WalletPage extends StatelessWidget {
+  const WalletPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

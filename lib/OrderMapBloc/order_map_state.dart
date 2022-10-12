@@ -5,7 +5,7 @@ class OrderMapState extends Equatable {
   final Set<Polyline> polylines;
   final Set<Marker> markers;
 
-  OrderMapState(this.polylines, this.markers);
+ const OrderMapState(this.polylines, this.markers);
 
   @override
   List<Object> get props => [polylines, markers];

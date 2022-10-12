@@ -7,8 +7,9 @@ import 'mobile_input.dart';
 //first page that takes phone number as input for verification
 class PhoneNumber extends StatefulWidget {
   static const String id = 'phone_number';
+  final VoidCallback onVerificationDone;
 
-  const PhoneNumber({super.key});
+  const PhoneNumber(this.onVerificationDone, {super.key});
 
   @override
   PhoneNumberState createState() => PhoneNumberState();

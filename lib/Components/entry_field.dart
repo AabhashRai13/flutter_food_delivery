@@ -19,7 +19,8 @@ class EntryField extends StatelessWidget {
   final TextCapitalization? textCapitalization;
   final String? Function(String?)? validator;
 
-  EntryField({
+  const EntryField({
+    super.key,
     this.controller,
     this.label,
     this.image,
@@ -81,7 +82,7 @@ class EntryField extends StatelessWidget {
                   UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey[200]!),
                   ),
-              counter: Offstage(),
+              counter: const Offstage(),
               icon: (image != null)
                   ? ImageIcon(
                       AssetImage(image!),
