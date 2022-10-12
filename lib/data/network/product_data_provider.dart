@@ -18,9 +18,10 @@ class ProductDataProvider {
     String? shopName,
   }) async {
     try {
-      final DocumentReference productData = productsCollection.doc(userId);
+      final CollectionReference productData =
+          productsCollection.doc('$shopName').collection('listig product');
 
-      productData.set({
+      productData.add({
         'listingName': listingName ?? '',
         'listingCategory': listingCategory ?? '',
         'rentalPrice': rentalPrice ?? '',
@@ -38,8 +39,8 @@ class ProductDataProvider {
     }
   }
 
-  Future<dynamic> fetchProducts({required String userId}) async {
-    final response = await productsCollection.doc(userId).get();
+  Future<dynamic> fetchProducts({required String shopName}) async {
+    final response = await productsCollection.doc(shopName).get();
     return response;
   }
 }
