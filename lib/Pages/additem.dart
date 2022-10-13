@@ -5,13 +5,19 @@ import 'package:hungerz_store/Components/entry_field.dart';
 
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/bloc/products/products_cubit.dart';
 import 'package:hungerz_store/models/product_id.dart';
 import 'package:hungerz_store/repositories/product_repository.dart';
 
 class AddItem extends StatefulWidget {
-  const AddItem({super.key, required this.isEditing, this.productId});
+  const AddItem(
+      {super.key,
+      required this.isEditing,
+      this.productId,
+      required this.productCubit});
   final bool isEditing;
   final ProductId? productId;
+  final ProductCubit productCubit;
   @override
   AddItemState createState() => AddItemState();
 }
@@ -66,15 +72,24 @@ class AddItemState extends State<AddItem> {
           )
         ],
       ),
-      body: Add(isEditing: widget.isEditing, productId: widget.productId),
+      body: Add(
+          isEditing: widget.isEditing,
+          productId: widget.productId,
+          productCubit: widget.productCubit),
     );
   }
 }
 
 class Add extends StatefulWidget {
-  const Add({super.key, required this.isEditing, this.productId});
+  const Add(
+      {super.key,
+      required this.isEditing,
+      this.productId,
+      required this.productCubit});
   final bool isEditing;
   final ProductId? productId;
+  final ProductCubit productCubit;
+
   @override
   AddState createState() => AddState();
 }
@@ -610,6 +625,8 @@ class AddState extends State<Add> {
                     rentingRules: _rulesController.text.trim(),
                   );
                   if (success == true) {
+                    await widget.productCubit.getAllProducts();
+
                     if (!mounted) return;
                     Navigator.of(context).pop();
                   }
@@ -628,6 +645,7 @@ class AddState extends State<Add> {
                     productId: widget.productId!.id,
                   );
                   if (success == true) {
+                    await widget.productCubit.getAllProducts();
                     if (!mounted) return;
                     Navigator.of(context).pop();
                   }

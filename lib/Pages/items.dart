@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Pages/additem.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/bloc/products/products_cubit.dart';
 import 'package:hungerz_store/models/product_id.dart';
-import 'package:hungerz_store/repositories/product_repository.dart';
+import '../app/di.dart';
 
 class ItemsPage extends StatefulWidget {
   const ItemsPage({super.key});
@@ -21,19 +22,16 @@ class ItemsPageState extends State<ItemsPage> {
   List<DropdownMenuItem<int>> listDrop = [];
   int? selected;
   List<ProductId> productsList = [];
-  final ProductRepository _productRepository = ProductRepository();
+  final ProductCubit _productCubit = instance<ProductCubit>();
 
-  late String? userId;
   @override
   void initState() {
     super.initState();
-    getUserId();
+    getProducts();
   }
 
-  getUserId() async {
-    // ignore: await_only_futures
-    userId = await FirebaseAuth.instance.currentUser!.uid;
-    productsList = await _productRepository.getAllProducts(userId: userId!);
+  getProducts() async {
+    await _productCubit.getAllProducts();
   }
 
   @override
@@ -46,109 +44,124 @@ class ItemsPageState extends State<ItemsPage> {
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
-      body: ListView(
-        children: <Widget>[
-          Divider(
-            color: Theme.of(context).cardColor,
-            thickness: 6.3,
-          ),
-          ...productsList.map((productId) {
-            return InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => AddItem(
-                              isEditing: true,
-                              productId: productId,
-                            )));
-              },
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 20.0, right: 20.0, top: 16.0),
-                child: Stack(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Image.asset(
-                          'images/2.png',
-                          scale: 1.6,
-                        ),
-                        const SizedBox(
-                          width: 16.0,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(productId.product.listingName ?? '',
-                                // AppLocalizations.of(context)!.sandwich!,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold)),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    'images/ic_veg.png',
-                                    height: 16.0,
-                                    width: 16.7,
+      body: BlocBuilder<ProductCubit, ProductState>(
+        bloc: _productCubit,
+        builder: (context, state) {
+          if (state is ProductsLoaded) {
+            return ListView(
+              children: <Widget>[
+                Divider(
+                  color: Theme.of(context).cardColor,
+                  thickness: 6.3,
+                ),
+                ...state.products.map((productId) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => AddItem(
+                                    isEditing: true,
+                                    productId: productId,
+                                    productCubit: _productCubit,
+                                  )));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, right: 20.0, top: 16.0),
+                      child: Stack(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Image.asset(
+                                'images/2.png',
+                                scale: 1.6,
+                              ),
+                              const SizedBox(
+                                width: 16.0,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(productId.product.listingName ?? '',
+                                      // AppLocalizations.of(context)!.sandwich!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4!
+                                          .copyWith(
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold)),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          'images/ic_veg.png',
+                                          height: 16.0,
+                                          width: 16.7,
+                                        ),
+                                        const SizedBox(
+                                          width: 10.0,
+                                        ),
+                                        Text(
+                                            '\$ ${productId.product.rentalPrice}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .caption),
+                                      ],
+                                    ),
                                   ),
-                                  const SizedBox(
-                                    width: 10.0,
-                                  ),
-                                  Text('\$ ${productId.product.rentalPrice}',
-                                      style:
-                                          Theme.of(context).textTheme.caption),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Positioned.directional(
-                      end: 0.0,
-                      bottom: 8.0,
-                      textDirection: Directionality.of(context),
-                      child: Row(
-                        children: [
-                          Text(
-                            '$stock',
-                            style: TextStyle(
-                                color: kHintColor,
-                                fontSize: 13.3,
-                                fontWeight: FontWeight.bold),
+                            ],
                           ),
-                          Switch(
-                            activeColor: kMainColor,
-                            activeTrackColor: Colors.grey[200],
-                            value: inStock,
-                            onChanged: (value) {
-                              setState(() {
-                                inStock = value;
-                              });
-                              if (inStock == true) {
-                                stock = "Available";
-                              } else if (inStock == false) {
-                                stock = "Not Available";
-                              }
-                              // AppLocalizations.of(context)!.outStock;
-                            },
-                          )
+                          Positioned.directional(
+                            end: 0.0,
+                            bottom: 8.0,
+                            textDirection: Directionality.of(context),
+                            child: Row(
+                              children: [
+                                Text(
+                                  '',
+                                  style: TextStyle(
+                                      color: kHintColor,
+                                      fontSize: 13.3,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Switch(
+                                  activeColor: kMainColor,
+                                  activeTrackColor: Colors.grey[200],
+                                  value: inStock,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      inStock = value;
+                                    });
+                                    if (inStock == true) {
+                                      stock = "Available";
+                                    } else if (inStock == false) {
+                                      stock = "Not Available";
+                                    }
+                                    // AppLocalizations.of(context)!.outStock;
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  );
+                }),
+              ],
             );
-          }),
-        ],
+          } else if (state is ProductLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return const SizedBox.shrink();
+        },
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: kMainColor,
@@ -156,7 +169,10 @@ class ItemsPageState extends State<ItemsPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => const AddItem(isEditing: false)));
+                  builder: (_) => AddItem(
+                        isEditing: false,
+                        productCubit: _productCubit,
+                      )));
         },
         tooltip: AppLocalizations.of(context)!.add,
         child: const Icon(
