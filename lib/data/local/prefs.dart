@@ -29,7 +29,8 @@ class AppPreferences {
   Future<String?> getUserID() async {
     return _sharedPreferences.getString(userId);
   }
-    Future<void> setshopName(String shopNamed) async {
+
+  Future<void> setshopName(String shopNamed) async {
     _sharedPreferences.setString(shopName, shopNamed);
   }
 

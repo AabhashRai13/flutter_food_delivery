@@ -8,12 +8,16 @@ class RegisterTextField extends StatefulWidget {
       required this.hint,
       required this.img,
       required this.textEditingController,
-      this.validator});
+      this.validator,
+      required this.onlyRead,
+      this.onTap});
   final String title;
   final String hint;
   final String img;
   final String? Function(String?)? validator;
   final TextEditingController textEditingController;
+  final bool onlyRead;
+  final void Function()? onTap;
 
   @override
   State<RegisterTextField> createState() => _RegisterTextFieldState();
@@ -27,7 +31,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
         Row(
           children: [
             SizedBox(
-              height: 20,
+              height: 22,
               child: Image(
                 image: AssetImage(
                   widget.img,
@@ -52,8 +56,10 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                   children: [
                     const SizedBox.shrink(),
                     TextFormField(
+                      readOnly: widget.onlyRead,
                       controller: widget.textEditingController,
                       validator: widget.validator,
+                      onTap: widget.onTap,
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2!

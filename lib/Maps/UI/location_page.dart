@@ -13,34 +13,41 @@ import 'package:hungerz_store/OrderMapBloc/order_map_bloc.dart';
 import 'package:hungerz_store/OrderMapBloc/order_map_state.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/app/di.dart';
+import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/map_utils.dart';
 
 class LocationPage extends StatelessWidget {
-  const LocationPage({super.key});
-
+  LocationPage({super.key, this.lat, this.lng, this.shopAddress});
+  double? lat;
+  double? lng;
+  String? shopAddress;
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OrderMapBloc>(
       create: (context) => OrderMapBloc()..loadMap(),
-      child: const SetLocation(),
+      child: SetLocation(lat: lat, lng: lng, shopAddress: shopAddress),
     );
   }
 }
 
 class SetLocation extends StatefulWidget {
-  const SetLocation({super.key});
-
+  SetLocation({super.key, this.lat, this.lng, this.shopAddress});
+  double? lat;
+  double? lng;
+  String? shopAddress;
   @override
   SetLocationState createState() => SetLocationState();
 }
 
 class SetLocationState extends State<SetLocation> {
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   final TextEditingController _messageController = TextEditingController();
   String googleApikey = "GOOGLE_MAP_API_KEY";
   GoogleMapController? mapStyleController; //contrller for Google map
   CameraPosition? cameraPosition;
   LatLng startLocation = const LatLng(27.6602292, 85.308027);
-  String location = "Location Name:";
+  String location = "Set Address";
 
   void placeAutoComplete(String query) async {
     Uri uri = Uri.https(
@@ -64,6 +71,12 @@ class SetLocationState extends State<SetLocation> {
   }
 
   @override
+  void dispose() {
+    mapStyleController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -73,6 +86,7 @@ class SetLocationState extends State<SetLocation> {
             icon: const Icon(
               Icons.chevron_left,
               size: 30,
+              color: Colors.black,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -130,6 +144,12 @@ class SetLocationState extends State<SetLocation> {
                             placemarks.first.subAdministrativeArea.toString() +
                             ", " +
                             placemarks.first.administrativeArea.toString();
+                        Future.delayed(const Duration(milliseconds: 100), () {
+                          // Do something
+                          widget.shopAddress = location;
+                          widget.lat = cameraPosition!.target.latitude;
+                          widget.lng = cameraPosition!.target.longitude;
+                        });
                       });
                     },
                   );
@@ -168,10 +188,10 @@ class SetLocationState extends State<SetLocation> {
             ),
           ),
           BottomBar(
-            text: AppLocalizations.of(context)!.continueText,
-            onTap: () =>
-                Navigator.popAndPushNamed(context, PageRoutes.storeProfile),
-          ),
+              text: AppLocalizations.of(context)!.continueText,
+              onTap: () async {
+                Navigator.pop(context);
+              }),
         ],
       ),
     );

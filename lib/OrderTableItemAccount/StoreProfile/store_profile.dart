@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hungerz_store/Auth/Registration/UI/register_text_field.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
 
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/Maps/UI/location_page.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
@@ -162,6 +164,13 @@ class RegisterFormState extends State<RegisterForm> {
                       label: "Shop Name",
                       title: "Enter name",
                       icon: null,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Shop Name is required';
+                        } else {
+                          return null;
+                        }
+                      },
                       textEditingController: _nameEditingController),
                 ),
                 //category textField
@@ -172,6 +181,13 @@ class RegisterFormState extends State<RegisterForm> {
                       label: "Description",
                       title: "Enter decription",
                       icon: null,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Brief Description is required';
+                        } else {
+                          return null;
+                        }
+                      },
                       textEditingController: _descriptionEditingController),
                 ),
                 //phone textField
@@ -182,6 +198,13 @@ class RegisterFormState extends State<RegisterForm> {
                       label: "Category",
                       title: "Enter Category",
                       icon: null,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Category is required';
+                        } else {
+                          return null;
+                        }
+                      },
                       textEditingController: _categoryEditingController),
                 ),
                 //email textField
@@ -192,7 +215,15 @@ class RegisterFormState extends State<RegisterForm> {
                       label: "Email",
                       title: "Enter email",
                       icon: null,
-                      initial: "Food Junction",
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Email should not be empty';
+                        } else if (!value.isValidEmail()) {
+                          return 'Email address is not valid';
+                        } else {
+                          return null;
+                        }
+                      },
                       textEditingController: _emailAddressEditingController),
                 ),
                 Padding(
@@ -203,6 +234,14 @@ class RegisterFormState extends State<RegisterForm> {
                       title: "Enter Phone",
                       icon: null,
                       initial: "Food Junction",
+                      keyBoardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Number is required';
+                        } else {
+                          return null;
+                        }
+                      },
                       textEditingController: _phoneNumberEditingController),
                 ),
               ],
@@ -227,8 +266,10 @@ class RegisterFormState extends State<RegisterForm> {
                 ),
                 //address textField
                 GestureDetector(
-                  onTap: () =>
-                      Navigator.pushNamed(context, PageRoutes.locationPage),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => LocationPage()));
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Padding(
@@ -244,8 +285,12 @@ class RegisterFormState extends State<RegisterForm> {
                                 " 1124, Veggy Garden, City Food Park, United States",
                             decoration: InputDecoration(
                                 prefix: GestureDetector(
-                                  onTap: () => Navigator.pushNamed(
-                                      context, PageRoutes.locationPage),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => LocationPage()));
+                                  },
                                   child: Icon(
                                     Icons.location_on,
                                     color: kMainColor,

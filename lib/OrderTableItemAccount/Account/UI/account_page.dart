@@ -265,16 +265,15 @@ class _StoreDetailsState extends State<StoreDetails> {
                   ),
 
                   GestureDetector(
-                    child: Text(
-                      '\n${AppLocalizations.of(context)!.storeProfile!}',
-                      style: TextStyle(
-                          color: kMainColor,
-                          fontSize: 13.3,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    onTap: () {},
-                  )
-
+                      child: Text(
+                        '\n${AppLocalizations.of(context)!.storeProfile!}',
+                        style: TextStyle(
+                            color: kMainColor,
+                            fontSize: 13.3,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onTap: () => Navigator.pushNamed(
+                          context, PageRoutes.storeProfile)),
                   //  Text(email, style: Theme.of(context).textTheme.subtitle2),
                 ],
               ),

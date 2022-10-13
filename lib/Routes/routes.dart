@@ -20,7 +20,6 @@ import 'package:hungerz_store/Pages/items.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/authentication.dart';
 
 class PageRoutes {
-  static const String locationPage = 'location_page';
   static const String orderTableItemAccountPage = 'order_item_account';
   static const String accountPage = 'account_page';
   static const String orderPage = 'order_page';
@@ -43,7 +42,6 @@ class PageRoutes {
   Map<String, WidgetBuilder> routes() {
     return {
       track: (context) => const TrackOrderPage(),
-      locationPage: (context) => const LocationPage(),
       orderPage: (context) => const OrderPage(),
       // orderInfoPage: (context) => OrderInfo(),
       accountPage: (context) => const AccountPage(),

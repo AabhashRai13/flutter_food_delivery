@@ -64,7 +64,8 @@ class AuthProvider {
       throw '!USER';
     }
 
-    final String userId = FirebaseAuth.instance.currentUser!.uid;
+    final String userId = userCredentials.user!.uid;
+    print("userId: $userId");
     await _appPreferences.setUserId(userId);
 
     if (userCredentials.additionalUserInfo!.isNewUser) {
