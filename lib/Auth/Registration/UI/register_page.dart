@@ -56,8 +56,7 @@ class RegisterFormState extends State<RegisterForm> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   double lat = 0.0;
-  double lng = 0.0;
-  String shopAddress = '';
+  double long = 0.0;
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
@@ -127,26 +126,26 @@ class RegisterFormState extends State<RegisterForm> {
               RegisterTextField(
                 textEditingController: _addressController,
                 title: "Address",
-                hint: shopAddress,
+                hint: "Select your address",
                 onlyRead: true,
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (_) => LocationPage(
-                                shopAddress: shopAddress,
-                                lat: lat,
-                                lng: lng,
+                                textEditingController: _addressController,
                               )));
+                  lat = result["lat"];
+                  long = result["long"];
                 },
                 img: 'images/location.png',
-                // validator: (value) {
-                //   if (shopAddress == "") {
-                //     return 'Set location';
-                //   } else {
-                //     return null;
-                //   }
-                // },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Set location';
+                  } else {
+                    return null;
+                  }
+                },
               ),
 
               RegisterTextField(
@@ -197,16 +196,17 @@ class RegisterFormState extends State<RegisterForm> {
             child: BottomBar(
                 text: AppLocalizations.of(context)!.continueText,
                 onTap: () async {
-                  log("controller ${_addressController.text.trim()}");
                   if (signupKey.currentState!.validate()) {
                     signupKey.currentState!.save();
+
                     bool success = await _userCubit.updateShop(
+                        email: _emailController.text.trim(),
                         categoryId: "nQEiE237G5zj24rUkbrG",
-                        address: shopAddress,
+                        address: _addressController.text.trim(),
                         name: _nameController.text.trim(),
                         description: _descriptionController.text.trim(),
                         latitude: lat,
-                        longitude: lng,
+                        longitude: long,
                         isPopular: true,
                         phoneNumber: _phoneNumberController.text.trim(),
                         imageUrl:

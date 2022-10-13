@@ -174,60 +174,69 @@ class _StoreDetailsState extends State<StoreDetails> {
         bloc: _userCubit,
         builder: (context, state) {
           if (state is ShopLoaded) {
-            return Row(
-              children: <Widget>[
-                const Image(
-                  image: AssetImage("images/Layer 1.png"),
-                  height: 98.0,
-                  width: 98.0,
-                ),
-                const SizedBox(width: 16.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(state.shop.name!,
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                            fontSize: 15.0, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 8.0),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.location_on,
-                          color: kLightTextColor,
-                          size: 10.0,
-                        ),
-                        const SizedBox(width: 5.0),
-                        Text(state.shop.address!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle2!
-                                .copyWith(
-                                    color: const Color(0xff4a4b48),
-                                    fontSize: 13.3)),
-                      ],
-                    ),
-                    GestureDetector(
-                        child: Text(
-                          '\nShop Profile',
-                          style: TextStyle(
-                              color: kMainColor,
-                              fontSize: 13.3,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfilePage(
-                                      shop: state.shop,
-                                    )),
-                          );
-                        }),
-                    Text(state.shop.email ?? "",
-                        style: Theme.of(context).textTheme.subtitle2),
-                  ],
-                ),
-              ],
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.13,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  const Image(
+                    image: AssetImage("images/Layer 1.png"),
+                    height: 98.0,
+                    width: 98.0,
+                  ),
+                  const SizedBox(width: 16.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(state.shop.name!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(
+                                  fontSize: 15.0, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 8.0),
+                      Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.location_on,
+                            color: kLightTextColor,
+                            size: 10.0,
+                          ),
+                          const SizedBox(width: 5.0),
+                          Text(state.shop.address!,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2!
+                                  .copyWith(
+                                      color: const Color(0xff4a4b48),
+                                      fontSize: 13.3)),
+                        ],
+                      ),
+                      GestureDetector(
+                          child: Text(
+                            '\nShop Profile',
+                            style: TextStyle(
+                                color: kMainColor,
+                                fontSize: 13.3,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfilePage(
+                                        shop: state.shop,
+                                      )),
+                            );
+                          }),
+                      Text(state.shop.email ?? "",
+                          style: Theme.of(context).textTheme.subtitle2),
+                    ],
+                  ),
+                ],
+              ),
             );
           }
 

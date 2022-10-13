@@ -28,6 +28,7 @@ class UserCubit extends Cubit<UserState> {
       required String phoneNumber,
       required String categoryId}) async {
     bool success = await _authRepository.updateShopProfile(
+        email: email,
         name: name,
         address: address,
         latitude: latitude,
