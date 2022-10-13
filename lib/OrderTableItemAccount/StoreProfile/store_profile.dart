@@ -311,7 +311,6 @@ class RegisterFormState extends State<RegisterForm> {
               color: Theme.of(context).cardColor,
               thickness: 8.0,
             ),
-
             //continue button bar
           ],
         ),

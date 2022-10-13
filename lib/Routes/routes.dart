@@ -15,8 +15,7 @@ import 'package:hungerz_store/OrderTableItemAccount/Order/UI/order_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Order/UI/track_order.dart';
 import 'package:hungerz_store/OrderTableItemAccount/StoreProfile/store_profile.dart';
 import 'package:hungerz_store/OrderTableItemAccount/order_table_item_account.dart';
-import 'package:hungerz_store/Pages/additem.dart';
-import 'package:hungerz_store/Pages/edititem.dart';
+
 import 'package:hungerz_store/Pages/items.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/authentication.dart';
 
@@ -34,9 +33,7 @@ class PageRoutes {
   static const String chatPage = 'chat_page';
   static const String insightPage = 'insight_page';
   static const String storeProfile = 'store_profile';
-  static const String addItem = 'additem';
-  static const String editItem = 'edititem';
-  static const String Items = 'items';
+  static const String items = 'items';
   static const String addToBank = 'addtobank_page';
   static const String review = 'reviews';
   static const String setting = 'settings_page';
@@ -46,26 +43,23 @@ class PageRoutes {
   Map<String, WidgetBuilder> routes() {
     return {
       track: (context) => const TrackOrderPage(),
-      locationPage: (context) => LocationPage(),
+      locationPage: (context) => const LocationPage(),
       orderPage: (context) => const OrderPage(),
       // orderInfoPage: (context) => OrderInfo(),
-      accountPage: (context) => AccountPage(),
+      accountPage: (context) => const AccountPage(),
       tncPage: (context) => TncPage(),
       supportPage: (context) => SupportPage(),
       loginNavigator: (context) => const LoginNavigator(),
-      walletPage: (context) => WalletPage(),
+      walletPage: (context) => const WalletPage(),
       chatPage: (context) => ChatPage(),
       insightPage: (context) => InsightPage(),
-      storeProfile: (context) => ProfilePage(
-      ),
-      addItem: (context) => const AddItem(),
-      editItem: (context) => EditItem(),
-      addToBank: (context) => AddToBank(),
-      Items: (context) => ItemsPage(),
+      storeProfile: (context) => const ProfilePage(),
+      addToBank: (context) => const AddToBank(),
+      items: (context) => const ItemsPage(),
       orderTableItemAccountPage: (context) => OrderItemAccount(),
       review: (context) => ReviewPage(),
-      setting: (context) => Settings(),
-      authentication: (context) => AuthenticationList(),
+      setting: (context) => const Settings(),
+      authentication: (context) => const AuthenticationList(),
     };
   }
 }

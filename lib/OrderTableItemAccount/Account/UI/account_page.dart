@@ -10,7 +10,6 @@ import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
-import 'package:hungerz_store/models/shop.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});

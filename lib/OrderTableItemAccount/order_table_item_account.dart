@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hungerz_store/Chat/UI/animated_bottom_bar.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/account_page.dart';
@@ -10,7 +9,7 @@ import 'package:hungerz_store/Pages/items.dart';
 
 class OrderItemAccount extends StatefulWidget {
   final int index;
-  OrderItemAccount([this.index = 0]);
+  const OrderItemAccount([this.index = 0]);
   @override
   _OrderItemAccountState createState() => _OrderItemAccountState();
 }

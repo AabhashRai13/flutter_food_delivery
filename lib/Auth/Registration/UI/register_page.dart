@@ -7,6 +7,7 @@ import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
 
+
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
   final VoidCallback onVerificationDone;
@@ -169,6 +170,7 @@ class RegisterFormState extends State<RegisterForm> {
                   if (signupKey.currentState!.validate()) {
                     signupKey.currentState!.save();
                     bool success = await _userCubit.updateShop(
+                      
                         categoryId: "nQEiE237G5zj24rUkbrG",
                         address: _addressController.text.trim(),
                         name: _nameController.text.trim(),

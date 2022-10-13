@@ -73,7 +73,16 @@ class OrderPageState extends State<OrderPage> {
                   ],
                 );
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                     Text("Please wait orders are loading..."),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CircularProgressIndicator()
+                  ],
+                );
               }
             },
           ),

@@ -1,11 +1,14 @@
-import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/custom_appbar.dart';
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/Maps/UI/network_utils.dart';
 import 'package:hungerz_store/OrderMapBloc/order_map_bloc.dart';
 import 'package:hungerz_store/OrderMapBloc/order_map_state.dart';
 import 'package:hungerz_store/Routes/routes.dart';
@@ -19,21 +22,38 @@ class LocationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<OrderMapBloc>(
       create: (context) => OrderMapBloc()..loadMap(),
-      child: SetLocation(),
+      child: const SetLocation(),
     );
   }
 }
 
 class SetLocation extends StatefulWidget {
+  const SetLocation({super.key});
+
   @override
-  _SetLocationState createState() => _SetLocationState();
+  SetLocationState createState() => SetLocationState();
 }
 
-class _SetLocationState extends State<SetLocation> {
-  TextEditingController _messageController = TextEditingController();
-  Completer<GoogleMapController> _mapController = Completer();
-  GoogleMapController? mapStyleController;
-  Set<Marker> _markers = {};
+class SetLocationState extends State<SetLocation> {
+  final TextEditingController _messageController = TextEditingController();
+  String googleApikey = "GOOGLE_MAP_API_KEY";
+  GoogleMapController? mapStyleController; //contrller for Google map
+  CameraPosition? cameraPosition;
+  LatLng startLocation = const LatLng(27.6602292, 85.308027);
+  String location = "Location Name:";
+
+  void placeAutoComplete(String query) async {
+    Uri uri = Uri.https(
+        "maps.google.com", "maps/api/place/autocomplete/json", //unencoder path
+        {
+          "input": query, //query parameter
+          "key": apiKey, // make sure you add your api key
+        });
+    String? response = await NetworkUtils.fetchUrl(uri);
+    if (response != null) {
+      log(response);
+    }
+  }
 
   @override
   void initState() {
@@ -47,10 +67,10 @@ class _SetLocationState extends State<SetLocation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(126.0),
+        preferredSize: const Size.fromHeight(126.0),
         child: CustomAppBar(
           leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.chevron_left,
               size: 30,
             ),
@@ -60,7 +80,10 @@ class _SetLocationState extends State<SetLocation> {
           ),
           titleWidget: Text(
             AppLocalizations.of(context)!.setLocation!,
-            style: TextStyle(fontSize: 16.7, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                fontSize: 16.7,
+                fontWeight: FontWeight.bold,
+                color: Colors.black),
           ),
           onTap: null,
           hint: AppLocalizations.of(context)!.enterLocation,
@@ -69,7 +92,7 @@ class _SetLocationState extends State<SetLocation> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             height: 8.0,
           ),
           Expanded(
@@ -77,16 +100,37 @@ class _SetLocationState extends State<SetLocation> {
               children: <Widget>[
                 BlocBuilder<OrderMapBloc, OrderMapState>(
                     builder: (context, state) {
-                  print('polyyyy' + state.polylines.toString());
+                  log('polyyyy${state.polylines}');
+
                   return GoogleMap(
-                    // polylines: state.polylines,
+                    //Map widget from google_maps_flutter package
                     mapType: MapType.normal,
                     initialCameraPosition: kGooglePlex,
-                    // markers: _markers,
-                    onMapCreated: (GoogleMapController controller) async {
-                      _mapController.complete(controller);
-                      mapStyleController = controller;
-                      mapStyleController!.setMapStyle(mapStyle);
+                    onMapCreated: (controller) {
+                      //method called when map is created
+                      setState(() {
+                        mapStyleController = controller;
+                      });
+                    },
+                    onCameraMove: (CameraPosition cameraPositiona) {
+                      cameraPosition = cameraPositiona; //when map is dragging
+                    },
+                    onCameraIdle: () async {
+                      //when map drag stops
+                      List<Placemark> placemarks =
+                          await placemarkFromCoordinates(
+                              cameraPosition!.target.latitude,
+                              cameraPosition!.target.longitude);
+                      setState(() {
+                        //get place name from lat and lang
+                        location = placemarks.first.street.toString() +
+                            ',' +
+                            placemarks.first.subLocality.toString() +
+                            ", " +
+                            placemarks.first.subAdministrativeArea.toString() +
+                            ", " +
+                            placemarks.first.administrativeArea.toString();
+                      });
                     },
                   );
                 }),
@@ -102,19 +146,20 @@ class _SetLocationState extends State<SetLocation> {
           ),
           Container(
             color: kCardBackgroundColor,
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child: Row(
               children: <Widget>[
                 Image.asset(
                   'images/map_pin.png',
                   scale: 2.5,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 16.0,
                 ),
                 Expanded(
                   child: Text(
-                    "1124, Veggy Garden, City Food Park, United States",
+                    location,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.caption,
                   ),

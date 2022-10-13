@@ -2,7 +2,10 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 const String apiKey = 'AIzaSyC4xQ0n-BwL_gODzdOTI6eqmzABT7XtF9Y';
 List<BitmapDescriptor> markerss = [];
@@ -25,16 +28,16 @@ class MapUtils {
     // var desc = await BitmapDescriptor.fromAssetImage(
     //         ImageConfiguration(devicePixelRatio: 5), Assets.icPin)
     //     .then((value) => icon = value);
-    markerss.add(await createBitmapDescriptorFromImage(
-        'images/map_pin.png', ''));
+    markerss
+        .add(await createBitmapDescriptorFromImage('images/map_pin.png', ''));
     // markerss.add(await createBitmapDescriptorFromImage('assets/Pickup.png',''));
     // markerss.add(await createBitmapDescriptorFromImage('assets/drop.png',''));
   }
 
   static Future<BitmapDescriptor> createBitmapDescriptorFromImage(
       String imagee, String alphabet) async {
-    ui.PictureRecorder recorder = new ui.PictureRecorder();
-    Canvas c = new Canvas(recorder);
+    ui.PictureRecorder recorder = ui.PictureRecorder();
+    Canvas c = Canvas(recorder);
 
     double imageWidth = 70;
     double imageHeight = 70;
@@ -48,9 +51,9 @@ class MapUtils {
         image: myImage,
         rect: Rect.fromLTWH(0, 0, imageWidth, imageHeight * 1.1));
 
-    TextPainter textPainter = new TextPainter(
+    TextPainter textPainter = TextPainter(
         text: TextSpan(
-            style: new TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 40.0,
               fontWeight: FontWeight.w600,
@@ -61,7 +64,7 @@ class MapUtils {
 
     textPainter.layout();
 
-    textPainter.paint(c, Offset(20, 6));
+    textPainter.paint(c, const Offset(20, 6));
 
     final picture = recorder.endRecording();
     final image = await picture.toImage(110, 110);
@@ -75,5 +78,40 @@ class MapUtils {
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
     ui.FrameInfo fi = await codec.getNextFrame();
     return fi.image;
+  }
+}
+
+class LocationAccess {
+  String currentAddress = '';
+
+  Future<String> getCurrentLocation() async {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) async {
+      List<Placemark> p =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+
+      Placemark place = p[0];
+      currentAddress =
+          "${place.name},${place.subLocality},${place.subAdministrativeArea},${place.administrativeArea}";
+
+      debugPrint('address $currentAddress');
+      return currentAddress;
+    }).catchError((e) {
+      debugPrint('Location error $e');
+    });
+    return currentAddress;
+  }
+
+  Future<void> requestLocationPermission() async {
+    final status = await Permission.locationWhenInUse.request();
+    if (status == PermissionStatus.granted) {
+      debugPrint('Permission Granted');
+      getCurrentLocation();
+    } else if (status == PermissionStatus.denied) {
+      debugPrint('Permission denied');
+    } else if (status == PermissionStatus.permanentlyDenied) {
+      debugPrint('Permission Permanently Denied');
+      await openAppSettings();
+    }
   }
 }
