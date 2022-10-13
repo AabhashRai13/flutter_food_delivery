@@ -13,10 +13,13 @@ class AuthRepository {
     String? description,
     String? imageUrl,
     bool? isPopular,
+    String? email,
     required String phoneNumber,
+    required String categoryId
   }) async {
     try {
       bool success = await _authProvider.updateShopProfile(
+        email: email,
           address: address,
           name: name,
           latitude: latitude,
@@ -24,7 +27,8 @@ class AuthRepository {
           description: description,
           imageUrl: imageUrl,
           isPopular: isPopular,
-          phoneNumber: phoneNumber
+          phoneNumber: phoneNumber,
+          categoryId:categoryId
           );
       return success;
     } catch (error) {

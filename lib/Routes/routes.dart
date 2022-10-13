@@ -56,7 +56,8 @@ class PageRoutes {
       walletPage: (context) => WalletPage(),
       chatPage: (context) => ChatPage(),
       insightPage: (context) => InsightPage(),
-      storeProfile: (context) => ProfilePage(),
+      storeProfile: (context) => ProfilePage(
+      ),
       addItem: (context) => const AddItem(),
       editItem: (context) => EditItem(),
       addToBank: (context) => AddToBank(),

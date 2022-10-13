@@ -16,6 +16,15 @@ class AuthProvider {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
+  DocumentReference? firestoreDocRefFromJson(dynamic value) {
+    if (value is DocumentReference) {
+      return FirebaseFirestore.instance.doc(value.path);
+    } else if (value is String) {
+      return FirebaseFirestore.instance.doc(value);
+    }
+    return null;
+  }
+
   getOtp(String phoneNumber, BuildContext context) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phoneNumber,
@@ -132,31 +141,34 @@ class AuthProvider {
     });
   }
 
-  Future<bool> updateShopProfile({
-    String? address,
-    String? name,
-    double? latitude,
-    longitude,
-    String? description,
-    String? imageUrl,
-    bool? isPopular,
-    Ratings? ratings,
-    required String phoneNumber,
-  }) async {
+  Future<bool> updateShopProfile(
+      {String? address,
+      String? email,
+      String? name,
+      double? latitude,
+      longitude,
+      String? description,
+      String? imageUrl,
+      bool? isPopular,
+      Ratings? ratings,
+      required String phoneNumber,
+      required String categoryId}) async {
     try {
       var uuid = await _appPreferences.getUserID();
 
       final DocumentReference shopp =
           FirebaseFirestore.instance.collection('shops').doc(uuid);
       Shop shop = Shop(
-        address: address,
-        name: name,
-        latitude: latitude ?? 12.011,
-        longitude: longitude ?? 41.1211,
-        description: description,
-        imageUrl: imageUrl,
-        isPopular: isPopular,
-      );
+          phoneNumber: phoneNumber,
+          email: email,
+          address: address,
+          name: name,
+          latitude: latitude ?? 12.011,
+          longitude: longitude ?? 41.1211,
+          description: description,
+          imageUrl: imageUrl,
+          isPopular: isPopular,
+          category: firestoreDocRefFromJson("/categories/$categoryId"));
 
       shopp.set(shop.toJson());
       await _appPreferences.setshopName(name!);

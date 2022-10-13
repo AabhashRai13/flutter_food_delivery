@@ -7,12 +7,13 @@ import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
+import 'package:hungerz_store/models/shop.dart';
 
 class ProfilePage extends StatelessWidget {
   static const String id = 'register_page';
   final String? phoneNumber;
-
-  const ProfilePage({super.key, this.phoneNumber});
+  final Shop? shop;
+  const ProfilePage({super.key, this.phoneNumber, this.shop});
 
   @override
   Widget build(BuildContext context) {
@@ -36,38 +37,43 @@ class ProfilePage extends StatelessWidget {
       ),
 
       //this column contains 3 textFields and a bottom bar
-      body: RegisterForm(phoneNumber),
+      body: RegisterForm(phoneNumber, shop),
     );
   }
 }
 
 class RegisterForm extends StatefulWidget {
   final String? phoneNumber;
+  final Shop? shop;
 
-  const RegisterForm(this.phoneNumber, {super.key});
+  const RegisterForm(this.phoneNumber, this.shop, {super.key});
 
   @override
   RegisterFormState createState() => RegisterFormState();
 }
 
 class RegisterFormState extends State<RegisterForm> {
-  final TextEditingController _nameEditingController = TextEditingController();
-  final TextEditingController _categoryEditingController =
+  late final TextEditingController _nameEditingController;
+  late final TextEditingController _categoryEditingController =
       TextEditingController();
 
-  final TextEditingController _phoneNumberEditingController =
-      TextEditingController();
+  late final TextEditingController _phoneNumberEditingController;
 
-  final TextEditingController _emailAddressEditingController =
-      TextEditingController();
+  late final TextEditingController _emailAddressEditingController;
 
-  final TextEditingController _descriptionEditingController =
-      TextEditingController();
+  late final TextEditingController _descriptionEditingController;
   final UserCubit _userCubit = instance<UserCubit>();
 
   @override
   void initState() {
     super.initState();
+    _nameEditingController = TextEditingController(text: widget.shop!.name);
+    _phoneNumberEditingController =
+        TextEditingController(text: widget.shop!.phoneNumber);
+    _emailAddressEditingController =
+        TextEditingController(text: widget.shop!.email ?? "");
+    _descriptionEditingController =
+        TextEditingController(text: widget.shop!.description);
   }
 
   @override
@@ -317,6 +323,7 @@ class RegisterFormState extends State<RegisterForm> {
                 // Navigator.pushNamed(context, PageRoutes.accountPage);
 
                 await _userCubit.updateShop(
+                    categoryId: "nQEiE237G5zj24rUkbrG",
                     address: "Ramechap, kapilvastu",
                     name: _nameEditingController.text.trim(),
                     description: _descriptionEditingController.text.trim(),

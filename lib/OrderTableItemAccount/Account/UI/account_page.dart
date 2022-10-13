@@ -5,10 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hungerz_store/Components/list_tile.dart';
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/OrderTableItemAccount/StoreProfile/store_profile.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
+import 'package:hungerz_store/models/shop.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -172,6 +174,64 @@ class _StoreDetailsState extends State<StoreDetails> {
       child: BlocBuilder<UserCubit, UserState>(
         bloc: _userCubit,
         builder: (context, state) {
+          if (state is ShopLoaded) {
+            return Row(
+              children: <Widget>[
+                const Image(
+                  image: AssetImage("images/Layer 1.png"),
+                  height: 98.0,
+                  width: 98.0,
+                ),
+                const SizedBox(width: 16.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(state.shop.name!,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            fontSize: 15.0, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8.0),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.location_on,
+                          color: kLightTextColor,
+                          size: 10.0,
+                        ),
+                        const SizedBox(width: 5.0),
+                        Text(state.shop.address!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2!
+                                .copyWith(
+                                    color: const Color(0xff4a4b48),
+                                    fontSize: 13.3)),
+                      ],
+                    ),
+                    GestureDetector(
+                        child: Text(
+                          '\nShop Profile',
+                          style: TextStyle(
+                              color: kMainColor,
+                              fontSize: 13.3,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfilePage(
+                                      shop: state.shop,
+                                    )),
+                          );
+                        }),
+                    Text(state.shop.email ?? "",
+                        style: Theme.of(context).textTheme.subtitle2),
+                  ],
+                ),
+              ],
+            );
+          }
+
           return Row(
             children: <Widget>[
               const Image(
@@ -206,15 +266,16 @@ class _StoreDetailsState extends State<StoreDetails> {
                   ),
 
                   GestureDetector(
-                      child: Text(
-                        '\n${AppLocalizations.of(context)!.storeProfile!}',
-                        style: TextStyle(
-                            color: kMainColor,
-                            fontSize: 13.3,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      onTap: () => Navigator.pushNamed(
-                          context, PageRoutes.storeProfile)),
+                    child: Text(
+                      '\n${AppLocalizations.of(context)!.storeProfile!}',
+                      style: TextStyle(
+                          color: kMainColor,
+                          fontSize: 13.3,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    onTap: () {},
+                  )
+
                   //  Text(email, style: Theme.of(context).textTheme.subtitle2),
                 ],
               ),

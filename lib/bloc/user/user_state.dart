@@ -13,3 +13,7 @@ class UsersLoaded extends UserState {
   final User allDatas;
   const UsersLoaded({required this.allDatas});
 }
+class ShopLoaded extends UserState {
+  final Shop shop;
+  const ShopLoaded({required this.shop});
+}

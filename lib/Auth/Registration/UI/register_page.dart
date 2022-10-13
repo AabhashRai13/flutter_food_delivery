@@ -169,6 +169,7 @@ class RegisterFormState extends State<RegisterForm> {
                   if (signupKey.currentState!.validate()) {
                     signupKey.currentState!.save();
                     bool success = await _userCubit.updateShop(
+                        categoryId: "nQEiE237G5zj24rUkbrG",
                         address: _addressController.text.trim(),
                         name: _nameController.text.trim(),
                         description: _descriptionController.text.trim(),
@@ -186,6 +187,4 @@ class RegisterFormState extends State<RegisterForm> {
       ),
     );
   }
-
-
 }
