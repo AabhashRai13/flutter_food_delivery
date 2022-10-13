@@ -53,6 +53,9 @@ dependencies:
   get_it: ^7.2.0
   json_annotation: ^4.7.0
   build_runner: ^2.2.1
+  geolocator: ^9.0.2
+  geocoding: ^2.0.5
+  permission_handler: ^10.1.0
 
 dev_dependencies:
   flutter_test:

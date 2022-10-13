@@ -30,7 +30,7 @@ class ProfilePage extends StatelessWidget {
         ),
         title: Text(
           AppLocalizations.of(context)!.editProfile!,
-          style: TextStyle(fontSize: 16.7, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 16.7, fontWeight: FontWeight.bold),
         ),
       ),
 
@@ -65,14 +65,15 @@ class _RegisterFormState extends State<RegisterForm> {
     return Stack(
       children: [
         ListView(
-          padding: EdgeInsets.only(bottom: 70),
+          padding: const EdgeInsets.only(bottom: 70),
           children: <Widget>[
             Divider(
               color: Theme.of(context).cardColor,
               thickness: 8.0,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -94,13 +95,13 @@ class _RegisterFormState extends State<RegisterForm> {
                         width: 99.0,
                         child: Image.asset('images/Layer 1.png'),
                       ),
-                      SizedBox(width: 24.0),
+                      const SizedBox(width: 24.0),
                       Icon(
                         Icons.camera_alt,
                         color: kMainColor,
                         size: 25.0,
                       ),
-                      SizedBox(width: 14.3),
+                      const SizedBox(width: 14.3),
                       Text(AppLocalizations.of(context)!.uploadPhoto!,
                           style: Theme.of(context)
                               .textTheme
@@ -119,8 +120,8 @@ class _RegisterFormState extends State<RegisterForm> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Text(
                     AppLocalizations.of(context)!.profileInfo!.toUpperCase(),
                     style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -129,12 +130,12 @@ class _RegisterFormState extends State<RegisterForm> {
                         color: kHintColor),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 //name textField
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: SmallTextFormField(
                       AppLocalizations.of(context)!.fullName!.toUpperCase(),
                       "Enter Restraunt Name",
@@ -143,11 +144,11 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 //category textField
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: SmallTextFormField(
                       AppLocalizations.of(context)!.category!.toUpperCase(),
                       AppLocalizations.of(context)!.type,
-                      Icon(
+                      const Icon(
                         Icons.keyboard_arrow_down,
                         color: Colors.black,
                       ),
@@ -155,7 +156,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 //phone textField
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: SmallTextFormField(
                     AppLocalizations.of(context)!.mobileNumber!.toUpperCase(),
                     "Enter Phone Number",
@@ -165,7 +166,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 //email textField
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: SmallTextFormField(
                     AppLocalizations.of(context)!.emailAddress!.toUpperCase(),
                     'Enter Email Address',
@@ -183,8 +184,8 @@ class _RegisterFormState extends State<RegisterForm> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Text(
                     AppLocalizations.of(context)!.address!.toUpperCase(),
                     style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -198,7 +199,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   onTap: () =>
                       Navigator.pushNamed(context, PageRoutes.locationPage),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
@@ -245,7 +246,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                     .copyWith(
                                         color: Colors.grey, fontSize: 14)),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           )
                         ],
@@ -263,8 +264,8 @@ class _RegisterFormState extends State<RegisterForm> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Text(
                     AppLocalizations.of(context)!.storeTimings!.toUpperCase(),
                     style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -274,7 +275,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -287,7 +288,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           '8:00 am',
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 30.0,
                       ),
                       Expanded(
@@ -313,8 +314,8 @@ class _RegisterFormState extends State<RegisterForm> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Text(
                     "ORDER COLOR SETTINGS",
                     style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -324,7 +325,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     children: [
                       Row(
@@ -340,7 +341,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                     .bodyText2!
                                     .copyWith(fontSize: 12),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               Row(
@@ -359,12 +360,12 @@ class _RegisterFormState extends State<RegisterForm> {
                                   )
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               )
                             ],
                           )),
-                          SizedBox(
+                          const SizedBox(
                             width: 30.0,
                           ),
                           Expanded(
@@ -408,7 +409,7 @@ class _RegisterFormState extends State<RegisterForm> {
                               ],
                             ),
                           )),
-                          SizedBox(
+                          const SizedBox(
                             width: 30.0,
                           ),
                           Expanded(
@@ -453,7 +454,7 @@ class _RegisterFormState extends State<RegisterForm> {
                               ],
                             ),
                           )),
-                          SizedBox(
+                          const SizedBox(
                             width: 30.0,
                           ),
                           Expanded(
