@@ -5,6 +5,7 @@ import 'package:hungerz_store/Components/entry_field.dart';
 
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/extension.dart';
 import 'package:hungerz_store/models/product_id.dart';
 import 'package:hungerz_store/repositories/product_repository.dart';
 
@@ -595,43 +596,52 @@ class AddState extends State<Add> {
             onTap: () async {
               if (signupKey.currentState!.validate()) {
                 signupKey.currentState!.save();
-
-                if (widget.isEditing == false) {
-                  bool success = await ProductRepository().addProducts(
-                    userId: userId ?? '',
-                    description: _descriptionController.text.trim(),
-                    listingCategory: _categoryController.text.trim(),
-                    listingName: _nameController.text.trim(),
-                    rentalDuration: _rentalDurationController.text.trim(),
-                    rentalFor: _rentalForController.text.trim(),
-                    rentalPrice: double.parse(_priceController.text),
-                    pickup: pickup,
-                    typeOfRental: typeOfRental,
-                    rentingRules: _rulesController.text.trim(),
-                  );
-                  if (success == true) {
-                    if (!mounted) return;
-                    Navigator.of(context).pop();
-                  }
-                } else if (widget.isEditing == true) {
-                  bool success = await ProductRepository().editProducts(
-                    userId: userId ?? '',
-                    description: _descriptionController.text.trim(),
-                    listingCategory: _categoryController.text.trim(),
-                    listingName: _nameController.text.trim(),
-                    rentalDuration: _rentalDurationController.text.trim(),
-                    rentalFor: _rentalForController.text.trim(),
-                    rentalPrice: double.parse(_priceController.text),
-                    pickup: pickup,
-                    typeOfRental: typeOfRental,
-                    rentingRules: _rulesController.text.trim(),
-                    productId: widget.productId!.id,
-                  );
-                  if (success == true) {
-                    if (!mounted) return;
-                    Navigator.of(context).pop();
-                  }
-                } else {}
+                if (pickup == -1) {
+                  context.showFailureSnack(
+                      'Please select waiver required at pick up');
+                } else if (typeOfRental == -1) {
+                  context.showFailureSnack('Please select Rental Type');
+                } else {
+                  if (widget.isEditing == false) {
+                    bool success = await ProductRepository().addProducts(
+                      userId: userId ?? '',
+                      description: _descriptionController.text.trim(),
+                      listingCategory: _categoryController.text.trim(),
+                      listingName: _nameController.text.trim(),
+                      rentalDuration: _rentalDurationController.text.trim(),
+                      rentalFor: _rentalForController.text.trim(),
+                      rentalPrice: double.parse(_priceController.text),
+                      pickup: pickup,
+                      typeOfRental: typeOfRental,
+                      rentingRules: _rulesController.text.trim(),
+                    );
+                    if (success == true) {
+                      if (!mounted) return;
+                      Navigator.of(context).pop();
+                    }
+                  } else if (widget.isEditing == true) {
+                    bool success = await ProductRepository().editProducts(
+                      userId: userId ?? '',
+                      description: _descriptionController.text.trim(),
+                      listingCategory: _categoryController.text.trim(),
+                      listingName: _nameController.text.trim(),
+                      rentalDuration: _rentalDurationController.text.trim(),
+                      rentalFor: _rentalForController.text.trim(),
+                      rentalPrice: double.parse(_priceController.text),
+                      pickup: pickup,
+                      typeOfRental: typeOfRental,
+                      rentingRules: _rulesController.text.trim(),
+                      productId: widget.productId!.id,
+                    );
+                    if (success == true) {
+                      if (!mounted) return;
+                      context.showSuccessSnack(widget.isEditing
+                          ? "Item edited successfully"
+                          : "Item added successfully");
+                      Navigator.of(context).pop();
+                    }
+                  } else {}
+                }
               }
             },
           ),

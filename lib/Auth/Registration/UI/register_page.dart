@@ -7,6 +7,7 @@ import 'package:hungerz_store/Maps/UI/location_page.dart';
 
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
+import 'package:hungerz_store/extension.dart';
 
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
@@ -119,6 +120,8 @@ class RegisterFormState extends State<RegisterForm> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Email Address is required';
+                  } else if (!value.isValidEmail()) {
+                    return 'Email address is not valid';
                   } else {
                     return null;
                   }
