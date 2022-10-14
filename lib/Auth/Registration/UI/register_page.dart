@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Auth/Registration/UI/register_text_field.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
