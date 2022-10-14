@@ -102,17 +102,3 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
     );
   }
 }
-
-extension StringExtension on String {
-  bool isValidEmail() {
-    bool isValid = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(this);
-    return isValid;
-  }
-
-  bool isValidNumber() {
-    bool isValid = RegExp(r'(^[0-9]{10}$)').hasMatch(this);
-    return isValid;
-  }
-}

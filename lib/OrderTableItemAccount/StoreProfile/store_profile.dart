@@ -9,6 +9,8 @@ import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
+import 'package:hungerz_store/data/local/prefs.dart';
+import 'package:hungerz_store/extension.dart';
 import 'package:hungerz_store/models/shop.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -64,8 +66,11 @@ class RegisterFormState extends State<RegisterForm> {
   late final TextEditingController _emailAddressEditingController;
 
   late final TextEditingController _descriptionEditingController;
+  TextEditingController _addressController = TextEditingController();
   final UserCubit _userCubit = instance<UserCubit>();
-
+  GlobalKey<FormState> signupKey = GlobalKey();
+  double lat = 0.0;
+  double long = 0.0;
   @override
   void initState() {
     super.initState();
@@ -74,8 +79,11 @@ class RegisterFormState extends State<RegisterForm> {
         TextEditingController(text: widget.shop!.phoneNumber);
     _emailAddressEditingController =
         TextEditingController(text: widget.shop!.email ?? "");
+    _addressController = TextEditingController(text: widget.shop!.address);
     _descriptionEditingController =
         TextEditingController(text: widget.shop!.description);
+    lat = widget.shop!.latitude!;
+    long = widget.shop!.longitude!;
   }
 
   @override
@@ -87,294 +95,318 @@ class RegisterFormState extends State<RegisterForm> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        ListView(
-          padding: const EdgeInsets.only(bottom: 70),
-          children: <Widget>[
-            Divider(
-              color: Theme.of(context).cardColor,
-              thickness: 8.0,
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-              child: Column(
+        Form(
+          key: signupKey,
+          child: ListView(
+            padding: const EdgeInsets.only(bottom: 70),
+            children: <Widget>[
+              Divider(
+                color: Theme.of(context).cardColor,
+                thickness: 8.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(
+                        AppLocalizations.of(context)!
+                            .featureImage!
+                            .toUpperCase(),
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.67,
+                            color: kHintColor),
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 99.0,
+                          width: 99.0,
+                          child: Image.asset('images/Layer 1.png'),
+                        ),
+                        const SizedBox(width: 24.0),
+                        Icon(
+                          Icons.camera_alt,
+                          color: kMainColor,
+                          size: 25.0,
+                        ),
+                        const SizedBox(width: 14.3),
+                        Text(AppLocalizations.of(context)!.uploadPhoto!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption!
+                                .copyWith(color: kMainColor)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                color: Theme.of(context).cardColor,
+                thickness: 8.0,
+              ),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
                     child: Text(
-                      AppLocalizations.of(context)!.featureImage!.toUpperCase(),
+                      AppLocalizations.of(context)!.profileInfo!.toUpperCase(),
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.67,
                           color: kHintColor),
                     ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 99.0,
-                        width: 99.0,
-                        child: Image.asset('images/Layer 1.png'),
-                      ),
-                      const SizedBox(width: 24.0),
-                      Icon(
-                        Icons.camera_alt,
-                        color: kMainColor,
-                        size: 25.0,
-                      ),
-                      const SizedBox(width: 14.3),
-                      Text(AppLocalizations.of(context)!.uploadPhoto!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .copyWith(color: kMainColor)),
-                    ],
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  //name textField
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: SmallTextFormField(
+                        // AppLocalizations.of(context)!.fullName!.toUpperCase(),
+                        label: "Shop Name",
+                        title: "Enter name",
+                        icon: null,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Shop Name is required';
+                          } else {
+                            return null;
+                          }
+                        },
+                        textEditingController: _nameEditingController),
+                  ),
+                  //category textField
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: SmallTextFormField(
+                        // AppLocalizations.of(context)!.fullName!.toUpperCase(),
+                        label: "Description",
+                        title: "Enter decription",
+                        icon: null,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Brief Description is required';
+                          } else {
+                            return null;
+                          }
+                        },
+                        textEditingController: _descriptionEditingController),
+                  ),
+                  //phone textField
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: SmallTextFormField(
+                        // AppLocalizations.of(context)!.fullName!.toUpperCase(),
+                        label: "Category",
+                        title: "Enter Category",
+                        icon: null,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Category is required';
+                          } else {
+                            return null;
+                          }
+                        },
+                        textEditingController: _categoryEditingController),
+                  ),
+                  //email textField
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: SmallTextFormField(
+                        // AppLocalizations.of(context)!.fullName!.toUpperCase(),
+                        label: "Email",
+                        title: "Enter email",
+                        icon: null,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Email should not be empty';
+                          } else if (!value.isValidEmail()) {
+                            return 'Email address is not valid';
+                          } else {
+                            return null;
+                          }
+                        },
+                        textEditingController: _emailAddressEditingController),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: SmallTextFormField(
+                        // AppLocalizations.of(context)!.fullName!.toUpperCase(),
+                        label: "Phone",
+                        title: "Enter Phone",
+                        icon: null,
+                        initial: "Food Junction",
+                        keyBoardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Number is required';
+                          } else {
+                            return null;
+                          }
+                        },
+                        textEditingController: _phoneNumberEditingController),
                   ),
                 ],
               ),
-            ),
-            Divider(
-              color: Theme.of(context).cardColor,
-              thickness: 8.0,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  child: Text(
-                    AppLocalizations.of(context)!.profileInfo!.toUpperCase(),
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.67,
-                        color: kHintColor),
+              Divider(
+                color: Theme.of(context).cardColor,
+                thickness: 8.0,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    child: Text(
+                      AppLocalizations.of(context)!.address!.toUpperCase(),
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.67,
+                          color: kHintColor),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                //name textField
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: SmallTextFormField(
-                      // AppLocalizations.of(context)!.fullName!.toUpperCase(),
-                      label: "Shop Name",
-                      title: "Enter name",
-                      icon: null,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Shop Name is required';
-                        } else {
-                          return null;
-                        }
-                      },
-                      textEditingController: _nameEditingController),
-                ),
-                //category textField
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: SmallTextFormField(
-                      // AppLocalizations.of(context)!.fullName!.toUpperCase(),
-                      label: "Description",
-                      title: "Enter decription",
-                      icon: null,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Brief Description is required';
-                        } else {
-                          return null;
-                        }
-                      },
-                      textEditingController: _descriptionEditingController),
-                ),
-                //phone textField
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: SmallTextFormField(
-                      // AppLocalizations.of(context)!.fullName!.toUpperCase(),
-                      label: "Category",
-                      title: "Enter Category",
-                      icon: null,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Category is required';
-                        } else {
-                          return null;
-                        }
-                      },
-                      textEditingController: _categoryEditingController),
-                ),
-                //email textField
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: SmallTextFormField(
-                      // AppLocalizations.of(context)!.fullName!.toUpperCase(),
-                      label: "Email",
-                      title: "Enter email",
-                      icon: null,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Email should not be empty';
-                        } else if (!value.isValidEmail()) {
-                          return 'Email address is not valid';
-                        } else {
-                          return null;
-                        }
-                      },
-                      textEditingController: _emailAddressEditingController),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: SmallTextFormField(
-                      // AppLocalizations.of(context)!.fullName!.toUpperCase(),
-                      label: "Phone",
-                      title: "Enter Phone",
-                      icon: null,
-                      initial: "Food Junction",
-                      keyBoardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Number is required';
-                        } else {
-                          return null;
-                        }
-                      },
-                      textEditingController: _phoneNumberEditingController),
-                ),
-              ],
-            ),
-            Divider(
-              color: Theme.of(context).cardColor,
-              thickness: 8.0,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  child: Text(
-                    AppLocalizations.of(context)!.address!.toUpperCase(),
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.67,
-                        color: kHintColor),
-                  ),
-                ),
-                //address textField
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => LocationPage()));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  //address textField
+                  GestureDetector(
+                    onTap: () async {
+                      final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => LocationPage(
+                                    textEditingController: _addressController,
+                                  )));
+                      lat = result["lat"];
+                      long = result["long"];
+                    },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2!
-                                .copyWith(color: Colors.black, fontSize: 14),
-                            initialValue:
-                                " 1124, Veggy Garden, City Food Park, United States",
-                            decoration: InputDecoration(
-                                prefix: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) => LocationPage()));
-                                  },
-                                  child: Icon(
-                                    Icons.location_on,
-                                    color: kMainColor,
-                                    size: 17,
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: _addressController,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(color: Colors.black, fontSize: 14),
+                              // " 1124, Veggy Garden, City Food Park, United States",
+                              decoration: InputDecoration(
+                                  prefix: GestureDetector(
+                                    onTap: () async {
+                                      final result = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) => LocationPage(
+                                                    textEditingController:
+                                                        _addressController,
+                                                  )));
+                                      lat = result["lat"];
+                                      long = result["long"];
+                                    },
+                                    child: Icon(
+                                      Icons.location_on,
+                                      color: kMainColor,
+                                      size: 17,
+                                    ),
                                   ),
-                                ),
-                                isDense: true,
-                                prefixStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                        color: Colors.black, fontSize: 12),
-                                border: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[200]!),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[200]!),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[200]!),
-                                ),
-                                hintText: "Set Restaurant",
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2!
-                                    .copyWith(
-                                        color: Colors.grey, fontSize: 14)),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          )
-                        ],
+                                  isDense: true,
+                                  prefixStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                          color: Colors.black, fontSize: 12),
+                                  border: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.grey[200]!),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.grey[200]!),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.grey[200]!),
+                                  ),
+                                  hintText: "Set Restaurant",
+                                  hintStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                          color: Colors.grey, fontSize: 14)),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Divider(
-              color: Theme.of(context).cardColor,
-              thickness: 8.0,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  child: Text(
-                    AppLocalizations.of(context)!.storeTimings!.toUpperCase(),
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.67,
-                        color: kHintColor),
+                ],
+              ),
+              Divider(
+                color: Theme.of(context).cardColor,
+                thickness: 8.0,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    child: Text(
+                      AppLocalizations.of(context)!.storeTimings!.toUpperCase(),
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.67,
+                          color: kHintColor),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Divider(
-              color: Theme.of(context).cardColor,
-              thickness: 8.0,
-            ),
-            //continue button bar
-          ],
+                ],
+              ),
+              Divider(
+                color: Theme.of(context).cardColor,
+                thickness: 8.0,
+              ),
+              //continue button bar
+            ],
+          ),
         ),
         Align(
           alignment: Alignment.bottomCenter,
           child: BottomBar(
               text: AppLocalizations.of(context)!.updateInfo,
               onTap: () async {
-                // Navigator.pushNamed(context, PageRoutes.accountPage);
-
-                await _userCubit.updateShop(
-                    categoryId: "nQEiE237G5zj24rUkbrG",
-                    address: "Ramechap, kapilvastu",
-                    name: _nameEditingController.text.trim(),
-                    description: _descriptionEditingController.text.trim(),
-                    isPopular: true,
-                    phoneNumber: _phoneNumberEditingController.text.trim(),
-                    imageUrl:
-                        "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
+                if (signupKey.currentState!.validate()) {
+                  signupKey.currentState!.save();
+                  final success = await _userCubit.updateShop(
+                      categoryId: "nQEiE237G5zj24rUkbrG",
+                      address: _addressController.text.trim(),
+                      name: _nameEditingController.text.trim(),
+                      description: _descriptionEditingController.text.trim(),
+                      isPopular: true,
+                      latitude: lat,
+                      longitude: long,
+                      email: _emailAddressEditingController.text.trim(),
+                      phoneNumber: _phoneNumberEditingController.text.trim(),
+                      imageUrl:
+                          "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
+                  if (success) {
+                    context
+                        .showSuccessSnack('Shop Profile Updated successfully');
+                  }
+                }
               }),
         ),
       ],

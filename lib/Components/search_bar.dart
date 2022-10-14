@@ -29,6 +29,7 @@ class CustomSearchBar extends StatelessWidget {
         color: color ?? kCardBackgroundColor,
       ),
       child: TextField(
+        readOnly: true,
         textCapitalization: TextCapitalization.sentences,
         cursorColor: kMainColor,
         decoration: InputDecoration(
