@@ -13,8 +13,8 @@ import 'package:hungerz_store/Locale/swahili.dart';
 import 'package:hungerz_store/Locale/turkish.dart';
 
 class AppConfig {
-  static final String appName = "Hungerz store";
-  static final bool isDemoMode = true;
+  static const String appName = "Hungerz store";
+  static const bool isDemoMode = true;
   static const String languageDefault = "en";
   static final Map<String, AppLanguage> languagesSupported = {
     "en": AppLanguage("English", english()),

@@ -6,15 +6,16 @@ class AnimatedBottomBar extends StatefulWidget {
   final Function? onBarTap;
 
   AnimatedBottomBar({
+    super.key,
     this.barItems,
     this.onBarTap,
   });
 
   @override
-  _AnimatedBottomBarState createState() => _AnimatedBottomBarState();
+  AnimatedBottomBarState createState() => AnimatedBottomBarState();
 }
 
-class _AnimatedBottomBarState extends State<AnimatedBottomBar>
+class AnimatedBottomBarState extends State<AnimatedBottomBar>
     with TickerProviderStateMixin {
   int selectedBarIndex = 0;
   Duration duration = Duration(milliseconds: 250);

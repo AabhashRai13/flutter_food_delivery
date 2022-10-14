@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hungerz_store/Auth/Registration/UI/register_text_field.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
 
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Maps/UI/location_page.dart';
-import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
-import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/extension.dart';
 import 'package:hungerz_store/models/shop.dart';
 
@@ -403,6 +400,7 @@ class RegisterFormState extends State<RegisterForm> {
                       imageUrl:
                           "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
                   if (success) {
+                    if (!mounted) return;
                     context
                         .showSuccessSnack('Shop Profile Updated successfully');
                   }

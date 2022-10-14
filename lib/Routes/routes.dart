@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hungerz_store/Auth/login_navigator.dart';
 import 'package:hungerz_store/Chat/UI/chat_page.dart';
-import 'package:hungerz_store/Maps/UI/location_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/addtobank_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/insight_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/reviews.dart';
@@ -54,7 +53,7 @@ class PageRoutes {
       storeProfile: (context) => const ProfilePage(),
       addToBank: (context) => const AddToBank(),
       items: (context) => const ItemsPage(),
-      orderTableItemAccountPage: (context) => OrderItemAccount(),
+      orderTableItemAccountPage: (context) => const OrderItemAccount(),
       review: (context) => ReviewPage(),
       setting: (context) => const Settings(),
       authentication: (context) => const AuthenticationList(),
