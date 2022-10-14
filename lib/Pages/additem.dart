@@ -617,6 +617,8 @@ class AddState extends State<Add> {
                     );
                     if (success == true) {
                       if (!mounted) return;
+                      context.showSuccessSnack("Item added successfully");
+
                       Navigator.of(context).pop();
                     }
                   } else if (widget.isEditing == true) {
@@ -635,9 +637,7 @@ class AddState extends State<Add> {
                     );
                     if (success == true) {
                       if (!mounted) return;
-                      context.showSuccessSnack(widget.isEditing
-                          ? "Item edited successfully"
-                          : "Item added successfully");
+                      context.showSuccessSnack("Item edited successfully");
                       Navigator.of(context).pop();
                     }
                   } else {}

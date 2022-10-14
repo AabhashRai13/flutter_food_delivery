@@ -66,9 +66,11 @@ class RegisterFormState extends State<RegisterForm> {
   late final TextEditingController _emailAddressEditingController;
 
   late final TextEditingController _descriptionEditingController;
+  TextEditingController _addressController = TextEditingController();
   final UserCubit _userCubit = instance<UserCubit>();
   GlobalKey<FormState> signupKey = GlobalKey();
-
+  double lat = 0.0;
+  double long = 0.0;
   @override
   void initState() {
     super.initState();
@@ -77,8 +79,11 @@ class RegisterFormState extends State<RegisterForm> {
         TextEditingController(text: widget.shop!.phoneNumber);
     _emailAddressEditingController =
         TextEditingController(text: widget.shop!.email ?? "");
+    _addressController = TextEditingController(text: widget.shop!.address);
     _descriptionEditingController =
         TextEditingController(text: widget.shop!.description);
+    lat = widget.shop!.latitude!;
+    long = widget.shop!.longitude!;
   }
 
   @override
@@ -273,9 +278,15 @@ class RegisterFormState extends State<RegisterForm> {
                   ),
                   //address textField
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => LocationPage()));
+                    onTap: () async {
+                      final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => LocationPage(
+                                    textEditingController: _addressController,
+                                  )));
+                      lat = result["lat"];
+                      long = result["long"];
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -284,20 +295,24 @@ class RegisterFormState extends State<RegisterForm> {
                         child: Column(
                           children: [
                             TextFormField(
+                              controller: _addressController,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!
                                   .copyWith(color: Colors.black, fontSize: 14),
-                              initialValue:
-                                  // " 1124, Veggy Garden, City Food Park, United States",
-                                  widget.shop!.address,
+                              // " 1124, Veggy Garden, City Food Park, United States",
                               decoration: InputDecoration(
                                   prefix: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
+                                    onTap: () async {
+                                      final result = await Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (_) => LocationPage()));
+                                              builder: (_) => LocationPage(
+                                                    textEditingController:
+                                                        _addressController,
+                                                  )));
+                                      lat = result["lat"];
+                                      long = result["long"];
                                     },
                                     child: Icon(
                                       Icons.location_on,
@@ -377,15 +392,20 @@ class RegisterFormState extends State<RegisterForm> {
                   signupKey.currentState!.save();
                   final success = await _userCubit.updateShop(
                       categoryId: "nQEiE237G5zj24rUkbrG",
-                      address: "Ramechap, kapilvastu",
+                      address: _addressController.text.trim(),
                       name: _nameEditingController.text.trim(),
                       description: _descriptionEditingController.text.trim(),
                       isPopular: true,
+                      latitude: lat,
+                      longitude: long,
                       email: _emailAddressEditingController.text.trim(),
                       phoneNumber: _phoneNumberEditingController.text.trim(),
                       imageUrl:
                           "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
-                  if (success) {}
+                  if (success) {
+                    context
+                        .showSuccessSnack('Shop Profile Updated successfully');
+                  }
                 }
               }),
         ),

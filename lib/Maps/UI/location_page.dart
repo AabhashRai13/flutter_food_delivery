@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
@@ -12,14 +13,23 @@ import 'package:hungerz_store/Maps/UI/network_utils.dart';
 import 'package:hungerz_store/OrderMapBloc/order_map_bloc.dart';
 import 'package:hungerz_store/OrderMapBloc/order_map_state.dart';
 import 'package:hungerz_store/Themes/colors.dart';
-import 'package:hungerz_store/app/di.dart';
-import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/map_utils.dart';
+import 'package:google_api_headers/google_api_headers.dart';
+import 'package:google_maps_webservice/places.dart';
+import 'package:google_api_headers/google_api_headers.dart';
 
 class LocationPage extends StatelessWidget {
-  const LocationPage({super.key, this.textEditingController});
+  const LocationPage(
+      {super.key,
+      this.textEditingController,
+      this.isFromStoreProfile,
+      this.lat,
+      this.long});
 
   final TextEditingController? textEditingController;
+  final bool? isFromStoreProfile;
+  final double? lat;
+  final double? long;
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OrderMapBloc>(
@@ -32,8 +42,15 @@ class LocationPage extends StatelessWidget {
 }
 
 class SetLocation extends StatefulWidget {
-  const SetLocation({super.key, this.textEditingController});
-
+  const SetLocation(
+      {super.key,
+      this.textEditingController,
+      this.isFromStoreProfile = false,
+      this.lat,
+      this.long});
+  final bool? isFromStoreProfile;
+  final double? lat;
+  final double? long;
   final TextEditingController? textEditingController;
   @override
   SetLocationState createState() => SetLocationState();
@@ -41,24 +58,13 @@ class SetLocation extends StatefulWidget {
 
 class SetLocationState extends State<SetLocation> {
   final TextEditingController _messageController = TextEditingController();
-  String googleApikey = "GOOGLE_MAP_API_KEY";
+  String googleApikey = "AIzaSyC4xQ0n-BwL_gODzdOTI6eqmzABT7XtF9Y";
   GoogleMapController? mapStyleController; //contrller for Google map
   CameraPosition? cameraPosition;
   LatLng startLocation = const LatLng(27.6602292, 85.308027);
   String location = "Set Address";
-
-  void placeAutoComplete(String query) async {
-    Uri uri = Uri.https(
-        "maps.google.com", "maps/api/place/autocomplete/json", //unencoder path
-        {
-          "input": query, //query parameter
-          "key": apiKey, // make sure you add your api key
-        });
-    String? response = await NetworkUtils.fetchUrl(uri);
-    if (response != null) {
-      log(response);
-    }
-  }
+  double? lat;
+  double? lang;
 
   @override
   void initState() {
@@ -66,6 +72,9 @@ class SetLocationState extends State<SetLocation> {
       mapStyle = string;
     });
     super.initState();
+    if (widget.isFromStoreProfile!) {
+      startLocation = LatLng(widget.lat!, widget.long!);
+    }
   }
 
   @override
@@ -97,7 +106,41 @@ class SetLocationState extends State<SetLocation> {
                 fontWeight: FontWeight.bold,
                 color: Colors.black),
           ),
-          onTap: null,
+          onTap: () async {
+            var place = await PlacesAutocomplete.show(
+                context: context,
+                apiKey: googleApikey,
+                mode: Mode.overlay,
+                types: [],
+                strictbounds: false,
+                components: [Component(Component.country, 'ca')],
+                //google_map_webservice package
+                onError: (err) {
+                  print(err);
+                });
+
+            if (place != null) {
+              setState(() {
+                location = place.description.toString();
+              });
+
+              //form google_maps_webservice package
+              final plist = GoogleMapsPlaces(
+                apiKey: googleApikey,
+                apiHeaders: await GoogleApiHeaders().getHeaders(),
+                //from google_api_headers package
+              );
+              String placeid = place.placeId ?? "0";
+              final detail = await plist.getDetailsByPlaceId(placeid);
+              final geometry = detail.result.geometry!;
+              lat = geometry.location.lat;
+              lang = geometry.location.lng;
+              var newlatlang = LatLng(lat!, lang!);
+              //move map camera to selected place with animation
+              mapStyleController?.animateCamera(CameraUpdate.newCameraPosition(
+                  CameraPosition(target: newlatlang, zoom: 17)));
+            }
+          },
           hint: AppLocalizations.of(context)!.enterLocation,
         ),
       ),
@@ -135,6 +178,8 @@ class SetLocationState extends State<SetLocation> {
                               cameraPosition!.target.longitude);
                       setState(() {
                         //get place name from lat and lang
+                        lat = cameraPosition!.target.latitude;
+                        lang = cameraPosition!.target.latitude;
                         location =
                             "${placemarks.first.street.toString()},${placemarks.first.subLocality.toString()},${placemarks.first.subAdministrativeArea.toString()},${placemarks.first.administrativeArea.toString()}";
                         Future.delayed(const Duration(milliseconds: 500), () {
@@ -182,10 +227,7 @@ class SetLocationState extends State<SetLocation> {
           BottomBar(
               text: AppLocalizations.of(context)!.continueText,
               onTap: () async {
-                Map latLongMap = {
-                  "lat": cameraPosition!.target.latitude,
-                  "long": cameraPosition!.target.longitude
-                };
+                Map latLongMap = {"lat": lat, "long": lang};
                 Navigator.pop(context, latLongMap);
               }),
         ],
