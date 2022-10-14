@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hungerz_store/Auth/Registration/UI/register_text_field.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/Maps/UI/location_page.dart';
 
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
-
 
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
@@ -55,8 +55,11 @@ class RegisterFormState extends State<RegisterForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-
+  double lat = 0.0;
+  double long = 0.0;
   final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
   GlobalKey<FormState> signupKey = GlobalKey();
   final UserCubit _userCubit = instance<UserCubit>();
   // RegisterBloc _registerBloc;
@@ -92,6 +95,7 @@ class RegisterFormState extends State<RegisterForm> {
               // inputField(AppLocalizations.of(context)!.fullNamee!.toUpperCase(),
               //     'Samantha Smith', 'images/icons/ic_name.png'),
               RegisterTextField(
+                onlyRead: false,
                 textEditingController: _nameController,
                 title: "Shop Name",
                 hint: "your Shop name",
@@ -105,35 +109,61 @@ class RegisterFormState extends State<RegisterForm> {
               ),
               //name textField
               //email textField
-
               RegisterTextField(
-                textEditingController: _addressController,
-                title: "Address",
-                hint: 'enter your address',
-                img: 'images/icons/ic_mail.png',
+                onlyRead: false,
+                textEditingController: _emailController,
+                title: "Email Address",
+                hint: 'abc@gmail.com',
+                img: 'images/icons/ic_phone.png',
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return ' Address should not be empty';
+                    return 'Email Address is required';
                   } else {
                     return null;
                   }
                 },
               ),
               RegisterTextField(
+                textEditingController: _addressController,
+                title: "Address",
+                hint: "Select your address",
+                onlyRead: true,
+                onTap: () async {
+                  final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => LocationPage(
+                                textEditingController: _addressController,
+                              )));
+                  lat = result["lat"];
+                  long = result["long"];
+                },
+                img: 'images/location.png',
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Set location';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+
+              RegisterTextField(
+                onlyRead: false,
                 textEditingController: _descriptionController,
                 title: "Description",
                 hint: 'your shop description',
                 img: 'images/icons/ic_phone.png',
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'breif description is required';
+                    return 'Brief description is required';
                   } else {
                     return null;
                   }
                 },
               ),
-
               RegisterTextField(
+                onlyRead: false,
                 textEditingController: _phoneNumberController,
                 title:
                     AppLocalizations.of(context)!.mobileNumber!.toUpperCase(),
@@ -166,15 +196,17 @@ class RegisterFormState extends State<RegisterForm> {
             child: BottomBar(
                 text: AppLocalizations.of(context)!.continueText,
                 onTap: () async {
-                  log("controller ${_addressController.text.trim()}");
                   if (signupKey.currentState!.validate()) {
                     signupKey.currentState!.save();
+
                     bool success = await _userCubit.updateShop(
-                      
+                        email: _emailController.text.trim(),
                         categoryId: "nQEiE237G5zj24rUkbrG",
                         address: _addressController.text.trim(),
                         name: _nameController.text.trim(),
                         description: _descriptionController.text.trim(),
+                        latitude: lat,
+                        longitude: long,
                         isPopular: true,
                         phoneNumber: _phoneNumberController.text.trim(),
                         imageUrl:

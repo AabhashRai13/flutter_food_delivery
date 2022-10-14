@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Components/entry_field.dart';
@@ -37,7 +39,7 @@ class _MobileInputState extends State<MobileInput> {
         children: <Widget>[
           CountryCodePicker(
             onChanged: (value) {
-              isoCode = value.code;
+              isoCode = value.dialCode;
             },
             builder: (value) => buildButton(value),
             initialSelection: '+977',
@@ -85,6 +87,7 @@ class _MobileInputState extends State<MobileInput> {
               ),
             ),
             onPressed: () async {
+              log("number ${isoCode! + _controller.text}");
               if (signupKey.currentState!.validate()) {
                 signupKey.currentState!.save();
                 _authProvider.getOtp(isoCode! + _controller.text, context);

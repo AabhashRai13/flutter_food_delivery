@@ -58,6 +58,8 @@ class SmallTextFormField extends StatelessWidget {
   final Icon? icon;
   final String? initial;
   final TextEditingController? textEditingController;
+  final String? Function(String?)? validator;
+  final TextInputType? keyBoardType;
 
   const SmallTextFormField({
     this.label,
@@ -65,6 +67,8 @@ class SmallTextFormField extends StatelessWidget {
     this.icon,
     this.initial,
     this.textEditingController,
+    this.validator,
+    this.keyBoardType,
   });
   @override
   Widget build(BuildContext context) {
@@ -86,6 +90,8 @@ class SmallTextFormField extends StatelessWidget {
                 )
               : const SizedBox.shrink(),
           TextFormField(
+            keyboardType: keyBoardType,
+            validator: validator,
             controller: textEditingController,
             style: Theme.of(context)
                 .textTheme

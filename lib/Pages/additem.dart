@@ -107,7 +107,7 @@ class AddState extends State<Add> {
   int? typeOfRental = -1;
   GlobalKey<FormState> signupKey = GlobalKey();
   // ignore: prefer_typing_uninitialized_variables
-  late String? userId;
+  late String? userId = "";
   @override
   void initState() {
     super.initState();
@@ -115,9 +115,8 @@ class AddState extends State<Add> {
     widget.isEditing ? initializeController() : null;
   }
 
-  getUserId() async {
-    // ignore: await_only_futures
-    userId = await FirebaseAuth.instance.currentUser!.uid;
+  getUserId() {
+    userId = FirebaseAuth.instance.currentUser!.uid;
   }
 
   initializeController() {

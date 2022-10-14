@@ -11,25 +11,30 @@ import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Maps/UI/network_utils.dart';
 import 'package:hungerz_store/OrderMapBloc/order_map_bloc.dart';
 import 'package:hungerz_store/OrderMapBloc/order_map_state.dart';
-import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/app/di.dart';
+import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/map_utils.dart';
 
 class LocationPage extends StatelessWidget {
-  const LocationPage({super.key});
+  const LocationPage({super.key, this.textEditingController});
 
+  final TextEditingController? textEditingController;
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OrderMapBloc>(
       create: (context) => OrderMapBloc()..loadMap(),
-      child: const SetLocation(),
+      child: SetLocation(
+        textEditingController: textEditingController,
+      ),
     );
   }
 }
 
 class SetLocation extends StatefulWidget {
-  const SetLocation({super.key});
+  const SetLocation({super.key, this.textEditingController});
 
+  final TextEditingController? textEditingController;
   @override
   SetLocationState createState() => SetLocationState();
 }
@@ -40,7 +45,7 @@ class SetLocationState extends State<SetLocation> {
   GoogleMapController? mapStyleController; //contrller for Google map
   CameraPosition? cameraPosition;
   LatLng startLocation = const LatLng(27.6602292, 85.308027);
-  String location = "Location Name:";
+  String location = "Set Address";
 
   void placeAutoComplete(String query) async {
     Uri uri = Uri.https(
@@ -64,6 +69,12 @@ class SetLocationState extends State<SetLocation> {
   }
 
   @override
+  void dispose() {
+    mapStyleController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -73,6 +84,7 @@ class SetLocationState extends State<SetLocation> {
             icon: const Icon(
               Icons.chevron_left,
               size: 30,
+              color: Colors.black,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -123,13 +135,13 @@ class SetLocationState extends State<SetLocation> {
                               cameraPosition!.target.longitude);
                       setState(() {
                         //get place name from lat and lang
-                        location = placemarks.first.street.toString() +
-                            ',' +
-                            placemarks.first.subLocality.toString() +
-                            ", " +
-                            placemarks.first.subAdministrativeArea.toString() +
-                            ", " +
-                            placemarks.first.administrativeArea.toString();
+                        location =
+                            "${placemarks.first.street.toString()},${placemarks.first.subLocality.toString()},${placemarks.first.subAdministrativeArea.toString()},${placemarks.first.administrativeArea.toString()}";
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          // Do something
+
+                          widget.textEditingController!.text = location;
+                        });
                       });
                     },
                   );
@@ -168,10 +180,14 @@ class SetLocationState extends State<SetLocation> {
             ),
           ),
           BottomBar(
-            text: AppLocalizations.of(context)!.continueText,
-            onTap: () =>
-                Navigator.popAndPushNamed(context, PageRoutes.storeProfile),
-          ),
+              text: AppLocalizations.of(context)!.continueText,
+              onTap: () async {
+                Map latLongMap = {
+                  "lat": cameraPosition!.target.latitude,
+                  "long": cameraPosition!.target.longitude
+                };
+                Navigator.pop(context, latLongMap);
+              }),
         ],
       ),
     );

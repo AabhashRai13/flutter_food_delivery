@@ -29,7 +29,8 @@ class AppPreferences {
   Future<String?> getUserID() async {
     return _sharedPreferences.getString(userId);
   }
-    Future<void> setshopName(String shopNamed) async {
+
+  Future<void> setshopName(String shopNamed) async {
     _sharedPreferences.setString(shopName, shopNamed);
   }
 
@@ -102,6 +103,9 @@ class AppPreferences {
 
   Future<void> clearPrefs() async {
     _sharedPreferences.remove(prefsAccessToken);
+    _sharedPreferences.remove(shopName);
+    _sharedPreferences.remove(userId);
+
     // _sharedPreferences.clear();
   }
 }

@@ -45,7 +45,7 @@ class LoginNavigator extends StatelessWidget {
           switch (settings.name) {
             case LoginRoutes.loginRoot:
               builder = (BuildContext _) => PhoneNumber(
-                    () {
+                    onVerificationDone: () {
                       Navigator.popAndPushNamed(
                           context, PageRoutes.orderTableItemAccountPage);
                     },
