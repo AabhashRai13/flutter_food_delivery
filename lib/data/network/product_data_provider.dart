@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hungerz_store/app/di.dart';
-import 'package:hungerz_store/data/local/prefs.dart';
 
 class ProductDataProvider {
   final productsCollection = FirebaseFirestore.instance.collection("products");
-  final AppPreferences _appPreferences = instance<AppPreferences>();
+  Future<dynamic> fetshopFromProducts(DocumentReference docReference) async {
+    final response = await docReference.get();
+
+    return response;
+  }
 
   Future<bool> addProducts({
     String? listingName,
@@ -18,6 +20,7 @@ class ProductDataProvider {
     String? rentalFor,
     String? rentalDuration,
     String? shopName,
+    DocumentReference? shop,
   }) async {
     try {
       productsCollection.add({
@@ -31,6 +34,7 @@ class ProductDataProvider {
         'rentalFor': rentalFor ?? '',
         'rentalDuration': rentalDuration ?? '',
         'shopName': shopName ?? '',
+        'shop': shop,
       });
       return true;
     } catch (error) {
@@ -50,6 +54,7 @@ class ProductDataProvider {
       String? rentalFor,
       String? rentalDuration,
       String? shopName,
+      DocumentReference? shop,
       required String productId}) async {
     try {
       final DocumentReference product = productsCollection.doc(productId);
@@ -65,6 +70,7 @@ class ProductDataProvider {
         'rentalFor': rentalFor,
         'rentalDuration': rentalDuration,
         'shopName': shopName,
+        'shop': shop,
       });
       return true;
     } catch (error) {

@@ -63,9 +63,9 @@ class AuthProvider {
     if (userCredentials.user == null) {
       throw '!USER';
     }
-
     final String userId = userCredentials.user!.uid;
-    print("userId: $userId");
+    log("user iddddd $userId");
+    //final String userId = FirebaseAuth.instance.currentUser!.uid;
     await _appPreferences.setUserId(userId);
 
     if (userCredentials.additionalUserInfo!.isNewUser) {
@@ -77,15 +77,11 @@ class AuthProvider {
       Navigator.pushNamed(context, LoginRoutes.registration);
     }
     if (!userCredentials.additionalUserInfo!.isNewUser) {
-      await _startUserProfile(
-        userId: userId,
-        phoneNumber: userCredentials.user!.phoneNumber!,
-      );
       if (!mounted) return;
       Navigator.pushReplacement<void, void>(
         context,
         MaterialPageRoute<void>(
-          builder: (BuildContext context) => OrderItemAccount(),
+          builder: (BuildContext context) => const OrderItemAccount(),
         ),
       );
     }

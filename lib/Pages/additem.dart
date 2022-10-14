@@ -6,13 +6,19 @@ import 'package:hungerz_store/Components/entry_field.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/extension.dart';
+import 'package:hungerz_store/bloc/products/products_cubit.dart';
 import 'package:hungerz_store/models/product_id.dart';
 import 'package:hungerz_store/repositories/product_repository.dart';
 
 class AddItem extends StatefulWidget {
-  const AddItem({super.key, required this.isEditing, this.productId});
+  const AddItem(
+      {super.key,
+      required this.isEditing,
+      this.productId,
+      required this.productCubit});
   final bool isEditing;
   final ProductId? productId;
+  final ProductCubit productCubit;
   @override
   AddItemState createState() => AddItemState();
 }
@@ -67,15 +73,24 @@ class AddItemState extends State<AddItem> {
           )
         ],
       ),
-      body: Add(isEditing: widget.isEditing, productId: widget.productId),
+      body: Add(
+          isEditing: widget.isEditing,
+          productId: widget.productId,
+          productCubit: widget.productCubit),
     );
   }
 }
 
 class Add extends StatefulWidget {
-  const Add({super.key, required this.isEditing, this.productId});
+  const Add(
+      {super.key,
+      required this.isEditing,
+      this.productId,
+      required this.productCubit});
   final bool isEditing;
   final ProductId? productId;
+  final ProductCubit productCubit;
+
   @override
   AddState createState() => AddState();
 }
@@ -642,6 +657,45 @@ class AddState extends State<Add> {
                     }
                   } else {}
                 }
+                if (widget.isEditing == false) {
+                  bool success = await ProductRepository().addProducts(
+                    userId: userId ?? '',
+                    description: _descriptionController.text.trim(),
+                    listingCategory: _categoryController.text.trim(),
+                    listingName: _nameController.text.trim(),
+                    rentalDuration: _rentalDurationController.text.trim(),
+                    rentalFor: _rentalForController.text.trim(),
+                    rentalPrice: double.parse(_priceController.text),
+                    pickup: pickup,
+                    typeOfRental: typeOfRental,
+                    rentingRules: _rulesController.text.trim(),
+                  );
+                  if (success == true) {
+                    await widget.productCubit.getAllProducts();
+
+                    if (!mounted) return;
+                    Navigator.of(context).pop();
+                  }
+                } else if (widget.isEditing == true) {
+                  bool success = await ProductRepository().editProducts(
+                    userId: userId ?? '',
+                    description: _descriptionController.text.trim(),
+                    listingCategory: _categoryController.text.trim(),
+                    listingName: _nameController.text.trim(),
+                    rentalDuration: _rentalDurationController.text.trim(),
+                    rentalFor: _rentalForController.text.trim(),
+                    rentalPrice: double.parse(_priceController.text),
+                    pickup: pickup,
+                    typeOfRental: typeOfRental,
+                    rentingRules: _rulesController.text.trim(),
+                    productId: widget.productId!.id,
+                  );
+                  if (success == true) {
+                    await widget.productCubit.getAllProducts();
+                    if (!mounted) return;
+                    Navigator.of(context).pop();
+                  }
+                } else {}
               }
             },
           ),
