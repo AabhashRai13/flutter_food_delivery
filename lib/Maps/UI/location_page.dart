@@ -11,37 +11,35 @@ import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Maps/UI/network_utils.dart';
 import 'package:hungerz_store/OrderMapBloc/order_map_bloc.dart';
 import 'package:hungerz_store/OrderMapBloc/order_map_state.dart';
-import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/map_utils.dart';
 
 class LocationPage extends StatelessWidget {
-  LocationPage({super.key, this.lat, this.lng, this.shopAddress});
-  double? lat;
-  double? lng;
-  String? shopAddress;
+  const LocationPage({super.key, this.textEditingController});
+
+  final TextEditingController? textEditingController;
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OrderMapBloc>(
       create: (context) => OrderMapBloc()..loadMap(),
-      child: SetLocation(lat: lat, lng: lng, shopAddress: shopAddress),
+      child: SetLocation(
+        textEditingController: textEditingController,
+      ),
     );
   }
 }
 
 class SetLocation extends StatefulWidget {
-  SetLocation({super.key, this.lat, this.lng, this.shopAddress});
-  double? lat;
-  double? lng;
-  String? shopAddress;
+  const SetLocation({super.key, this.textEditingController});
+
+  final TextEditingController? textEditingController;
   @override
   SetLocationState createState() => SetLocationState();
 }
 
 class SetLocationState extends State<SetLocation> {
-  final AppPreferences _appPreferences = instance<AppPreferences>();
   final TextEditingController _messageController = TextEditingController();
   String googleApikey = "GOOGLE_MAP_API_KEY";
   GoogleMapController? mapStyleController; //contrller for Google map
@@ -137,18 +135,12 @@ class SetLocationState extends State<SetLocation> {
                               cameraPosition!.target.longitude);
                       setState(() {
                         //get place name from lat and lang
-                        location = placemarks.first.street.toString() +
-                            ',' +
-                            placemarks.first.subLocality.toString() +
-                            ", " +
-                            placemarks.first.subAdministrativeArea.toString() +
-                            ", " +
-                            placemarks.first.administrativeArea.toString();
-                        Future.delayed(const Duration(milliseconds: 100), () {
+                        location =
+                            "${placemarks.first.street.toString()},${placemarks.first.subLocality.toString()},${placemarks.first.subAdministrativeArea.toString()},${placemarks.first.administrativeArea.toString()}";
+                        Future.delayed(const Duration(milliseconds: 500), () {
                           // Do something
-                          widget.shopAddress = location;
-                          widget.lat = cameraPosition!.target.latitude;
-                          widget.lng = cameraPosition!.target.longitude;
+
+                          widget.textEditingController!.text = location;
                         });
                       });
                     },
@@ -190,7 +182,11 @@ class SetLocationState extends State<SetLocation> {
           BottomBar(
               text: AppLocalizations.of(context)!.continueText,
               onTap: () async {
-                Navigator.pop(context);
+                Map latLongMap = {
+                  "lat": cameraPosition!.target.latitude,
+                  "long": cameraPosition!.target.longitude
+                };
+                Navigator.pop(context, latLongMap);
               }),
         ],
       ),
