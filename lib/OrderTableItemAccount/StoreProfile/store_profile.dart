@@ -8,7 +8,9 @@ import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
 import 'package:hungerz_store/extension.dart';
+import 'package:hungerz_store/models/category.dart';
 import 'package:hungerz_store/models/shop.dart';
+import 'package:hungerz_store/repositories/category_repository.dart';
 
 class ProfilePage extends StatelessWidget {
   static const String id = 'register_page';
@@ -68,6 +70,16 @@ class RegisterFormState extends State<RegisterForm> {
   GlobalKey<FormState> signupKey = GlobalKey();
   double lat = 0.0;
   double long = 0.0;
+  String? _choosenCategory;
+
+  List<CategoryId> categoryList = [];
+  String? userId;
+
+  getCategoryId() async {
+    categoryList = await CategoryRepository().getAllCategory();
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -81,6 +93,7 @@ class RegisterFormState extends State<RegisterForm> {
         TextEditingController(text: widget.shop!.description);
     lat = widget.shop!.latitude!;
     long = widget.shop!.longitude!;
+    getCategoryId();
   }
 
   @override
@@ -125,7 +138,10 @@ class RegisterFormState extends State<RegisterForm> {
                         SizedBox(
                           height: 99.0,
                           width: 99.0,
-                          child: Image.asset('images/Layer 1.png'),
+                          child: (widget.shop!.imageUrl == null ||
+                                  widget.shop!.imageUrl!.isEmpty)
+                              ? Image.asset('images/Layer 1.png')
+                              : Image.network(widget.shop!.imageUrl!),
                         ),
                         const SizedBox(width: 24.0),
                         Icon(
@@ -201,21 +217,71 @@ class RegisterFormState extends State<RegisterForm> {
                   ),
                   //phone textField
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: SmallTextFormField(
-                        // AppLocalizations.of(context)!.fullName!.toUpperCase(),
-                        label: "Category",
-                        title: "Enter Category",
-                        icon: null,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Category is required';
-                          } else {
-                            return null;
-                          }
-                        },
-                        textEditingController: _categoryEditingController),
+                    padding: const EdgeInsets.symmetric(horizontal: 22),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Category",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(fontSize: 11),
+                            ),
+                          ],
+                        ),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              isDense: true,
+                              prefixStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(color: Colors.black, fontSize: 12),
+                              border: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey[200]!),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey[200]!),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey[200]!),
+                              ),
+                            ),
+                            hint: const Text("Select Category"),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(color: Colors.black, fontSize: 14),
+                            value: _choosenCategory,
+                            validator: ((value) {
+                              if (_choosenCategory == null) {
+                                return 'Please select category';
+                              } else {
+                                return null;
+                              }
+                            }),
+                            items: categoryList.map((CategoryId) {
+                              return DropdownMenuItem<String>(
+                                child: Text(CategoryId.name.name),
+                                value: CategoryId.categoryId,
+                              );
+                            }).toList(),
+                            onChanged: (String? value) {
+                              setState(() {
+                                _choosenCategory = value;
+                              });
+                            }),
+                        const SizedBox(
+                          height: 15,
+                        )
+                      ],
+                    ),
                   ),
+
                   //email textField
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -388,7 +454,7 @@ class RegisterFormState extends State<RegisterForm> {
                 if (signupKey.currentState!.validate()) {
                   signupKey.currentState!.save();
                   final success = await _userCubit.updateShop(
-                      categoryId: "nQEiE237G5zj24rUkbrG",
+                      categoryId: _choosenCategory!,
                       address: _addressController.text.trim(),
                       name: _nameEditingController.text.trim(),
                       description: _descriptionEditingController.text.trim(),

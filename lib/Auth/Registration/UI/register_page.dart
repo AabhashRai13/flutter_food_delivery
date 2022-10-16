@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Auth/Registration/UI/register_text_field.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
@@ -7,6 +9,9 @@ import 'package:hungerz_store/Maps/UI/location_page.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
 import 'package:hungerz_store/extension.dart';
+import 'package:hungerz_store/models/category.dart';
+import 'package:hungerz_store/Themes/colors.dart';
+import 'package:hungerz_store/repositories/category_repository.dart';
 
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
@@ -59,14 +64,20 @@ class RegisterFormState extends State<RegisterForm> {
   double long = 0.0;
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-
+  String? _choosenCategory;
   GlobalKey<FormState> signupKey = GlobalKey();
   final UserCubit _userCubit = instance<UserCubit>();
   // RegisterBloc _registerBloc;
+  List<CategoryId> categoryList = [];
   String? userId;
   @override
   void initState() {
     super.initState();
+    getCategoryId();
+  }
+
+  getCategoryId() async {
+    categoryList = await CategoryRepository().getAllCategory();
   }
 
   @override
@@ -108,6 +119,96 @@ class RegisterFormState extends State<RegisterForm> {
                 },
               ),
               //name textField
+
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        height: 22,
+                        child: Image(
+                          image: AssetImage(
+                            'images/icons/ic_phone.png',
+                          ),
+                          color: kMainColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 13,
+                      ),
+                      Text("Category",
+                          style:
+                              TextStyle(color: Colors.grey[600], fontSize: 12))
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 25),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              const SizedBox.shrink(),
+                              DropdownButtonFormField(
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    prefixStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(
+                                            color: Colors.black, fontSize: 12),
+                                    border: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.grey[200]!),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.grey[200]!),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.grey[200]!),
+                                    ),
+                                  ),
+                                  hint: const Text("Select Category"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                          color: Colors.black, fontSize: 14),
+                                  value: _choosenCategory,
+                                  validator: ((value) {
+                                    if (_choosenCategory == null) {
+                                      return 'Please select category';
+                                    } else {
+                                      return null;
+                                    }
+                                  }),
+                                  items: categoryList.map((CategoryId) {
+                                    return DropdownMenuItem<String>(
+                                      child: Text(CategoryId.name.name),
+                                      value: CategoryId.categoryId,
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? value) {
+                                    _choosenCategory = value;
+                                  }),
+                              const SizedBox(
+                                height: 15,
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
               //email textField
               RegisterTextField(
                 onlyRead: false,
@@ -203,7 +304,7 @@ class RegisterFormState extends State<RegisterForm> {
 
                     bool success = await _userCubit.updateShop(
                         email: _emailController.text.trim(),
-                        categoryId: "nQEiE237G5zj24rUkbrG",
+                        categoryId: _choosenCategory!,
                         address: _addressController.text.trim(),
                         name: _nameController.text.trim(),
                         description: _descriptionController.text.trim(),
