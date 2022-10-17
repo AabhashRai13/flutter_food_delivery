@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Chat/UI/animated_bottom_bar.dart';
-import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/account_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Order/UI/order_page.dart';
-import 'package:hungerz_store/OrderTableItemAccount/Bookings/UI/bookings_page.dart';
 
 import 'package:hungerz_store/Pages/items.dart';
 
@@ -25,7 +23,6 @@ class _OrderItemAccountState extends State<OrderItemAccount> {
 
   final List<Widget> _children = [
     OrderPage(),
-    BookingsPage(),
     ItemsPage(),
     AccountPage(),
   ];
@@ -36,31 +33,29 @@ class _OrderItemAccountState extends State<OrderItemAccount> {
   //   });
   // }
 
-  static String bottomIconItem = 'images/footermenu/ic_item.png';
+  static String bottomIconItem = 'images/footermenu/plus.png';
 
-  static String bottomIconTable = 'images/footermenu/ic_table.png';
+  // static String bottomIconTable = 'images/footermenu/ic_table.png';
 
-  static String bottomIconOrder = 'images/footermenu/ic_orders.png';
+  static String bottomIconOrder = 'images/footermenu/renterii.png';
 
-  static String bottomIconAccount = 'images/footermenu/ic_profile.png';
+  static String bottomIconAccount = 'images/footermenu/profile.png';
 
   @override
   Widget build(BuildContext context) {
     final List<BarItem> barItems = [
       BarItem(
-        text: AppLocalizations.of(context)!.orders,
+        text: "Rentals",
+        // AppLocalizations.of(context)!.orders,
         image: bottomIconOrder,
       ),
       BarItem(
-        text: "Table",
-        image: bottomIconTable,
-      ),
-      BarItem(
-        text: AppLocalizations.of(context)!.product,
+        text: "Listings",
+        // AppLocalizations.of(context)!.product,
         image: bottomIconItem,
       ),
       BarItem(
-        text: "Account",
+        text: "Profile",
         image: bottomIconAccount,
       ),
     ];

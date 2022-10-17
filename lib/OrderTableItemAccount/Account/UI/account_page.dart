@@ -24,7 +24,8 @@ class AccountPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(AppLocalizations.of(context)!.account!,
+        title: Text("My Profile",
+            // AppLocalizations.of(context)!.account!,
             style: Theme.of(context).textTheme.bodyText1),
         centerTitle: true,
       ),
@@ -64,7 +65,8 @@ class AccountState extends State<Account> {
             onTap: () => Navigator.pushNamed(context, PageRoutes.insightPage)),
         BuildListTile(
           image: 'images/account/ic_menu_wallet.png',
-          text: AppLocalizations.of(context)!.wallet,
+          text: "Earnings",
+          // AppLocalizations.of(context)!.wallet,
           onTap: () => Navigator.pushNamed(context, PageRoutes.walletPage),
         ),
         BuildListTile(
@@ -73,7 +75,7 @@ class AccountState extends State<Account> {
             onTap: () => Navigator.pushNamed(context, PageRoutes.review)),
         BuildListTile(
             image: 'images/account/ic_auth.png',
-            text: "Authentication",
+            text: "Add Insurance",
             onTap: () =>
                 Navigator.pushNamed(context, PageRoutes.authentication)),
         BuildListTile(

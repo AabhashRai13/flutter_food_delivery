@@ -18,14 +18,14 @@ class AnimatedBottomBar extends StatefulWidget {
 class AnimatedBottomBarState extends State<AnimatedBottomBar>
     with TickerProviderStateMixin {
   int selectedBarIndex = 0;
-  Duration duration = Duration(milliseconds: 250);
+  Duration duration = const Duration(milliseconds: 250);
 
   @override
   Widget build(BuildContext context) {
     return Material(
       elevation: 10.0,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -50,13 +50,13 @@ class AnimatedBottomBarState extends State<AnimatedBottomBar>
           });
         },
         child: AnimatedContainer(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
           duration: duration,
           decoration: BoxDecoration(
               color: isSelected
                   ? kMainColor.withOpacity(0.075)
                   : Colors.transparent,
-              borderRadius: BorderRadius.all(Radius.circular(30))),
+              borderRadius: const BorderRadius.all(Radius.circular(30))),
           child: Row(
             children: <Widget>[
               ImageIcon(
@@ -65,7 +65,7 @@ class AnimatedBottomBarState extends State<AnimatedBottomBar>
                     ? kMainColor
                     : Theme.of(context).secondaryHeaderColor,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10.0,
               ),
               AnimatedSize(
