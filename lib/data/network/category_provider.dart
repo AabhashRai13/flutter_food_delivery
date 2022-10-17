@@ -8,4 +8,10 @@ class CategoriesProvider {
 
     return response;
   }
+
+  Future<dynamic> fetCategory(DocumentReference docReference) async {
+    final response = await docReference.get();
+
+    return response;
+  }
 }

@@ -1,5 +1,6 @@
-import 'dart:developer';
+import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Auth/Registration/UI/register_text_field.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
@@ -12,6 +13,7 @@ import 'package:hungerz_store/extension.dart';
 import 'package:hungerz_store/models/category.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/repositories/category_repository.dart';
+import 'package:image_picker/image_picker.dart';
 
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
@@ -67,6 +69,8 @@ class RegisterFormState extends State<RegisterForm> {
   String? _choosenCategory;
   GlobalKey<FormState> signupKey = GlobalKey();
   final UserCubit _userCubit = instance<UserCubit>();
+  var imageUrl;
+  File? image;
   // RegisterBloc _registerBloc;
   List<CategoryId> categoryList = [];
   String? userId;
@@ -78,6 +82,51 @@ class RegisterFormState extends State<RegisterForm> {
 
   getCategoryId() async {
     categoryList = await CategoryRepository().getAllCategory();
+    setState(() {});
+  }
+
+  Future<String> pickFromCamera() async {
+    var downloadUrl = '';
+    final picker = ImagePicker();
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    var file = File(pickedFile!.path);
+    image = file;
+    setState(() {});
+    if (pickedFile != null) {
+      final snapshot = await FirebaseStorage.instance
+          .ref()
+          .child(pickedFile.name)
+          .putFile(file)
+          .whenComplete(() {});
+      downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } else {
+      debugPrint('No image selected.');
+    }
+    return downloadUrl;
+  }
+
+  Future<String> pickFromGallery() async {
+    var downloadUrl = '';
+    final picker = ImagePicker();
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    var file = File(pickedFile!.path);
+    image = file;
+    setState(() {});
+    if (pickedFile != null) {
+      final snapshot = await FirebaseStorage.instance
+          .ref()
+          .child(pickedFile.name)
+          .putFile(file)
+          .whenComplete(() {});
+      downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } else {
+      debugPrint('No image selected.');
+    }
+    return downloadUrl;
   }
 
   @override
@@ -102,6 +151,62 @@ class RegisterFormState extends State<RegisterForm> {
               ),
               const SizedBox(
                 height: 25,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                      height: 99.0,
+                      width: 99.0,
+                      child: image != null
+                          ? Image.file(image!)
+                          : Image.asset('images/Layer 1.png')),
+                  const SizedBox(width: 24.0),
+                  Icon(
+                    Icons.camera_alt,
+                    color: kMainColor,
+                    size: 25.0,
+                  ),
+                  const SizedBox(width: 14.3),
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              title: const Text("Make a Choice"),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    title: const Text('Pick From Gallery'),
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      imageUrl = await pickFromGallery();
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: const Text('Take a Picture'),
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      imageUrl = await pickFromCamera();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    child: Text(AppLocalizations.of(context)!.uploadPhoto!,
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(color: kMainColor)),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
               ),
               // inputField(AppLocalizations.of(context)!.fullNamee!.toUpperCase(),
               //     'Samantha Smith', 'images/icons/ic_name.png'),
@@ -312,8 +417,7 @@ class RegisterFormState extends State<RegisterForm> {
                         longitude: long,
                         isPopular: true,
                         phoneNumber: _phoneNumberController.text.trim(),
-                        imageUrl:
-                            "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
+                        imageUrl: imageUrl);
                     if (success) {
                       widget.onVerificationDone();
                     }

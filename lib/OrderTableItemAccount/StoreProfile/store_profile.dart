@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
@@ -11,6 +14,7 @@ import 'package:hungerz_store/extension.dart';
 import 'package:hungerz_store/models/category.dart';
 import 'package:hungerz_store/models/shop.dart';
 import 'package:hungerz_store/repositories/category_repository.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatelessWidget {
   static const String id = 'register_page';
@@ -71,13 +75,58 @@ class RegisterFormState extends State<RegisterForm> {
   double lat = 0.0;
   double long = 0.0;
   String? _choosenCategory;
+  String imageUrl = '';
 
   List<CategoryId> categoryList = [];
   String? userId;
 
   getCategoryId() async {
     categoryList = await CategoryRepository().getAllCategory();
+    var catId = await CategoryRepository().getCategory(widget.shop!);
+    _choosenCategory = catId.categoryId;
     setState(() {});
+  }
+
+  Future<String> pickFromCamera() async {
+    var downloadUrl = '';
+    final picker = ImagePicker();
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    var file = File(pickedFile!.path);
+
+    if (pickedFile != null) {
+      final snapshot = await FirebaseStorage.instance
+          .ref()
+          .child(pickedFile.name)
+          .putFile(file)
+          .whenComplete(() {});
+      downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } else {
+      debugPrint('No image selected.');
+    }
+    return downloadUrl;
+  }
+
+  Future<String> pickFromGallery() async {
+    var downloadUrl = '';
+    final picker = ImagePicker();
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    var file = File(pickedFile!.path);
+
+    if (pickedFile != null) {
+      final snapshot = await FirebaseStorage.instance
+          .ref()
+          .child(pickedFile.name)
+          .putFile(file)
+          .whenComplete(() {});
+      downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } else {
+      debugPrint('No image selected.');
+    }
+    return downloadUrl;
   }
 
   @override
@@ -93,6 +142,7 @@ class RegisterFormState extends State<RegisterForm> {
         TextEditingController(text: widget.shop!.description);
     lat = widget.shop!.latitude!;
     long = widget.shop!.longitude!;
+    imageUrl = widget.shop!.imageUrl!;
     getCategoryId();
   }
 
@@ -138,10 +188,9 @@ class RegisterFormState extends State<RegisterForm> {
                         SizedBox(
                           height: 99.0,
                           width: 99.0,
-                          child: (widget.shop!.imageUrl == null ||
-                                  widget.shop!.imageUrl!.isEmpty)
+                          child: (imageUrl == null || imageUrl.trim().isEmpty)
                               ? Image.asset('images/Layer 1.png')
-                              : Image.network(widget.shop!.imageUrl!),
+                              : Image.network(imageUrl),
                         ),
                         const SizedBox(width: 24.0),
                         Icon(
@@ -150,11 +199,43 @@ class RegisterFormState extends State<RegisterForm> {
                           size: 25.0,
                         ),
                         const SizedBox(width: 14.3),
-                        Text(AppLocalizations.of(context)!.uploadPhoto!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(color: kMainColor)),
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    title: const Text("Make a Choice"),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListTile(
+                                          title:
+                                              const Text('Pick From Gallery'),
+                                          onTap: () async {
+                                            Navigator.pop(context);
+                                            imageUrl = await pickFromGallery();
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('Take a Picture'),
+                                          onTap: () async {
+                                            Navigator.pop(context);
+                                            imageUrl = await pickFromCamera();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Text(
+                              AppLocalizations.of(context)!.uploadPhoto!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption!
+                                  .copyWith(color: kMainColor)),
+                        ),
                       ],
                     ),
                   ],
@@ -463,8 +544,7 @@ class RegisterFormState extends State<RegisterForm> {
                       longitude: long,
                       email: _emailAddressEditingController.text.trim(),
                       phoneNumber: _phoneNumberEditingController.text.trim(),
-                      imageUrl:
-                          "https://staticg.sportskeeda.com/editor/2022/06/1acf7-16544386413156-1920.jpg");
+                      imageUrl: imageUrl);
                   if (success) {
                     if (!mounted) return;
                     context
