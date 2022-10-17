@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/entry_field.dart';
@@ -5,11 +9,13 @@ import 'package:hungerz_store/Components/entry_field.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
+import 'package:hungerz_store/constants_utils.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/extension.dart';
 import 'package:hungerz_store/bloc/products/products_cubit.dart';
 import 'package:hungerz_store/models/product_id.dart';
 import 'package:hungerz_store/repositories/product_repository.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddItem extends StatefulWidget {
   const AddItem(
@@ -104,6 +110,8 @@ class AddState extends State<Add> {
   TextEditingController _rulesController = TextEditingController();
   TextEditingController _rentalForController = TextEditingController();
   TextEditingController _rentalDurationController = TextEditingController();
+  var imageUrl = '';
+  File? image;
 
   int? pickup = -1;
   int? typeOfRental = -1;
@@ -122,6 +130,54 @@ class AddState extends State<Add> {
     userId = await _appPreferences.getUserID();
   }
 
+  Future<String> pickFromCamera() async {
+    var downloadUrl = '';
+    final picker = ImagePicker();
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    var file = File(pickedFile!.path);
+    image = file;
+    setState(() {});
+    if (pickedFile != null) {
+      final snapshot = await FirebaseStorage.instance
+          .ref()
+          .child(pickedFile.name)
+          .putFile(file)
+          .whenComplete(() {});
+      downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } else {
+      debugPrint('No image selected.');
+    }
+    return downloadUrl;
+  }
+
+  Future<String> pickFromGallery() async {
+    var downloadUrl = '';
+    final picker = ImagePicker();
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    var file = File(pickedFile!.path);
+    image = file;
+    setState(() {});
+    if (pickedFile != null) {
+      final snapshot = await FirebaseStorage.instance
+          .ref()
+          .child(pickedFile.name)
+          .putFile(file)
+          .whenComplete(() {});
+      downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } else {
+      debugPrint('No image selected.');
+    }
+    return downloadUrl;
+  }
+
+  var _choosenCategory = '';
+  var rentalFor = '';
+  var rentalDuration = '';
+
   bool loading = false;
   initializeController() {
     if (widget.isEditing == true) {
@@ -129,6 +185,10 @@ class AddState extends State<Add> {
           TextEditingController(text: widget.productId!.product.listingName);
       _categoryController = TextEditingController(
           text: widget.productId!.product.listingCategory);
+      _choosenCategory = widget.productId!.product.listingCategory ?? '';
+      imageUrl = widget.productId!.product.imageUrl ?? '';
+      rentalFor = widget.productId!.product.rentalFor ?? '';
+      rentalDuration = widget.productId!.product.rentalDuration ?? '';
       _descriptionController =
           TextEditingController(text: widget.productId!.product.description);
       _priceController = TextEditingController(
@@ -180,7 +240,11 @@ class AddState extends State<Add> {
                         SizedBox(
                           height: 99.0,
                           width: 99.0,
-                          child: Image.asset('images/placeholder_dish.png'),
+                          child: image != null
+                              ? Image.file(image!)
+                              : (widget.isEditing && imageUrl.trim().isNotEmpty
+                                  ? Image.network(imageUrl)
+                                  : Image.asset('images/placeholder_dish.png')),
                         ),
                         const SizedBox(width: 24.0),
                         Icon(
@@ -189,11 +253,43 @@ class AddState extends State<Add> {
                           size: 25.0,
                         ),
                         const SizedBox(width: 14.3),
-                        Text(AppLocalizations.of(context)!.uploadPhoto!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(color: kMainColor)),
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    title: const Text("Make a Choice"),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListTile(
+                                          title:
+                                              const Text('Pick From Gallery'),
+                                          onTap: () async {
+                                            Navigator.pop(context);
+                                            imageUrl = await pickFromGallery();
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('Take a Picture'),
+                                          onTap: () async {
+                                            Navigator.pop(context);
+                                            imageUrl = await pickFromCamera();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Text(
+                              AppLocalizations.of(context)!.uploadPhoto!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption!
+                                  .copyWith(color: kMainColor)),
+                        ),
                       ],
                     ),
                   ],
@@ -236,25 +332,51 @@ class AddState extends State<Add> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: EntryField(
-                      suffixIcon: const Icon(
-                        Icons.keyboard_arrow_down,
-                        color: Colors.black,
-                      ),
-                      textCapitalization: TextCapitalization.words,
-                      // label: AppLocalizations.of(context).itemCategory,
-                      hint: 'Listing Category',
-                      controller: _categoryController,
-                      // AppLocalizations.of(context)!.selectCategory,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Listing Category is required';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 22),
+                    child: DropdownButtonFormField(
+                        decoration: InputDecoration(
+                          isDense: true,
+                          prefixStyle: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: Colors.black, fontSize: 12),
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey[200]!),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey[200]!),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey[200]!),
+                          ),
+                        ),
+                        hint: const Text("Listing Category"),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(color: Colors.black, fontSize: 15),
+                        value: _choosenCategory.isNotEmpty
+                            ? _choosenCategory
+                            : null,
+                        validator: ((value) {
+                          if (_choosenCategory.trim() == null ||
+                              _choosenCategory.trim().isEmpty) {
+                            return 'Please select category';
+                          } else {
+                            return null;
+                          }
+                        }),
+                        items: listingCategory.map((category) {
+                          return DropdownMenuItem<String>(
+                            child: Text(category),
+                            value: category,
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          _choosenCategory = value!;
+                          _categoryController.text = _choosenCategory;
+                          log(_choosenCategory);
+                        }),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -568,35 +690,111 @@ class AddState extends State<Add> {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
                       children: [
-                        EntryField(
-                          suffixIcon: const Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Colors.black,
-                          ),
-                          hint: "Rental For",
-                          controller: _rentalForController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Rental purpose required';
-                            } else {
-                              return null;
-                            }
-                          },
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                isDense: true,
+                                prefixStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
+                                        color: Colors.black, fontSize: 12),
+                                border: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[200]!),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[200]!),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[200]!),
+                                ),
+                              ),
+                              hint: const Text(
+                                "Rental For",
+                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(color: Colors.black, fontSize: 15),
+                              value: rentalFor.isNotEmpty ? rentalFor : null,
+                              validator: ((value) {
+                                if (rentalFor.trim() == null ||
+                                    rentalFor.trim().isEmpty) {
+                                  return 'Please select Rental For';
+                                } else {
+                                  return null;
+                                }
+                              }),
+                              items: rentalForCategoryList.map((rentFor) {
+                                return DropdownMenuItem<String>(
+                                  child: Text(rentFor),
+                                  value: rentFor,
+                                );
+                              }).toList(),
+                              onChanged: (String? value) {
+                                rentalFor = value!;
+                                _rentalForController.text = rentalFor;
+                                log(rentalFor);
+                              }),
                         ),
-                        EntryField(
-                          suffixIcon: const Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Colors.black,
-                          ),
-                          hint: "Rental Duration",
-                          controller: _rentalDurationController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Rental purpose required';
-                            } else {
-                              return null;
-                            }
-                          },
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                isDense: true,
+                                prefixStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
+                                        color: Colors.black, fontSize: 12),
+                                border: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[200]!),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[200]!),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[200]!),
+                                ),
+                              ),
+                              hint: const Text(
+                                "Rental Duration",
+                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(color: Colors.black, fontSize: 15),
+                              value: rentalDuration.isNotEmpty
+                                  ? rentalDuration
+                                  : null,
+                              validator: ((value) {
+                                if (rentalDuration.trim() == null ||
+                                    rentalDuration.trim().isEmpty) {
+                                  return 'Please select Rental Duration';
+                                } else {
+                                  return null;
+                                }
+                              }),
+                              items: rentalDurationsList.map((rentDur) {
+                                return DropdownMenuItem<String>(
+                                  child: Text(rentDur),
+                                  value: rentDur,
+                                );
+                              }).toList(),
+                              onChanged: (String? value) {
+                                rentalDuration = value!;
+                                _rentalDurationController.text = rentalDuration;
+                                log(rentalDuration);
+                              }),
                         ),
                       ],
                     ),
@@ -635,6 +833,7 @@ class AddState extends State<Add> {
                             pickup: pickup,
                             typeOfRental: typeOfRental,
                             rentingRules: _rulesController.text.trim(),
+                            imageUrl: imageUrl,
                           );
                           if (success == true) {
                             await widget.productCubit.getAllProducts();
@@ -658,6 +857,7 @@ class AddState extends State<Add> {
                             typeOfRental: typeOfRental,
                             rentingRules: _rulesController.text.trim(),
                             productId: widget.productId!.id,
+                            imageUrl: imageUrl,
                           );
                           if (success == true) {
                             await widget.productCubit.getAllProducts();

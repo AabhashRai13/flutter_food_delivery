@@ -20,6 +20,7 @@ class ProductDataProvider {
     String? rentalFor,
     String? rentalDuration,
     String? shopName,
+    String? imageUrl,
     DocumentReference? shop,
   }) async {
     try {
@@ -35,6 +36,7 @@ class ProductDataProvider {
         'rentalDuration': rentalDuration ?? '',
         'shopName': shopName ?? '',
         'shop': shop,
+        'imageUrl': imageUrl ?? '',
       });
       return true;
     } catch (error) {
@@ -54,6 +56,7 @@ class ProductDataProvider {
       String? rentalFor,
       String? rentalDuration,
       String? shopName,
+      String? imageUrl,
       DocumentReference? shop,
       required String productId}) async {
     try {
@@ -71,6 +74,7 @@ class ProductDataProvider {
         'rentalDuration': rentalDuration,
         'shopName': shopName,
         'shop': shop,
+        'imageUrl': imageUrl ?? '',
       });
       return true;
     } catch (error) {

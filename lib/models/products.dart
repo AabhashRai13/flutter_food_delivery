@@ -29,6 +29,7 @@ class Products {
   String? rentalFor;
   String? rentalDuration;
   bool? instock;
+  String? imageUrl;
   @JsonKey(
     toJson: firestoreDocRefToJson,
     fromJson: firestoreDocRefFromJson,
@@ -53,7 +54,8 @@ class Products {
       this.rentalDuration,
       this.instock,
       this.shop,
-      this.category});
+      this.category,
+      this.imageUrl});
 
   /// Create a Product from JSON format
   factory Products.fromJson(Map<String, dynamic> json) =>

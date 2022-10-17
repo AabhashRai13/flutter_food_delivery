@@ -74,9 +74,21 @@ class ItemsPageState extends State<ItemsPage> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Image.asset(
-                                'images/2.png',
-                                scale: 1.6,
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.width * 0.22,
+                                width: MediaQuery.of(context).size.width * 0.22,
+                                child: (productId.product.imageUrl == null ||
+                                        productId.product.imageUrl!
+                                            .trim()
+                                            .isEmpty)
+                                    ? Image.asset(
+                                        'images/2.png',
+                                        scale: 1.6,
+                                      )
+                                    : Image.network(
+                                        productId.product.imageUrl!,
+                                      ),
                               ),
                               const SizedBox(
                                 width: 16.0,

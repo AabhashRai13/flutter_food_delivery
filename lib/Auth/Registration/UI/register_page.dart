@@ -205,7 +205,7 @@ class RegisterFormState extends State<RegisterForm> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               // inputField(AppLocalizations.of(context)!.fullNamee!.toUpperCase(),

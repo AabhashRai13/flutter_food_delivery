@@ -70,6 +70,7 @@ class ProductRepository {
     String? rentalFor,
     String? rentalDuration,
     String? shopId,
+    String? imageUrl,
   }) async {
     try {
       var shopName = await _appPreferences.getshopName();
@@ -87,6 +88,7 @@ class ProductRepository {
         pickup: pickup,
         shopName: shopName,
         shop: firestoreDocRefFromJson("/shops/$shopId"),
+        imageUrl: imageUrl,
       );
       return success;
     } catch (error) {
@@ -106,6 +108,7 @@ class ProductRepository {
     String? rentalFor,
     String? rentalDuration,
     required String productId,
+    String? imageUrl,
   }) async {
     try {
       var shopName = await _appPreferences.getshopName();
@@ -125,6 +128,7 @@ class ProductRepository {
         shopName: shopName,
         productId: productId,
         shop: firestoreDocRefFromJson("/shops/$shopId"),
+        imageUrl: imageUrl,
       );
       return success;
     } catch (error) {

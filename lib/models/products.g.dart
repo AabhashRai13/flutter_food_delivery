@@ -19,6 +19,7 @@ Products _$ProductsFromJson(Map<String, dynamic> json) => Products(
       rentalFor: json['rentalFor'] as String?,
       rentalDuration: json['rentalDuration'] as String?,
       instock: json['instock'] as bool?,
+      imageUrl: json['imageUrl'] as String?,
       shop: firestoreDocRefFromJson(json['shop']),
       category: firestoreDocRefFromJson(json['category']),
     );
@@ -36,6 +37,7 @@ Map<String, dynamic> _$ProductsToJson(Products instance) => <String, dynamic>{
       'rentalFor': instance.rentalFor,
       'rentalDuration': instance.rentalDuration,
       'instock': instance.instock,
+      'imageUrl': instance.imageUrl,
       'shop': firestoreDocRefToJson(instance.shop),
       'category': firestoreDocRefToJson(instance.category),
     };
