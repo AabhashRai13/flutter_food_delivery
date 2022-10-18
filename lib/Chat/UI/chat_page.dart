@@ -1,26 +1,30 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:hungerz_store/Components/custom_appbar.dart';
 import 'package:hungerz_store/Components/entry_field.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/Themes/style.dart';
 
+// ignore: use_key_in_widget_constructors
 class ChatPage extends StatelessWidget {
+  final String clientName;
+  const ChatPage({super.key, required this.clientName});
   @override
   Widget build(BuildContext context) {
-    return ChatWidget();
+    return const ChatWidget();
   }
 }
 
 class ChatWidget extends StatefulWidget {
+  const ChatWidget({super.key});
+
   @override
-  _ChatWidgetState createState() => _ChatWidgetState();
+  ChatWidgetState createState() => ChatWidgetState();
 }
 
-class _ChatWidgetState extends State<ChatWidget> {
-  TextEditingController _messageController = TextEditingController();
+class ChatWidgetState extends State<ChatWidget> {
+  final TextEditingController _messageController = TextEditingController();
 
   @override
   void initState() {
@@ -37,7 +41,7 @@ class _ChatWidgetState extends State<ChatWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(110.0),
+          preferredSize: const Size.fromHeight(110.0),
           child: CustomAppBar(
             leading: IconButton(
               icon: Icon(
@@ -50,7 +54,7 @@ class _ChatWidgetState extends State<ChatWidget> {
               },
             ),
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(0.0),
+              preferredSize: const Size.fromHeight(0.0),
               child: Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 // padding: EdgeInsets.only(top: 12.0),

@@ -5,6 +5,8 @@ import 'package:hungerz_store/Components/entry_field.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 
 class SocialLogIn extends StatefulWidget {
+  const SocialLogIn({super.key});
+
   @override
   _SocialLogInState createState() => _SocialLogInState();
 }
@@ -22,7 +24,7 @@ class _SocialLogInState extends State<SocialLogIn> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(100),
+          preferredSize:const Size.fromHeight(100),
           child: AppBar(
             automaticallyImplyLeading: true,
           ),

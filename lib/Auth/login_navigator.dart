@@ -52,7 +52,7 @@ class LoginNavigator extends StatelessWidget {
                   );
               break;
             case LoginRoutes.social:
-              builder = (BuildContext _) => SocialLogIn();
+              builder = (BuildContext _) => const SocialLogIn();
               break;
             case LoginRoutes.registration:
               builder = (BuildContext _) => RegisterPage(

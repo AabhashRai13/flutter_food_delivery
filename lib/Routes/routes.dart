@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hungerz_store/Auth/login_navigator.dart';
 import 'package:hungerz_store/Chat/UI/chat_page.dart';
-import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/addtobank_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/insight_page.dart';
-import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/reviews.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/settings_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/support_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/tnc_page.dart';
@@ -13,7 +10,6 @@ import 'package:hungerz_store/OrderTableItemAccount/Account/UI/account_page.dart
 import 'package:hungerz_store/OrderTableItemAccount/Order/UI/order_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Order/UI/track_order.dart';
 import 'package:hungerz_store/OrderTableItemAccount/StoreProfile/store_profile.dart';
-import 'package:hungerz_store/OrderTableItemAccount/order_table_item_account.dart';
 
 import 'package:hungerz_store/Pages/items.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/authentication.dart';
@@ -37,26 +33,55 @@ class PageRoutes {
   static const String setting = 'settings_page';
   static const String track = 'track_order';
   static const String authentication = 'authentication_list';
+}
 
-  Map<String, WidgetBuilder> routes() {
-    return {
-      track: (context) => const TrackOrderPage(),
-      orderPage: (context) => const OrderPage(),
-      // orderInfoPage: (context) => OrderInfo(),
-      accountPage: (context) => const AccountPage(),
-      tncPage: (context) => TncPage(),
-      supportPage: (context) => SupportPage(),
-      loginNavigator: (context) => const LoginNavigator(),
-      walletPage: (context) => const WalletPage(),
-      chatPage: (context) => ChatPage(),
-      insightPage: (context) => InsightPage(),
-      storeProfile: (context) => const ProfilePage(),
-      addToBank: (context) => const AddToBank(),
-      items: (context) => const ItemsPage(),
-      orderTableItemAccountPage: (context) => const OrderItemAccount(),
-      review: (context) => ReviewPage(),
-      setting: (context) => const Settings(),
-      authentication: (context) => const AuthenticationList(),
-    };
+class RouteGenerator {
+  static Route<dynamic> getRoute(
+    RouteSettings routeSettings,
+  ) {
+    switch (routeSettings.name) {
+      case PageRoutes.track:
+        return MaterialPageRoute(builder: (_) => const TrackOrderPage());
+      case PageRoutes.orderPage:
+        return MaterialPageRoute(builder: (_) => const OrderPage());
+      case PageRoutes.accountPage:
+        return MaterialPageRoute(builder: (_) => const AccountPage());
+      case PageRoutes.tncPage:
+        return MaterialPageRoute(builder: (_) => TncPage());
+      case PageRoutes.supportPage:
+        return MaterialPageRoute(builder: (_) => SupportPage());
+      case PageRoutes.loginNavigator:
+        return MaterialPageRoute(builder: (_) => const LoginNavigator());
+      case PageRoutes.walletPage:
+        return MaterialPageRoute(builder: (_) => const WalletPage());
+      case PageRoutes.chatPage:
+        final args = routeSettings.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => ChatPage(
+                  clientName: args,
+                ));
+      case PageRoutes.insightPage:
+        return MaterialPageRoute(builder: (_) => InsightPage());
+      case PageRoutes.storeProfile:
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
+      case PageRoutes.items:
+        return MaterialPageRoute(builder: (_) => const ItemsPage());
+      case PageRoutes.setting:
+        return MaterialPageRoute(builder: (_) => const Settings());
+      case PageRoutes.authentication:
+        return MaterialPageRoute(builder: (_) => const AuthenticationList());
+      default:
+        return unDefinedRoute();
+    }
+  }
+
+  static Route<dynamic> unDefinedRoute() {
+    return MaterialPageRoute(
+        builder: (_) => Scaffold(
+              appBar: AppBar(
+                title: const Text("no Route found"),
+              ),
+              body: const Center(child: Text("no route found")),
+            ));
   }
 }
