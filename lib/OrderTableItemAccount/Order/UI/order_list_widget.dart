@@ -94,61 +94,35 @@ class OrderListWidget extends StatelessWidget {
                   color: Theme.of(context).cardColor,
                   thickness: 1.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: [
-                      Text('Veg Sandwich x1',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              fontSize: 11.7,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.06,
-                              color: Colors.black)),
-                      Text(
-                        '(Extra Cheese)',
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                            fontSize: 11.7,
-                            letterSpacing: 0.06,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 6.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: [
-                      Text('Fried Chicken x1',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              fontSize: 11.7,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.06,
-                              color: Colors.black)),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 6.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: [
-                      Text('WaterMelon Juice x1',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              fontSize: 11.7,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.06,
-                              color: Colors.black)),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: data.orders!.products!.length,
+                    itemBuilder: ((context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
+                            children: [
+                              Text(data.products![index].listingName!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .copyWith(
+                                          fontSize: 11.7,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 0.06,
+                                          color: Colors.black)),
+                              Text(
+                                " * ${data.orders!.products![index].quantity!.toString()}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6!
+                                    .copyWith(
+                                        fontSize: 11.7,
+                                        letterSpacing: 0.06,
+                                        fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ))),
                 Divider(
                   color: Theme.of(context).cardColor,
                   thickness: 8.0,

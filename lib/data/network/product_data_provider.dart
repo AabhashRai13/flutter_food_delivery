@@ -1,10 +1,17 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductDataProvider {
   final productsCollection = FirebaseFirestore.instance.collection("products");
   Future<dynamic> fetshopFromProducts(DocumentReference docReference) async {
     final response = await docReference.get();
+    return response;
+  }
 
+  Future<dynamic> fetproductFromOrder(DocumentReference docReference) async {
+    log("docReference $docReference");
+    final response = await docReference.get();
     return response;
   }
 
