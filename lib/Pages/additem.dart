@@ -7,10 +7,12 @@ import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/entry_field.dart';
 
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/Pages/video_page.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/constants_utils.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
+import 'package:hungerz_store/data/network/upload_files.dart';
 import 'package:hungerz_store/extension.dart';
 import 'package:hungerz_store/bloc/products/products_cubit.dart';
 import 'package:hungerz_store/models/product_id.dart';
@@ -112,7 +114,7 @@ class AddState extends State<Add> {
   TextEditingController _rentalDurationController = TextEditingController();
   var imageUrl = '';
   File? image;
-
+  var videoUrl = '';
   int? pickup = -1;
   int? typeOfRental = -1;
   GlobalKey<FormState> signupKey = GlobalKey();
@@ -656,12 +658,22 @@ class AddState extends State<Add> {
                           Icons.upload_sharp,
                           color: kMainColor,
                         ),
-                        Text(
-                          "Upload Video",
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .copyWith(color: kMainColor),
+                        GestureDetector(
+                          onTap: () async {
+                            videoUrl = await Navigator.push(
+                              context,
+                              // Create the SelectionScreen in the next step.
+                              MaterialPageRoute(
+                                  builder: (context) => const VideoUpload()),
+                            );
+                          },
+                          child: Text(
+                            "Upload Video",
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption!
+                                .copyWith(color: kMainColor),
+                          ),
                         )
                       ],
                     ),
@@ -827,19 +839,19 @@ class AddState extends State<Add> {
                       } else {
                         if (widget.isEditing == false) {
                           bool success = await ProductRepository().addProducts(
-                            userId: userId ?? '',
-                            description: _descriptionController.text.trim(),
-                            listingCategory: _categoryController.text.trim(),
-                            listingName: _nameController.text.trim(),
-                            rentalDuration:
-                                _rentalDurationController.text.trim(),
-                            rentalFor: _rentalForController.text.trim(),
-                            rentalPrice: double.parse(_priceController.text),
-                            pickup: pickup,
-                            typeOfRental: typeOfRental,
-                            rentingRules: _rulesController.text.trim(),
-                            imageUrl: imageUrl,
-                          );
+                              userId: userId ?? '',
+                              description: _descriptionController.text.trim(),
+                              listingCategory: _categoryController.text.trim(),
+                              listingName: _nameController.text.trim(),
+                              rentalDuration:
+                                  _rentalDurationController.text.trim(),
+                              rentalFor: _rentalForController.text.trim(),
+                              rentalPrice: double.parse(_priceController.text),
+                              pickup: pickup,
+                              typeOfRental: typeOfRental,
+                              rentingRules: _rulesController.text.trim(),
+                              imageUrl: imageUrl,
+                              videoUrl: videoUrl);
                           if (success == true) {
                             await widget.productCubit.getAllProducts();
 
@@ -850,20 +862,20 @@ class AddState extends State<Add> {
                           }
                         } else if (widget.isEditing == true) {
                           bool success = await ProductRepository().editProducts(
-                            userId: userId ?? '',
-                            description: _descriptionController.text.trim(),
-                            listingCategory: _categoryController.text.trim(),
-                            listingName: _nameController.text.trim(),
-                            rentalDuration:
-                                _rentalDurationController.text.trim(),
-                            rentalFor: _rentalForController.text.trim(),
-                            rentalPrice: double.parse(_priceController.text),
-                            pickup: pickup,
-                            typeOfRental: typeOfRental,
-                            rentingRules: _rulesController.text.trim(),
-                            productId: widget.productId!.id,
-                            imageUrl: imageUrl,
-                          );
+                              userId: userId ?? '',
+                              description: _descriptionController.text.trim(),
+                              listingCategory: _categoryController.text.trim(),
+                              listingName: _nameController.text.trim(),
+                              rentalDuration:
+                                  _rentalDurationController.text.trim(),
+                              rentalFor: _rentalForController.text.trim(),
+                              rentalPrice: double.parse(_priceController.text),
+                              pickup: pickup,
+                              typeOfRental: typeOfRental,
+                              rentingRules: _rulesController.text.trim(),
+                              productId: widget.productId!.id,
+                              imageUrl: imageUrl,
+                              videoUrl: videoUrl);
                           if (success == true) {
                             await widget.productCubit.getAllProducts();
 

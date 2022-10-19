@@ -58,78 +58,78 @@ class ProductRepository {
     }
   }
 
-  Future<bool> addProducts({
-    String? listingName,
-    String? listingCategory,
-    double? rentalPrice,
-    required String userId,
-    int? pickup,
-    int? typeOfRental,
-    String? description,
-    String? rentingRules,
-    String? rentalFor,
-    String? rentalDuration,
-    String? shopId,
-    String? imageUrl,
-  }) async {
+  Future<bool> addProducts(
+      {String? listingName,
+      String? listingCategory,
+      double? rentalPrice,
+      required String userId,
+      int? pickup,
+      int? typeOfRental,
+      String? description,
+      String? rentingRules,
+      String? rentalFor,
+      String? rentalDuration,
+      String? shopId,
+      String? imageUrl,
+      String? videoUrl}) async {
     try {
       var shopName = await _appPreferences.getshopName();
       var shopId = await _appPreferences.getUserID();
       bool success = await productDataProvider.addProducts(
-        userId: userId,
-        description: description,
-        listingCategory: listingCategory,
-        listingName: listingName,
-        rentalDuration: rentalDuration,
-        rentalPrice: rentalPrice,
-        typeOfRental: typeOfRental,
-        rentingRules: rentingRules,
-        rentalFor: rentalFor,
-        pickup: pickup,
-        shopName: shopName,
-        shop: firestoreDocRefFromJson("/shops/$shopId"),
-        imageUrl: imageUrl,
-      );
+          userId: userId,
+          description: description,
+          listingCategory: listingCategory,
+          listingName: listingName,
+          rentalDuration: rentalDuration,
+          rentalPrice: rentalPrice,
+          typeOfRental: typeOfRental,
+          rentingRules: rentingRules,
+          rentalFor: rentalFor,
+          pickup: pickup,
+          shopName: shopName,
+          shop: firestoreDocRefFromJson("/shops/$shopId"),
+          imageUrl: imageUrl,
+          videoUrl: videoUrl);
       return success;
     } catch (error) {
       rethrow;
     }
   }
 
-  Future<bool> editProducts({
-    String? listingName,
-    String? listingCategory,
-    double? rentalPrice,
-    required String userId,
-    int? pickup,
-    int? typeOfRental,
-    String? description,
-    String? rentingRules,
-    String? rentalFor,
-    String? rentalDuration,
-    required String productId,
-    String? imageUrl,
-  }) async {
+  Future<bool> editProducts(
+      {String? listingName,
+      String? listingCategory,
+      double? rentalPrice,
+      required String userId,
+      int? pickup,
+      int? typeOfRental,
+      String? description,
+      String? rentingRules,
+      String? rentalFor,
+      String? rentalDuration,
+      required String productId,
+      String? imageUrl,
+      String? videoUrl}) async {
     try {
       var shopName = await _appPreferences.getshopName();
       var shopId = await _appPreferences.getUserID();
       log("shop id $shopId");
       bool success = await productDataProvider.editProducts(
-        userId: userId,
-        description: description,
-        listingCategory: listingCategory,
-        listingName: listingName,
-        rentalDuration: rentalDuration,
-        rentalPrice: rentalPrice,
-        typeOfRental: typeOfRental,
-        rentingRules: rentingRules,
-        rentalFor: rentalFor,
-        pickup: pickup,
-        shopName: shopName,
-        productId: productId,
-        shop: firestoreDocRefFromJson("/shops/$shopId"),
-        imageUrl: imageUrl,
-      );
+          userId: userId,
+          description: description,
+          listingCategory: listingCategory,
+          listingName: listingName,
+          rentalDuration: rentalDuration,
+          rentalPrice: rentalPrice,
+          typeOfRental: typeOfRental,
+          rentingRules: rentingRules,
+          rentalFor: rentalFor,
+          pickup: pickup,
+          shopName: shopName,
+          productId: productId,
+          shop: firestoreDocRefFromJson("/shops/$shopId"),
+          imageUrl: imageUrl,
+          videoUrl: videoUrl);
       return success;
     } catch (error) {
       rethrow;
