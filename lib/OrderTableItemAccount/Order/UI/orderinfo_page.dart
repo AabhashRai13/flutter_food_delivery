@@ -98,7 +98,7 @@ class OrderInfoState extends State<OrderInfo> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(AppLocalizations.of(context)!.item!,
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                           color: Color(0xffadadad),
@@ -109,15 +109,15 @@ class OrderInfoState extends State<OrderInfo> {
               Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Row(
                     children: [
                       Image.asset(
                         'images/ic_veg.png',
                         scale: 2.5,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20.0,
                       ),
                       Text(
@@ -125,13 +125,13 @@ class OrderInfoState extends State<OrderInfo> {
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 15.0),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         '1',
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                             fontWeight: FontWeight.w500, fontSize: 15.0),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 50.0,
                       ),
                       Text(
@@ -148,11 +148,11 @@ class OrderInfoState extends State<OrderInfo> {
               Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 35.0,
                       ),
                       Text(
@@ -162,7 +162,7 @@ class OrderInfoState extends State<OrderInfo> {
                             .caption!
                             .copyWith(fontSize: 13.3),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         '\$ 3.00',
                         style: Theme.of(context)
@@ -181,15 +181,15 @@ class OrderInfoState extends State<OrderInfo> {
               Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Row(
                     children: [
                       Image.asset(
                         'images/ic_nonveg.png',
                         scale: 2.5,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20.0,
                       ),
                       Text(
@@ -197,13 +197,13 @@ class OrderInfoState extends State<OrderInfo> {
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 15.0),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         '1',
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                             fontWeight: FontWeight.w500, fontSize: 15.0),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 50.0,
                       ),
                       Text(
@@ -224,15 +224,15 @@ class OrderInfoState extends State<OrderInfo> {
               Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Row(
                     children: [
                       Image.asset(
                         'images/ic_veg.png',
                         scale: 2.5,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20.0,
                       ),
                       Text(
@@ -240,13 +240,13 @@ class OrderInfoState extends State<OrderInfo> {
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 15.0),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         '1',
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                             fontWeight: FontWeight.w500, fontSize: 15.0),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 50.0,
                       ),
                       Text(
@@ -260,7 +260,7 @@ class OrderInfoState extends State<OrderInfo> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Divider(
@@ -278,7 +278,8 @@ class OrderInfoState extends State<OrderInfo> {
               ),
               Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 20.0),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -298,7 +299,8 @@ class OrderInfoState extends State<OrderInfo> {
               ),
               Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 20.0),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -318,7 +320,8 @@ class OrderInfoState extends State<OrderInfo> {
               ),
               Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 20.0),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -354,7 +357,7 @@ class OrderInfoState extends State<OrderInfo> {
                   child: Container(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: ListTile(
-                      leading: CircleAvatar(
+                      leading: const CircleAvatar(
                         radius: 22.0,
                         backgroundImage: AssetImage('images/profile.jpg'),
                       ),
