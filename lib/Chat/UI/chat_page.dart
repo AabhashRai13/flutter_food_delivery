@@ -8,13 +8,17 @@ import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/Themes/style.dart';
 
 class ChatPage extends StatelessWidget {
+  const ChatPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ChatWidget();
+    return const ChatWidget();
   }
 }
 
 class ChatWidget extends StatefulWidget {
+  const ChatWidget({super.key});
+
   @override
   _ChatWidgetState createState() => _ChatWidgetState();
 }

@@ -36,10 +36,9 @@ class OrderInfoState extends State<OrderInfo> {
             },
           ),
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(0.0),
+            preferredSize: const Size.fromHeight(0.0),
             child: Container(
               color: Theme.of(context).scaffoldBackgroundColor,
-              // padding: EdgeInsets.only(top: 12.0),
               child: ListTile(
                 title: Text(
                   widget.data.user!.name ?? '',
@@ -49,7 +48,7 @@ class OrderInfoState extends State<OrderInfo> {
                       .copyWith(fontSize: 14, letterSpacing: 0.07),
                 ),
                 subtitle: Text(
-                  'AE5587 |  ${formattedDate}',
+                  'AE5587 |  $formattedDate',
                   style: Theme.of(context)
                       .textTheme
                       .headline6!
@@ -99,169 +98,68 @@ class OrderInfoState extends State<OrderInfo> {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   child: Text(AppLocalizations.of(context)!.item!,
                       style: Theme.of(context).textTheme.headline6!.copyWith(
-                          color: Color(0xffadadad),
+                          color: const Color(0xffadadad),
                           fontWeight: FontWeight.bold)),
-                  color: Theme.of(context).scaffoldBackgroundColor,
                 ),
               ),
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        'images/ic_veg.png',
-                        scale: 2.5,
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: widget.data.orders!.products!.length,
+                itemBuilder: ((context, index) => Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10.0),
+                        child: Row(
+                          children: [
+                            const SizedBox(
+                              width: 20.0,
+                            ),
+                            Text(
+                              widget.data.products![index].listingName ?? '',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0),
+                            ),
+                            const Spacer(),
+                            Text(
+                              widget.data.orders!.products![index].quantity !=
+                                      null
+                                  ? widget
+                                      .data.orders!.products![index].quantity
+                                      .toString()
+                                  : '0',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15.0),
+                            ),
+                            const SizedBox(
+                              width: 50.0,
+                            ),
+                            Text(
+                              '\$ ${widget.data.products![index].rentalPrice ?? '0'}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption!
+                                  .copyWith(fontSize: 13.3),
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(
-                        width: 20.0,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.sandwich!,
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                            fontWeight: FontWeight.bold, fontSize: 15.0),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '1',
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                            fontWeight: FontWeight.w500, fontSize: 15.0),
-                      ),
-                      const SizedBox(
-                        width: 50.0,
-                      ),
-                      Text(
-                        '\$ 5.00',
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 13.3),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 35.0,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.cheese!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 13.3),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '\$ 3.00',
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 13.3),
-                      ),
-                    ],
-                  ),
-                ),
+                    )),
               ),
               Divider(
                 color: Theme.of(context).cardColor,
                 thickness: 1.0,
-              ),
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        'images/ic_nonveg.png',
-                        scale: 2.5,
-                      ),
-                      const SizedBox(
-                        width: 20.0,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.chicken!,
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                            fontWeight: FontWeight.bold, fontSize: 15.0),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '1',
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                            fontWeight: FontWeight.w500, fontSize: 15.0),
-                      ),
-                      const SizedBox(
-                        width: 50.0,
-                      ),
-                      Text(
-                        '\$ 7.00',
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 13.3),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Divider(
-                color: Theme.of(context).cardColor,
-                thickness: 1.0,
-              ),
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        'images/ic_veg.png',
-                        scale: 2.5,
-                      ),
-                      const SizedBox(
-                        width: 20.0,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.juice!,
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                            fontWeight: FontWeight.bold, fontSize: 15.0),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '1',
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                            fontWeight: FontWeight.w500, fontSize: 15.0),
-                      ),
-                      const SizedBox(
-                        width: 50.0,
-                      ),
-                      Text(
-                        '\$ 4.50',
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 13.3),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 5,
               ),
               Divider(
                 color: Theme.of(context).cardColor,
@@ -269,12 +167,13 @@ class OrderInfoState extends State<OrderInfo> {
               ),
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                color: Theme.of(context).scaffoldBackgroundColor,
                 child: Text(
                     AppLocalizations.of(context)!.payment!.toUpperCase(),
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                         color: kDisabledColor, fontWeight: FontWeight.bold)),
-                color: Theme.of(context).scaffoldBackgroundColor,
               ),
               Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
@@ -333,7 +232,7 @@ class OrderInfoState extends State<OrderInfo> {
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '\$ ${widget.data.orders!.total!.toString()}',
+                        '\$ ${widget.data.orders!.total != null ? widget.data.orders!.total.toString() : '0'}',
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ]),

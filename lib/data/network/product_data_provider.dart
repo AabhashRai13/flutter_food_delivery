@@ -1,28 +1,35 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductDataProvider {
   final productsCollection = FirebaseFirestore.instance.collection("products");
   Future<dynamic> fetshopFromProducts(DocumentReference docReference) async {
     final response = await docReference.get();
-
     return response;
   }
 
-  Future<bool> addProducts({
-    String? listingName,
-    String? listingCategory,
-    double? rentalPrice,
-    required String userId,
-    int? pickup,
-    int? typeOfRental,
-    String? description,
-    String? rentingRules,
-    String? rentalFor,
-    String? rentalDuration,
-    String? shopName,
-    String? imageUrl,
-    DocumentReference? shop,
-  }) async {
+  Future<dynamic> fetproductFromOrder(DocumentReference docReference) async {
+    log("docReference $docReference");
+    final response = await docReference.get();
+    return response;
+  }
+
+  Future<bool> addProducts(
+      {String? listingName,
+      String? listingCategory,
+      double? rentalPrice,
+      required String userId,
+      int? pickup,
+      int? typeOfRental,
+      String? description,
+      String? rentingRules,
+      String? rentalFor,
+      String? rentalDuration,
+      String? shopName,
+      String? imageUrl,
+      DocumentReference? shop,
+      String? videoUrl}) async {
     try {
       productsCollection.add({
         'listingName': listingName ?? '',
@@ -37,6 +44,7 @@ class ProductDataProvider {
         'shopName': shopName ?? '',
         'shop': shop,
         'imageUrl': imageUrl ?? '',
+        'videoUrl': videoUrl ?? ''
       });
       return true;
     } catch (error) {
@@ -58,6 +66,7 @@ class ProductDataProvider {
       String? shopName,
       String? imageUrl,
       DocumentReference? shop,
+      String? videoUrl,
       required String productId}) async {
     try {
       final DocumentReference product = productsCollection.doc(productId);
@@ -75,6 +84,7 @@ class ProductDataProvider {
         'shopName': shopName,
         'shop': shop,
         'imageUrl': imageUrl ?? '',
+        'videoUrl': videoUrl ?? ''
       });
       return true;
     } catch (error) {

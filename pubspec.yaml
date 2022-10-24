@@ -59,6 +59,7 @@ dependencies:
   permission_handler: ^10.1.0
   flutter_google_places: ^0.3.0
   image_picker: ^0.8.6
+  file_picker: ^5.2.1
 
 dev_dependencies:
   flutter_test:
