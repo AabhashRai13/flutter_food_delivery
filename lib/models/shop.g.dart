@@ -13,9 +13,9 @@ Shop _$ShopFromJson(Map<String, dynamic> json) => Shop(
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
       name: json['name'] as String?,
-      ratings: json['ratings'] == null
-          ? null
-          : Ratings.fromJson(json['ratings'] as Map<String, dynamic>),
+      ratings: (json['ratings'] as List<dynamic>?)
+          ?.map((e) => Ratings.fromJson(e as Map<String, dynamic>))
+          .toList(),
       description: json['description'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       category: firestoreDocRefFromJson(json['category']),

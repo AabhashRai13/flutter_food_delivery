@@ -11,7 +11,6 @@ import 'package:hungerz_store/language_cubit.dart';
 import 'package:hungerz_store/map_utils.dart';
 import 'package:hungerz_store/theme_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'app/di.dart';
 
 Future<void> main() async {

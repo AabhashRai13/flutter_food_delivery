@@ -174,4 +174,10 @@ class AuthProvider {
       rethrow;
     }
   }
+
+  Future<dynamic> fetchUserFromReview(DocumentReference docReference) async {
+    final response = await docReference.get();
+
+    return response;
+  }
 }
