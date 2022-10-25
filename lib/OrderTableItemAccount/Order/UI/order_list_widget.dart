@@ -34,60 +34,70 @@ class OrderListWidget extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 10.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                data.user!.name ?? "",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                        fontSize: 13.3, letterSpacing: 0.07),
-                              ),
-                              const Spacer(),
-                              Text(data.orders!.status ?? 'unknown',
-                                  // AppLocalizations.of(context)!.pending!,
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  data.user!.name ?? "",
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline4!
                                       .copyWith(
-                                          color: const Color(0xffffa025),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 11.7,
-                                          letterSpacing: 0.06)),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 8.0,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Order ${data.orders!.orderNum} | $formattedDate',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                        fontSize: 11.7,
-                                        letterSpacing: 0.06,
-                                        fontWeight: FontWeight.w500),
-                              ),
-                              const Spacer(),
-                              Text(
-                                '\$ ${data.orders!.total != null ? data.orders!.total.toString() : '0'} | ${data.orders!.paymentMethod}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                        fontSize: 11.7,
-                                        letterSpacing: 0.06,
-                                        fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ],
+                                          fontSize: 13.3, letterSpacing: 0.07),
+                                ),
+                                const Spacer(),
+                                Text(data.orders!.status ?? 'unknown',
+                                    // AppLocalizations.of(context)!.pending!,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4!
+                                        .copyWith(
+                                            color: const Color(0xffffa025),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11.7,
+                                            letterSpacing: 0.06)),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 8.0,
+                            ),
+                            Text(
+                              'Order ${data.orders!.orderNum}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(
+                                      fontSize: 11.7,
+                                      letterSpacing: 0.06,
+                                      fontWeight: FontWeight.w500),
+                            ),
+                            const Spacer(),
+                            Text(
+                              'order created at $formattedDate',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(
+                                      fontSize: 11.7,
+                                      letterSpacing: 0.06,
+                                      fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              '\$ ${data.orders!.total != null ? data.orders!.total.toString() : '0'} | ${data.orders!.paymentMethod}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(
+                                      fontSize: 11.7,
+                                      letterSpacing: 0.06,
+                                      fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
                       ),
                     )),
                 Divider(

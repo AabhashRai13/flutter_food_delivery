@@ -43,6 +43,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   fetchShopProfile() async {
+    ratings.clear();
     final data = await _shopRepository.fetchShopProfile();
     final shopProfileData = data['docData'];
     shopName = Shop.fromJson(shopProfileData).name;
