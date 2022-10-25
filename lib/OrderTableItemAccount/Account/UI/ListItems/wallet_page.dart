@@ -19,7 +19,7 @@ class WalletPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.wallet!,
+        title: Text('Earnings',
             style: Theme.of(context)
                 .textTheme
                 .headline4!
@@ -49,6 +49,8 @@ class Wallet extends StatefulWidget {
 class _WalletState extends State<Wallet> {
   final OrderCubit _orderCubit = instance<OrderCubit>();
   double _totalAvailableBalance = 0.0;
+  List<AllData> pastRentalList = [];
+
   @override
   void initState() {
     _orderCubit.getAllOrders();
@@ -63,7 +65,13 @@ class _WalletState extends State<Wallet> {
           bloc: _orderCubit,
           builder: (context, state) {
             if (state is OrdersLoaded) {
-              for (var item in state.allDatas) {
+              for (var items in state.allDatas) {
+                if (items.orders!.status == 'sold') {
+                  pastRentalList.add(items);
+                }
+              }
+
+              for (var item in pastRentalList) {
                 _totalAvailableBalance =
                     _totalAvailableBalance + item.orders!.total!;
               }
@@ -150,7 +158,7 @@ class _WalletState extends State<Wallet> {
                       ),
                     ],
                   ),
-                  ...state.allDatas.map((orderItem) =>
+                  ...pastRentalList.map((orderItem) =>
                       WalletOrderWidget(order: orderItem.orders!))
                 ],
               );

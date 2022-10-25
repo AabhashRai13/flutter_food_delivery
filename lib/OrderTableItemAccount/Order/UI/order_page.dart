@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Order/UI/order_list_widget.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/order/order_cubit.dart';
+import 'package:hungerz_store/models/all_data.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({super.key});
@@ -20,6 +20,9 @@ class OrderPageState extends State<OrderPage> {
     _orderCubit.getAllOrders();
     super.initState();
   }
+
+  List<AllData> newRentalList = [];
+  List<AllData> pastRentalList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -53,41 +56,84 @@ class OrderPageState extends State<OrderPage> {
             ),
           ),
         ),
-        body: TabBarView(children: [
-          BlocBuilder<OrderCubit, OrderState>(
-            bloc: _orderCubit,
-            builder: (context, state) {
-              if (state is OrdersLoaded) {
-                return ListView(
-                  children: <Widget>[
-                    Divider(
-                      color: Theme.of(context).cardColor,
-                      thickness: 8.0,
-                    ),
-                    Column(
-                      children: [
-                        ...state.allDatas.map(
-                            (orderItem) => OrderListWidget(data: orderItem))
-                      ],
-                    )
-                  ],
-                );
-              } else {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text("Please wait orders are loading..."),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CircularProgressIndicator()
-                  ],
-                );
-              }
-            },
-          ),
-          const SizedBox()
-        ]),
+        body: TabBarView(
+          children: [
+            BlocBuilder<OrderCubit, OrderState>(
+              bloc: _orderCubit,
+              builder: (context, state) {
+                if (state is OrdersLoaded) {
+                  for (var items in state.allDatas) {
+                    if (items.orders!.status == 'pending') {
+                      newRentalList.add(items);
+                    }
+                  }
+                  return ListView(
+                    children: <Widget>[
+                      Divider(
+                        color: Theme.of(context).cardColor,
+                        thickness: 8.0,
+                      ),
+                      Column(
+                        children: [
+                          ...newRentalList.map(
+                              (orderItem) => OrderListWidget(data: orderItem))
+                        ],
+                      )
+                    ],
+                  );
+                } else {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text("Please wait orders are loading..."),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CircularProgressIndicator()
+                    ],
+                  );
+                }
+              },
+            ),
+            BlocBuilder<OrderCubit, OrderState>(
+              bloc: _orderCubit,
+              builder: (context, state) {
+                if (state is OrdersLoaded) {
+                  for (var items in state.allDatas) {
+                    if (items.orders!.status == 'sold') {
+                      pastRentalList.add(items);
+                    }
+                  }
+                  return ListView(
+                    children: <Widget>[
+                      Divider(
+                        color: Theme.of(context).cardColor,
+                        thickness: 8.0,
+                      ),
+                      Column(
+                        children: [
+                          ...pastRentalList.map(
+                              (orderItem) => OrderListWidget(data: orderItem))
+                        ],
+                      )
+                    ],
+                  );
+                } else {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text("Please wait orders are loading..."),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CircularProgressIndicator()
+                    ],
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
