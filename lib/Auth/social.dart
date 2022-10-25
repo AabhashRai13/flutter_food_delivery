@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:hungerz_store/Auth/login_navigator.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/entry_field.dart';
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/Routes/routes.dart';
 
 class SocialLogIn extends StatefulWidget {
+  const SocialLogIn({super.key});
+
   @override
-  _SocialLogInState createState() => _SocialLogInState();
+  SocialLogInState createState() => SocialLogInState();
 }
 
-class _SocialLogInState extends State<SocialLogIn> {
+class SocialLogInState extends State<SocialLogIn> {
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -22,7 +24,7 @@ class _SocialLogInState extends State<SocialLogIn> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(100),
+          preferredSize: const Size.fromHeight(100),
           child: AppBar(
             automaticallyImplyLeading: true,
           ),
@@ -30,7 +32,7 @@ class _SocialLogInState extends State<SocialLogIn> {
         body: Stack(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -51,7 +53,7 @@ class _SocialLogInState extends State<SocialLogIn> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 44.0),
+                    padding: const EdgeInsets.only(left: 44.0),
                     child: Text(
                       AppLocalizations.of(context)!.verificationText!,
                       style: Theme.of(context)
@@ -68,7 +70,7 @@ class _SocialLogInState extends State<SocialLogIn> {
               child: BottomBar(
                   text: AppLocalizations.of(context)!.continueText,
                   onTap: () {
-                    Navigator.pushNamed(context, LoginRoutes.verification);
+                    Navigator.pushNamed(context, PageRoutes.verification);
                   }),
             )
           ],

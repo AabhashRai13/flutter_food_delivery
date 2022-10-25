@@ -1,7 +1,6 @@
 // import 'package:buy_this_app/buy_this_app.dart';
 import 'package:flutter/material.dart';
-import 'package:hungerz_store/Locale/locales.dart';
-
+import 'package:flutter_svg/svg.dart';
 import 'mobile_input.dart';
 
 //first page that takes phone number as input for verification
@@ -31,45 +30,42 @@ class PhoneNumberState extends State<PhoneNumber> {
           color: Theme.of(context).cardColor,
           height: MediaQuery.of(context).size.height,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
             mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Spacer(),
-              Expanded(
-                flex: 3,
-                child: Image.asset(
-                  "images/logo_restro.png",
-                  // scale: 3,
-                ),
+              const SizedBox(
+                height: 100,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.09,
+                width: MediaQuery.of(context).size.width,
+                child: SvgPicture.asset("images/renterii_text.svg",
+                    semanticsLabel: 'Acme Logo'),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.012,
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: SvgPicture.asset("images/for_lenders_text.svg",
+                    semanticsLabel: 'Acme Logo'),
+              ),
+              const SizedBox(
+                height: 100,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.25,
+                width: MediaQuery.of(context).size.width,
+                child: SvgPicture.asset("images/cycle.svg",
+                    semanticsLabel: 'Acme Logo'),
               ),
               const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.bodyText1!,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.bodyText2!,
-                    style: TextStyle(color: Colors.grey[900]),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              Expanded(
-                flex: 5,
-                child: Image.asset(
-                  "images/signin hero restro.png", //footer image
-                ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.19,
+                width: MediaQuery.of(context).size.width,
+                child: SvgPicture.asset("images/renterii_banner.svg",
+                    semanticsLabel: 'Acme Logo'),
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
                 child: MobileInput(),
               ),
             ],

@@ -563,11 +563,11 @@ class AppLocalizations {
   }
 
   String? get newOrder {
-    return _localizedValues[locale.languageCode]!['newOrder'];
+    return _localizedValues[locale.languageCode]!['newRentals'];
   }
 
   String? get pastOrder {
-    return _localizedValues[locale.languageCode]!['pastOrder'];
+    return _localizedValues[locale.languageCode]!['pastRentals'];
   }
 
   String? get vegetables {
