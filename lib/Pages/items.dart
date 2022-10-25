@@ -23,7 +23,7 @@ class ItemsPageState extends State<ItemsPage> {
   int? selected;
   List<ProductId> productsList = [];
   final ProductCubit _productCubit = instance<ProductCubit>();
-
+  List<int> availability = [];
   @override
   void initState() {
     super.initState();
