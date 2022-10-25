@@ -16,6 +16,8 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       status: json['status'] as String?,
       total: (json['total'] as num?)?.toDouble(),
       createdAt: firestoreTimestampFromJson(json['createdAt']),
+      orderNum: json['orderNum'] as String?,
+      paymentMethod: json['paymentMethod'] as String?,
     );
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
@@ -26,6 +28,8 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'createdAt': firestoreTimestampToJson(instance.createdAt),
       'user': firestoreDocRefToJson(instance.user),
       'shop': firestoreDocRefToJson(instance.shop),
+      'orderNum': instance.orderNum,
+      'paymentMethod': instance.paymentMethod,
     };
 
 Product _$ProductFromJson(Map<String, dynamic> json) => Product(

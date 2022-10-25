@@ -65,6 +65,8 @@ class Order {
   double? total;
   String? status;
   List<Product>? products;
+  String? orderNum;
+  String? paymentMethod;
   @JsonKey(
     fromJson: firestoreTimestampFromJson,
     toJson: firestoreTimestampToJson,
@@ -89,7 +91,9 @@ class Order {
       this.products,
       this.status,
       this.total,
-      this.createdAt});
+      this.createdAt,
+      this.orderNum,
+      this.paymentMethod});
 
   /// Create a Order from JSON format
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);

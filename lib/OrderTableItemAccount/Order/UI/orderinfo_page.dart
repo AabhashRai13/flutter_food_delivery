@@ -42,13 +42,11 @@ class OrderInfoState extends State<OrderInfo> {
               child: ListTile(
                 title: Text(
                   widget.data.user!.name ?? '',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4!
-                      .copyWith(fontSize: 14, letterSpacing: 0.07),
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                      fontSize: 14, letterSpacing: 0.07, color: Colors.black),
                 ),
                 subtitle: Text(
-                  'AE5587 |  $formattedDate',
+                  '${widget.data.orders!.orderNum} |  $formattedDate',
                   style: Theme.of(context)
                       .textTheme
                       .headline6!

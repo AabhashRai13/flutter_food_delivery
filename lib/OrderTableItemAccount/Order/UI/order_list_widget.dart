@@ -65,7 +65,7 @@ class OrderListWidget extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                'Order AE5587 | $formattedDate',
+                                'Order ${data.orders!.orderNum} | $formattedDate',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6!
@@ -76,7 +76,7 @@ class OrderListWidget extends StatelessWidget {
                               ),
                               const Spacer(),
                               Text(
-                                '\$ ${data.orders!.total != null ? data.orders!.total.toString() : '0'} | COD',
+                                '\$ ${data.orders!.total != null ? data.orders!.total.toString() : '0'} | ${data.orders!.paymentMethod}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6!

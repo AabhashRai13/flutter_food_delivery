@@ -76,8 +76,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => InsightPage());
       case PageRoutes.storeProfile:
         return MaterialPageRoute(builder: (_) => const ProfilePage());
-      case PageRoutes.addToBank:
-        return MaterialPageRoute(builder: (_) => const AddToBank());
+      // case PageRoutes.addToBank:
+      // return MaterialPageRoute(builder: (_) => AddToBank(totalAmount: 0.0,));
       case PageRoutes.items:
         return MaterialPageRoute(builder: (_) => const ItemsPage());
       case PageRoutes.orderTableItemAccountPage:

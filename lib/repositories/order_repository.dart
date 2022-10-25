@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
@@ -30,6 +28,10 @@ class OrderRepository {
       for (QueryDocumentSnapshot docSnapshot in documentsSnapshot.docs) {
         Map<String, dynamic> docData =
             docSnapshot.data() as Map<String, dynamic>;
+        final now = DateTime.now();
+        final orderNum = now.microsecondsSinceEpoch.toString();
+        docData.putIfAbsent('orderNum', () => orderNum);
+        docData.putIfAbsent('paymentMethod', () => 'COD');
         order = Order.fromJson(docData);
         user = await getUserFromOrder(order);
         shopWithId = await getShopFromOrders(order);
