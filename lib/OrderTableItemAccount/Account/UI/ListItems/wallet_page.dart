@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/addtobank_page.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/Themes/style.dart';
+import 'package:hungerz_store/app/di.dart';
+import 'package:hungerz_store/bloc/order/order_cubit.dart';
+import 'package:hungerz_store/models/all_data.dart';
+import 'package:hungerz_store/models/orders.dart';
+import 'package:hungerz_store/repositories/order_repository.dart';
+import 'package:intl/intl.dart';
 
 class WalletPage extends StatelessWidget {
   const WalletPage({super.key});
@@ -33,81 +41,152 @@ class WalletPage extends StatelessWidget {
   }
 }
 
-class Wallet extends StatelessWidget {
+class Wallet extends StatefulWidget {
+  @override
+  State<Wallet> createState() => _WalletState();
+}
+
+class _WalletState extends State<Wallet> {
+  final OrderCubit _orderCubit = instance<OrderCubit>();
+  double _totalAvailableBalance = 0.0;
+  @override
+  void initState() {
+    _orderCubit.getAllOrders();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        Padding(
-          padding:
-              EdgeInsets.only(top: 20.0, right: 20.0, left: 20.0, bottom: 5),
-          child: Row(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context)!.availableBalance!,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                        letterSpacing: 0.67,
-                        color: kHintColor,
-                        fontWeight: FontWeight.bold),
+        BlocBuilder<OrderCubit, OrderState>(
+          bloc: _orderCubit,
+          builder: (context, state) {
+            if (state is OrdersLoaded) {
+              for (var item in state.allDatas) {
+                _totalAvailableBalance =
+                    _totalAvailableBalance + item.orders!.total!;
+              }
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 20.0, right: 20.0, left: 20.0, bottom: 5),
+                    child: Row(
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              AppLocalizations.of(context)!.availableBalance!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(
+                                      letterSpacing: 0.67,
+                                      color: kHintColor,
+                                      fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 8.0,
+                            ),
+                            Text(
+                              '${_totalAvailableBalance.toString()}',
+                              style: listTitleTextStyle.copyWith(
+                                  fontSize: 35.0,
+                                  color: kMainTextColor,
+                                  letterSpacing: 0.18),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 8.0,
+                  Stack(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 25),
+                        alignment: Alignment.bottomLeft,
+                        height: 50.0,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10.0),
+                        color: Theme.of(context).cardColor,
+                        child: Text(
+                          AppLocalizations.of(context)!.recent!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2!
+                              .copyWith(
+                                  color: kTextColor,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.08),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 20),
+                          height: 46.0,
+                          width: 134.0,
+                          decoration: BoxDecoration(
+                              color: kMainColor,
+                              borderRadius: BorderRadius.circular(3)),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: kMainColor,
+                            ),
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => AddToBank(
+                                        totalAmount: _totalAvailableBalance))),
+                            child: Text(
+                              AppLocalizations.of(context)!.sendToBank!,
+                              style: bottomBarTextStyle.copyWith(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    '\$ 758.50',
-                    style: listTitleTextStyle.copyWith(
-                        fontSize: 35.0,
-                        color: kMainTextColor,
-                        letterSpacing: 0.18),
-                  ),
+                  ...state.allDatas.map((orderItem) =>
+                      WalletOrderWidget(order: orderItem.orders!))
                 ],
-              ),
-            ],
-          ),
-        ),
-        Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 25),
-              alignment: Alignment.bottomLeft,
-              height: 50.0,
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              color: Theme.of(context).cardColor,
-              child: Text(
-                AppLocalizations.of(context)!.recent!,
-                style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                    color: kTextColor,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.08),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                margin: EdgeInsets.only(right: 20),
-                height: 46.0,
-                width: 134.0,
-                decoration: BoxDecoration(
-                    color: kMainColor, borderRadius: BorderRadius.circular(3)),
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: kMainColor,
-                  ),
-                  onPressed: () =>
-                      Navigator.pushNamed(context, PageRoutes.addToBank),
-                  child: Text(
-                    AppLocalizations.of(context)!.sendToBank!,
-                    style: bottomBarTextStyle.copyWith(
-                        fontWeight: FontWeight.bold),
-                  ),
+              );
+            } else {
+              return Align(
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text("Please wait orders are loading..."),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CircularProgressIndicator()
+                  ],
                 ),
-              ),
-            ),
-          ],
+              );
+            }
+          },
         ),
+      ],
+    );
+  }
+}
+
+class WalletOrderWidget extends StatelessWidget {
+  const WalletOrderWidget({super.key, required this.order});
+  final Order order;
+  @override
+  Widget build(BuildContext context) {
+    var createdDate = order.createdAt ?? '' as DateTime;
+    String formattedDate =
+        DateFormat('dd MMM yyy, hh:mm a').format(createdDate);
+
+    return Column(
+      children: [
         Padding(
           padding: const EdgeInsets.only(
               left: 20.0, right: 20.0, top: 10.0, bottom: 10),
@@ -116,31 +195,32 @@ class Wallet extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Order num 212217',
+                  Text('Order num ${order.orderNum}',
                       style: Theme.of(context)
                           .textTheme
                           .caption!
                           .copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10.0),
-                  Text('3 items | 30 June 2018, 11.59 am',
+                  const SizedBox(height: 10.0),
+                  Text(
+                      '${order.products!.length != null ? order.products!.length : 0} items | $formattedDate',
                       style: Theme.of(context)
                           .textTheme
                           .headline6!
                           .copyWith(color: kTextColor, fontSize: 11.7)),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Text(
-                    '\$80.00',
+                    '\$ ${order.total ?? 0}',
                     style: Theme.of(context)
                         .textTheme
                         .caption!
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Text(AppLocalizations.of(context)!.online!,
                       style: Theme.of(context)
                           .textTheme
@@ -148,7 +228,7 @@ class Wallet extends StatelessWidget {
                           .copyWith(color: kTextColor, fontSize: 11.7)),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 width: 30,
               ),
               Column(
@@ -161,530 +241,7 @@ class Wallet extends StatelessWidget {
                         .caption!
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.earnings!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          color: Theme.of(context).cardColor,
-          thickness: 3.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 20.0, right: 20.0, top: 10, bottom: 10),
-          child: Row(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Order num 232313',
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10.0),
-                  Text('2 items | 30 June 2018, 10.23 am',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$110.00',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.online!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$9.50',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.earnings!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          color: Theme.of(context).cardColor,
-          thickness: 3.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 20.0, right: 20.0, top: 10, bottom: 10),
-          child: Row(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context)!.sendToBank!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10.0),
-                  Text('29 June 2018, 09.12 am',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '-\$100.00',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.sendToBank!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          color: Theme.of(context).cardColor,
-          thickness: 3.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 20.0, right: 20.0, top: 10, bottom: 10),
-          child: Row(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Order num 232323',
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10.0),
-                  Text('3 items | 20 June 2018, 10.43 am',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$150.00',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.cash!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$7.50',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.earnings!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          color: Theme.of(context).cardColor,
-          thickness: 3.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 20.0, right: 20.0, top: 10, bottom: 10),
-          child: Row(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Order num 232373',
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10.0),
-                  Text('2 items | 10 June 2018, 11.23 am',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$140.00',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.cash!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$9.80',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.earnings!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          color: Theme.of(context).cardColor,
-          thickness: 3.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 20.0, right: 20.0, top: 10, bottom: 10),
-          child: Row(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Order num 232983',
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10.0),
-                  Text('2 items | 10 June 2018, 10.43 am',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$170.00',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.cash!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$7.10',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.earnings!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          color: Theme.of(context).cardColor,
-          thickness: 3.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 20.0, right: 20.0, top: 10, bottom: 10),
-          child: Row(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Order num 232983',
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10.0),
-                  Text('Delivered 3 items',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$210.00',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.cash!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$12.50',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.earnings!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          color: Theme.of(context).cardColor,
-          thickness: 3.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 20.0, right: 20.0, top: 10, bottom: 10),
-          child: Row(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Order num 232393',
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10.0),
-                  Text('3 items | 22 June 2018, 11.33 am',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$140.00',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.online!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$9.50',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.earnings!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          color: Theme.of(context).cardColor,
-          thickness: 3.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 20.0, right: 20.0, top: 10, bottom: 10),
-          child: Row(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Order num 232783',
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10.0),
-                  Text('Delivered 3 items',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$190.00',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(AppLocalizations.of(context)!.cash!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: kTextColor, fontSize: 11.7)),
-                ],
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '\$11.50',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Text(AppLocalizations.of(context)!.earnings!,
                       style: Theme.of(context)
                           .textTheme

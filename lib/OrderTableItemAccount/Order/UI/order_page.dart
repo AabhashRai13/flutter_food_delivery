@@ -24,8 +24,8 @@ class OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     final List<Tab> tabs = <Tab>[
-      Tab(text: AppLocalizations.of(context)!.newOrder),
-      Tab(text: AppLocalizations.of(context)!.pastOrder),
+      const Tab(text: "NEW RENTALS"),
+      const Tab(text: "PAST RENTALS"),
     ];
     return DefaultTabController(
       length: tabs.length,
@@ -36,7 +36,7 @@ class OrderPageState extends State<OrderPage> {
             automaticallyImplyLeading: false,
             centerTitle: true,
             title: Text(
-              AppLocalizations.of(context)!.orderText!,
+              "My Rentals",
               style: Theme.of(context).textTheme.bodyText1,
             ),
             bottom: PreferredSize(
@@ -76,7 +76,7 @@ class OrderPageState extends State<OrderPage> {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                     Text("Please wait orders are loading..."),
+                    Text("Please wait orders are loading..."),
                     SizedBox(
                       height: 10,
                     ),

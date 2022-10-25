@@ -1,9 +1,14 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/data/network/auth.dart';
+import 'package:hungerz_store/models/orders.dart';
+import 'package:hungerz_store/models/user.dart';
+
+import '../models/ratings.dart';
 
 class ShopRepository {
   final AuthProvider _authDataProvider = AuthProvider();
@@ -16,15 +21,25 @@ class ShopRepository {
 
     final docSnapshot = data['docData'];
     final DocumentReference docReference = data['docReference'];
-
-    // if (!docSnapshot.exists) {
-    //   return {};
-    // }
-
     return {
       'docData': docSnapshot as Map<String, dynamic>,
       'docReference': docReference,
     };
+  }
+
+  Future<Users> getUserFromOrder(DocumentReference userId) async {
+    Users user = Users();
+
+    final DocumentSnapshot userDocumentsSnapshot =
+        await _authDataProvider.fetchUserFromReview(userId);
+    if (userDocumentsSnapshot.exists) {
+      Map<String, dynamic> userData =
+          userDocumentsSnapshot.data() as Map<String, dynamic>;
+      user = Users.fromJson(userData);
+      return user;
+    } else {
+      return user;
+    }
   }
 
   // Future<void> updateUserProfile({

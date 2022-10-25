@@ -177,7 +177,7 @@ class SettingsState extends State<Settings> {
                   text: AppLocalizations.of(context)!.submit,
                   onTap: () {
                     _languageCubit.setCurrentLanguage(selectedLocal!, true);
-                    Navigator.pushNamed(context, PageRoutes.loginNavigator);
+                    Navigator.pushNamed(context, PageRoutes.loginRoot);
                   }),
             ),
           ],

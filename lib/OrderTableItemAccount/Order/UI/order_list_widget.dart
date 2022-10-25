@@ -65,7 +65,7 @@ class OrderListWidget extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                'Order AE5587 | $formattedDate',
+                                'Order ${data.orders!.orderNum} | $formattedDate',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6!
@@ -76,7 +76,7 @@ class OrderListWidget extends StatelessWidget {
                               ),
                               const Spacer(),
                               Text(
-                                '\$ ${data.orders!.total!.toString()} | COD',
+                                '\$ ${data.orders!.total != null ? data.orders!.total.toString() : '0'} | ${data.orders!.paymentMethod}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6!
@@ -101,7 +101,7 @@ class OrderListWidget extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Row(
                             children: [
-                              Text(data.products![index].listingName!,
+                              Text(data.products![index].listingName ?? '',
                                   style: Theme.of(context)
                                       .textTheme
                                       .caption!
@@ -111,7 +111,7 @@ class OrderListWidget extends StatelessWidget {
                                           letterSpacing: 0.06,
                                           color: Colors.black)),
                               Text(
-                                " * ${data.orders!.products![index].quantity!.toString()}",
+                                " * ${data.orders!.products![index].quantity != null ? data.orders!.products![index].quantity.toString() : '0'}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6!

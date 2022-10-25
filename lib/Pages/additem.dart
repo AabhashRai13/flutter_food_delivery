@@ -1,18 +1,15 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/entry_field.dart';
-
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Pages/video_page.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/constants_utils.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
-import 'package:hungerz_store/data/network/upload_files.dart';
 import 'package:hungerz_store/extension.dart';
 import 'package:hungerz_store/bloc/products/products_cubit.dart';
 import 'package:hungerz_store/models/product_id.dart';
@@ -230,7 +227,7 @@ class AddState extends State<Add> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
                       child: Text(
-                        'Listing Image',
+                        'Rental Image',
                         // AppLocalizations.of(context)!.image!.toUpperCase(),
                         style: Theme.of(context).textTheme.headline6!.copyWith(
                             fontWeight: FontWeight.bold,
@@ -248,7 +245,7 @@ class AddState extends State<Add> {
                               ? Image.file(image!)
                               : (widget.isEditing && imageUrl.trim().isNotEmpty
                                   ? Image.network(imageUrl)
-                                  : Image.asset('images/placeholder_dish.png')),
+                                  : Image.asset('images/image_icon.png')),
                         ),
                         const SizedBox(width: 24.0),
                         Icon(
@@ -311,7 +308,7 @@ class AddState extends State<Add> {
                         horizontal: 20.0, vertical: 10.0),
                     child: Text(
                       // AppLocalizations.of(context)!.info!,
-                      'Listing Info',
+                      'Rental Info',
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.67,
@@ -324,7 +321,7 @@ class AddState extends State<Add> {
                       textCapitalization: TextCapitalization.words,
                       hint:
                           // AppLocalizations.of(context)!.enterTitle,
-                          'Listing Name',
+                          'Rental Name',
                       controller: _nameController,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -355,7 +352,7 @@ class AddState extends State<Add> {
                           ),
                         ),
                         hint: Text(initialCategory == ""
-                            ? "Listing Category"
+                            ? "Rental Category"
                             : initialCategory),
                         style: Theme.of(context)
                             .textTheme
@@ -560,7 +557,7 @@ class AddState extends State<Add> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     child: Text(
-                      "LISTING DESCRIPTION",
+                      "RENTAL DESCRIPTION",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.67,
@@ -642,7 +639,7 @@ class AddState extends State<Add> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     child: Text(
-                      "LISTING VIDEO",
+                      "RENTAL VIDEO",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.67,

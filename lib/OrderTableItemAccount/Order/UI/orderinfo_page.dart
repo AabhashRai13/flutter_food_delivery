@@ -42,13 +42,11 @@ class OrderInfoState extends State<OrderInfo> {
               child: ListTile(
                 title: Text(
                   widget.data.user!.name ?? '',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4!
-                      .copyWith(fontSize: 14, letterSpacing: 0.07),
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                      fontSize: 14, letterSpacing: 0.07, color: Colors.black),
                 ),
                 subtitle: Text(
-                  'AE5587 |  $formattedDate',
+                  '${widget.data.orders!.orderNum} |  $formattedDate',
                   style: Theme.of(context)
                       .textTheme
                       .headline6!
@@ -119,7 +117,7 @@ class OrderInfoState extends State<OrderInfo> {
                               width: 20.0,
                             ),
                             Text(
-                              widget.data.products![index].listingName!,
+                              widget.data.products![index].listingName ?? '',
                               style: Theme.of(context)
                                   .textTheme
                                   .headline4!
@@ -129,8 +127,12 @@ class OrderInfoState extends State<OrderInfo> {
                             ),
                             const Spacer(),
                             Text(
-                              widget.data.orders!.products![index].quantity
-                                  .toString(),
+                              widget.data.orders!.products![index].quantity !=
+                                      null
+                                  ? widget
+                                      .data.orders!.products![index].quantity
+                                      .toString()
+                                  : '0',
                               style: Theme.of(context)
                                   .textTheme
                                   .headline4!
@@ -142,7 +144,7 @@ class OrderInfoState extends State<OrderInfo> {
                               width: 50.0,
                             ),
                             Text(
-                              '\$ ${widget.data.products![index].rentalPrice!}',
+                              '\$ ${widget.data.products![index].rentalPrice ?? '0'}',
                               style: Theme.of(context)
                                   .textTheme
                                   .caption!
@@ -228,7 +230,7 @@ class OrderInfoState extends State<OrderInfo> {
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '\$ ${widget.data.orders!.total!.toString()}',
+                        '\$ ${widget.data.orders!.total != null ? widget.data.orders!.total.toString() : '0'}',
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ]),

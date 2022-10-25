@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:hungerz_store/Auth/login_navigator.dart';
+import 'package:hungerz_store/Auth/MobileNumber/UI/phone_number.dart';
+import 'package:hungerz_store/Auth/Registration/UI/register_page.dart';
+import 'package:hungerz_store/Auth/Verification/UI/verification_page.dart';
+import 'package:hungerz_store/Auth/social.dart';
 import 'package:hungerz_store/Chat/UI/chat_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/addtobank_page.dart';
 import 'package:hungerz_store/OrderTableItemAccount/Account/UI/ListItems/insight_page.dart';
@@ -22,7 +24,6 @@ class PageRoutes {
   static const String orderTableItemAccountPage = 'order_item_account';
   static const String accountPage = 'account_page';
   static const String orderPage = 'order_page';
-  // static const String orderInfoPage = 'orderinfo_page';
   static const String tncPage = 'tnc_page';
   static const String savedAddressesPage = 'saved_addresses_page';
   static const String supportPage = 'support_page';
@@ -37,26 +38,68 @@ class PageRoutes {
   static const String setting = 'settings_page';
   static const String track = 'track_order';
   static const String authentication = 'authentication_list';
+  static const String loginRoot = 'login/';
+  static const String social = 'login/social';
+  static const String registration = 'login/registration';
+  static const String verification = 'login/verification';
+  static const String home = 'home';
+}
 
-  Map<String, WidgetBuilder> routes() {
-    return {
-      track: (context) => const TrackOrderPage(),
-      orderPage: (context) => const OrderPage(),
-      // orderInfoPage: (context) => OrderInfo(),
-      accountPage: (context) => const AccountPage(),
-      tncPage: (context) => TncPage(),
-      supportPage: (context) => SupportPage(),
-      loginNavigator: (context) => const LoginNavigator(),
-      walletPage: (context) => const WalletPage(),
-      chatPage: (context) => ChatPage(),
-      insightPage: (context) => InsightPage(),
-      storeProfile: (context) => const ProfilePage(),
-      addToBank: (context) => const AddToBank(),
-      items: (context) => const ItemsPage(),
-      orderTableItemAccountPage: (context) => const OrderItemAccount(),
-      review: (context) => ReviewPage(),
-      setting: (context) => const Settings(),
-      authentication: (context) => const AuthenticationList(),
-    };
+class RouteGenerator {
+  static Route<dynamic> getRoute(
+    RouteSettings routeSettings,
+  ) {
+    switch (routeSettings.name) {
+      case PageRoutes.loginRoot:
+        return MaterialPageRoute(builder: (_) => const PhoneNumber());
+      case PageRoutes.social:
+        return MaterialPageRoute(builder: (_) => const SocialLogIn());
+      case PageRoutes.registration:
+        return MaterialPageRoute(builder: (_) => const RegisterPage());
+      case PageRoutes.verification:
+        return MaterialPageRoute(builder: (_) => const VerificationPage());
+      case PageRoutes.track:
+        return MaterialPageRoute(builder: (_) => const TrackOrderPage());
+      case PageRoutes.orderPage:
+        return MaterialPageRoute(builder: (_) => const OrderPage());
+      case PageRoutes.accountPage:
+        return MaterialPageRoute(builder: (_) => const AccountPage());
+      case PageRoutes.tncPage:
+        return MaterialPageRoute(builder: (_) => TncPage());
+      case PageRoutes.supportPage:
+        return MaterialPageRoute(builder: (_) => SupportPage());
+      case PageRoutes.walletPage:
+        return MaterialPageRoute(builder: (_) => const WalletPage());
+      case PageRoutes.chatPage:
+        return MaterialPageRoute(builder: (_) => const ChatPage());
+      case PageRoutes.insightPage:
+        return MaterialPageRoute(builder: (_) => InsightPage());
+      case PageRoutes.storeProfile:
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
+      // case PageRoutes.addToBank:
+      // return MaterialPageRoute(builder: (_) => AddToBank(totalAmount: 0.0,));
+      case PageRoutes.items:
+        return MaterialPageRoute(builder: (_) => const ItemsPage());
+      case PageRoutes.orderTableItemAccountPage:
+        return MaterialPageRoute(builder: (_) => const OrderItemAccount());
+      case PageRoutes.review:
+        return MaterialPageRoute(builder: (_) => const ReviewPage());
+      case PageRoutes.setting:
+        return MaterialPageRoute(builder: (_) => const Settings());
+      case PageRoutes.authentication:
+        return MaterialPageRoute(builder: (_) => const AuthenticationList());
+      default:
+        return unDefinedRoute();
+    }
+  }
+
+  static Route<dynamic> unDefinedRoute() {
+    return MaterialPageRoute(
+        builder: (_) => Scaffold(
+              appBar: AppBar(
+                title: const Text("no Route found"),
+              ),
+              body: const Center(child: Text("no route found")),
+            ));
   }
 }

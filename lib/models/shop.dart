@@ -24,7 +24,7 @@ class Shop {
   String? description;
   String? imageUrl;
   bool? isPopular;
-  Ratings? ratings;
+  List<Ratings>? ratings;
   String? phoneNumber;
   String? email;
   @JsonKey(

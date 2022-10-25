@@ -7,8 +7,8 @@ import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/Themes/style.dart';
 
 class AddToBank extends StatelessWidget {
-  const AddToBank({super.key});
-
+  const AddToBank({super.key, required this.totalAmount});
+  final double totalAmount;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,14 +30,14 @@ class AddToBank extends StatelessWidget {
           },
         ),
       ),
-      body: const Add(),
+      body: Add(totalAmount: totalAmount),
     );
   }
 }
 
 class Add extends StatelessWidget {
-  const Add({super.key});
-
+  const Add({super.key, required this.totalAmount});
+  final double totalAmount;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -45,26 +45,29 @@ class Add extends StatelessWidget {
         ListView(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Row(
                 children: <Widget>[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(bottom: 8.0),
+                        padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                           AppLocalizations.of(context)!
                               .availableBalance!
                               .toUpperCase(),
-                          style: Theme.of(context).textTheme.headline6!.copyWith(
-                              letterSpacing: 0.67,
-                              color: kHintColor,
-                              fontWeight: FontWeight.bold),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6!
+                              .copyWith(
+                                  letterSpacing: 0.67,
+                                  color: kHintColor,
+                                  fontWeight: FontWeight.bold),
                         ),
                       ),
                       Text(
-                        '\$ 558.50',
+                        '\$ $totalAmount',
                         style: listTitleTextStyle.copyWith(
                             fontSize: 35.0,
                             color: kMainTextColor,
@@ -80,7 +83,8 @@ class Add extends StatelessWidget {
               thickness: 8.0,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -96,20 +100,20 @@ class Add extends StatelessWidget {
                     ),
                   ),
                   SmallTextFormField(
-                 label:   AppLocalizations.of(context)!
+                    label: AppLocalizations.of(context)!
                         .accountHolderName!
                         .toUpperCase(),
-                title:    null,
-               icon:     null,
-               initial:     'Food Junction',
+                    title: null,
+                    icon: null,
+                    initial: 'Food Junction',
                   ),
                   SmallTextFormField(
-                 label:   AppLocalizations.of(context)!.bankName!.toUpperCase(),
-                title:   null,
-                icon:    null,
-                 initial:   'HBNC Bank of New York',
+                    label:
+                        AppLocalizations.of(context)!.bankName!.toUpperCase(),
+                    title: null,
+                    icon: null,
+                    initial: 'HBNC Bank of New York',
                   ),
-             
                 ],
               ),
             ),
@@ -117,8 +121,9 @@ class Add extends StatelessWidget {
               color: Theme.of(context).cardColor,
               thickness: 8.0,
             ),
-     
-            SizedBox(height: 80,),
+            const SizedBox(
+              height: 80,
+            ),
           ],
         ),
         Align(
