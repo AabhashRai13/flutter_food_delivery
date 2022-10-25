@@ -1,10 +1,9 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hungerz_store/Auth/login_navigator.dart';
 import 'package:hungerz_store/OrderTableItemAccount/order_table_item_account.dart';
+import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
 import 'package:hungerz_store/models/ratings.dart';
@@ -33,7 +32,7 @@ class AuthProvider {
       codeSent: (String verificationId, int? resendToken) {
         AuthProvider.phone = verificationId;
         AuthProvider.phoneNumber = phoneNumber;
-        Navigator.pushNamed(context, LoginRoutes.verification);
+        Navigator.pushNamed(context, PageRoutes.verification);
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
@@ -74,7 +73,7 @@ class AuthProvider {
         phoneNumber: userCredentials.user!.phoneNumber!,
       );
       if (!mounted) return;
-      Navigator.pushNamed(context, LoginRoutes.registration);
+      Navigator.pushNamed(context, PageRoutes.registration);
     }
     if (!userCredentials.additionalUserInfo!.isNewUser) {
       if (!mounted) return;

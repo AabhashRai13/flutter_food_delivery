@@ -69,8 +69,7 @@ class _HungerzStoreState extends State<HungerzStore> {
               theme: theme,
               home:
                   userId != null ? const OrderItemAccount() : const Settings(),
-              // home: LoginNavigator(),
-              routes: PageRoutes().routes(),
+              onGenerateRoute: RouteGenerator.getRoute,
             );
           });
         },

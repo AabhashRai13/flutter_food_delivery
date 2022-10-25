@@ -9,10 +9,10 @@ class OrderItemAccount extends StatefulWidget {
   final int index;
   const OrderItemAccount([this.index = 0]);
   @override
-  _OrderItemAccountState createState() => _OrderItemAccountState();
+  OrderItemAccountState createState() => OrderItemAccountState();
 }
 
-class _OrderItemAccountState extends State<OrderItemAccount> {
+class OrderItemAccountState extends State<OrderItemAccount> {
   int _currentIndex = 0;
 
   @override
@@ -22,9 +22,9 @@ class _OrderItemAccountState extends State<OrderItemAccount> {
   }
 
   final List<Widget> _children = [
-    OrderPage(),
-    ItemsPage(),
-    AccountPage(),
+    const OrderPage(),
+    const ItemsPage(),
+    const AccountPage(),
   ];
 
   // void onTapped(int index) {

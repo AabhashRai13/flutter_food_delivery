@@ -1,10 +1,7 @@
-// import 'package:buy_this_app/buy_this_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hungerz_store/Auth/MobileNumber/UI/phone_number.dart';
-import 'package:hungerz_store/Auth/login_navigator.dart';
 import 'package:hungerz_store/Components/list_tile.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/OrderTableItemAccount/StoreProfile/store_profile.dart';
@@ -60,35 +57,35 @@ class AccountState extends State<Account> {
           thickness: 8.0,
         ),
         BuildListTile(
-            image: 'images/account/ic_menu_insight.png',
+            image: 'images/insight_icon.png',
             text: AppLocalizations.of(context)!.insight,
             onTap: () => Navigator.pushNamed(context, PageRoutes.insightPage)),
         BuildListTile(
-          image: 'images/account/ic_menu_wallet.png',
+          image: 'images/earnings_icon.png',
           text: "Earnings",
           // AppLocalizations.of(context)!.wallet,
           onTap: () => Navigator.pushNamed(context, PageRoutes.walletPage),
         ),
         BuildListTile(
-            image: 'images/account/ic_menu_reviewsact.png',
+            image: 'images/reviews_icon.png',
             text: AppLocalizations.of(context)!.review,
             onTap: () => Navigator.pushNamed(context, PageRoutes.review)),
         BuildListTile(
-            image: 'images/account/ic_auth.png',
+            image: 'images/add_insurance_icon.png',
             text: "Add Insurance",
             onTap: () =>
                 Navigator.pushNamed(context, PageRoutes.authentication)),
         BuildListTile(
-            image: 'images/account/ic_menu_tncact.png',
+            image: 'images/terms_and_conditions_icon.png',
             text: AppLocalizations.of(context)!.tnc,
             onTap: () => Navigator.pushNamed(context, PageRoutes.tncPage)),
         BuildListTile(
-            image: 'images/account/ic_menu_supportact.png',
+            image: 'images/support_icon.png',
             text: AppLocalizations.of(context)!.support,
             onTap: () => Navigator.pushNamed(context, PageRoutes.supportPage,
                 arguments: number)),
         BuildListTile(
-            image: 'images/account/ic_menu_setting.png',
+            image: 'images/setting_icon.png',
             text: AppLocalizations.of(context)!.settings,
             onTap: () => Navigator.pushNamed(context, PageRoutes.setting,
                 arguments: number)),
@@ -109,7 +106,7 @@ class LogoutTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BuildListTile(
-      image: 'images/account/ic_menu_logoutact.png',
+      image: 'images/logout_icon.png',
       text: AppLocalizations.of(context)!.logout,
       onTap: () {
         showDialog(

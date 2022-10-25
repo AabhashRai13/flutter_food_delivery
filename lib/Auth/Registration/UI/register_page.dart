@@ -15,10 +15,11 @@ import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/repositories/category_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../Routes/routes.dart';
+
 //register page for registration of a new user
 class RegisterPage extends StatelessWidget {
-  final VoidCallback onVerificationDone;
-  const RegisterPage(this.onVerificationDone, {super.key});
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +46,13 @@ class RegisterPage extends StatelessWidget {
       ),
 
       //this column contains 3 textFields and a bottom bar
-      body: RegisterForm(onVerificationDone),
+      body: const RegisterForm(),
     );
   }
 }
 
 class RegisterForm extends StatefulWidget {
-  final VoidCallback onVerificationDone;
-  const RegisterForm(this.onVerificationDone, {super.key});
+  const RegisterForm({super.key});
 
   @override
   RegisterFormState createState() => RegisterFormState();
@@ -419,7 +419,9 @@ class RegisterFormState extends State<RegisterForm> {
                         phoneNumber: _phoneNumberController.text.trim(),
                         imageUrl: imageUrl);
                     if (success) {
-                      widget.onVerificationDone();
+                      if (!mounted) return;
+                      Navigator.popAndPushNamed(
+                          context, PageRoutes.orderTableItemAccountPage);
                     }
                   }
                 }),
