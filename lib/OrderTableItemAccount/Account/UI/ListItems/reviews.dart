@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
+import 'package:intl/intl.dart';
 
 class Review {
   final String? title;
@@ -28,7 +29,7 @@ class ReviewPageState extends State<ReviewPage> {
   void initState() {
     super.initState();
     log("length ${userCubit.ratings.length} ");
-    log("User ${userCubit.ratings[0].user!.name!}");
+    // log("User ${userCubit.ratings[0].user!.name} ");
   }
 
   @override
@@ -107,6 +108,11 @@ class ReviewPageState extends State<ReviewPage> {
       body: ListView.builder(
           itemCount: userCubit.ratings.length,
           itemBuilder: (context, index) {
+            var createdDate =
+                userCubit.ratings[index].ratings!.createdAt ?? '' as DateTime;
+            String formattedDate =
+                DateFormat('dd MMM yyy, hh:mm a').format(createdDate);
+
             if (userCubit.ratings.isEmpty) return const SizedBox();
             return Padding(
               padding:
@@ -119,7 +125,7 @@ class ReviewPageState extends State<ReviewPage> {
                     thickness: 6.7,
                   ),
                   Text(
-                    userCubit.ratings[index].user!.name!,
+                    userCubit.ratings[index].user!.name ?? '',
                     style: Theme.of(context)
                         .textTheme
                         .headline4!
@@ -142,15 +148,17 @@ class ReviewPageState extends State<ReviewPage> {
                                     )),
                         const Spacer(),
                         Text(
-                          listOfReviews[index].date,
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              fontSize: 11.7, color: const Color(0xffd7d7d7)),
+                          formattedDate,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontSize: 11.7, color: Colors.black),
                         ),
                       ],
                     ),
                   ),
                   Text(
-                    userCubit.ratings[index].ratings!.description!,
+                    userCubit.ratings[index].ratings!.description ?? '',
                     textAlign: TextAlign.justify,
                     style: Theme.of(context)
                         .textTheme
