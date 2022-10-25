@@ -83,7 +83,7 @@ class RouteGenerator {
       case PageRoutes.orderTableItemAccountPage:
         return MaterialPageRoute(builder: (_) => const OrderItemAccount());
       case PageRoutes.review:
-        return MaterialPageRoute(builder: (_) => ReviewPage());
+        return MaterialPageRoute(builder: (_) => const ReviewPage());
       case PageRoutes.setting:
         return MaterialPageRoute(builder: (_) => const Settings());
       case PageRoutes.authentication:

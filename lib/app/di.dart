@@ -24,8 +24,8 @@ Future<void> initAppModule() async {
   instance.registerFactory<ShopRepository>(() => ShopRepository());
   instance.registerFactory<ProductRepository>(() => ProductRepository());
 
-//blocs and cubit
-  instance.registerFactory<UserCubit>(() => UserCubit());
+  ///blocs and cubit
+  instance.registerSingleton<UserCubit>(UserCubit());
 
   instance.registerFactory<OrderCubit>(() => OrderCubit(instance()));
   instance.registerFactory<ProductCubit>(() => ProductCubit(instance()));

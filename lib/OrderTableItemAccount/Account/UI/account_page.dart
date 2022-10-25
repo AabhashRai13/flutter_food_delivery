@@ -16,14 +16,10 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // late ThemeCubit _themeCubit;
-    // _themeCubit = BlocProvider.of<ThemeCubit>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("My Profile",
-            // AppLocalizations.of(context)!.account!,
-            style: Theme.of(context).textTheme.bodyText1),
+        title: Text("My Profile", style: Theme.of(context).textTheme.bodyText1),
         centerTitle: true,
       ),
       body: const Account(),
@@ -40,7 +36,7 @@ class Account extends StatefulWidget {
 
 class AccountState extends State<Account> {
   String? number;
-
+  String? shopName;
   @override
   void initState() {
     super.initState();
@@ -163,7 +159,8 @@ class LogoutTile extends StatelessWidget {
 }
 
 class StoreDetails extends StatefulWidget {
-  const StoreDetails({super.key});
+  final String? shopName;
+  const StoreDetails({super.key, this.shopName});
 
   @override
   State<StoreDetails> createState() => _StoreDetailsState();

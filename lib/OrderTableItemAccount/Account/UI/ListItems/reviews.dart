@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/app/di.dart';
+import 'package:hungerz_store/bloc/user/user_cubit.dart';
 
 class Review {
   final String? title;
@@ -12,11 +15,22 @@ class Review {
 }
 
 class ReviewPage extends StatefulWidget {
+  final String? shopName;
+  const ReviewPage({super.key, this.shopName});
+
   @override
-  _ReviewPageState createState() => _ReviewPageState();
+  ReviewPageState createState() => ReviewPageState();
 }
 
-class _ReviewPageState extends State<ReviewPage> {
+class ReviewPageState extends State<ReviewPage> {
+  final UserCubit userCubit = instance<UserCubit>();
+  @override
+  void initState() {
+    super.initState();
+    log("length ${userCubit.ratings.length} ");
+    log("User ${userCubit.ratings[0].user!.name!}");
+  }
+
   @override
   Widget build(BuildContext context) {
     var appLocalization = AppLocalizations.of(context)!;
@@ -38,39 +52,39 @@ class _ReviewPageState extends State<ReviewPage> {
     ];
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
+        preferredSize: const Size.fromHeight(70.0),
         child: AppBar(
           flexibleSpace: Container(
-            padding: EdgeInsets.only(left: 60),
+            padding: const EdgeInsets.only(left: 60),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 Text(
-                  AppLocalizations.of(context)!.store!,
+                  userCubit.shopName ?? "",
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8.0,
                 ),
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.star,
                       color: Color(0xff7ac81e),
                       size: 14,
                     ),
-                    SizedBox(width: 8.0),
+                    const SizedBox(width: 8.0),
                     Text('4.2',
                         style: Theme.of(context)
                             .textTheme
                             .overline!
-                            .copyWith(color: Color(0xff7ac81e))),
-                    SizedBox(width: 8.0),
-                    Text('148 reviews',
+                            .copyWith(color: const Color(0xff7ac81e))),
+                    const SizedBox(width: 8.0),
+                    Text('${userCubit.ratings.length} reviews',
                         style: Theme.of(context).textTheme.overline),
                   ],
                 ),
@@ -82,7 +96,7 @@ class _ReviewPageState extends State<ReviewPage> {
             icon: Icon(
               Icons.chevron_left,
               size: 30,
-            color: Theme.of(context).secondaryHeaderColor,
+              color: Theme.of(context).secondaryHeaderColor,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -91,10 +105,12 @@ class _ReviewPageState extends State<ReviewPage> {
         ),
       ),
       body: ListView.builder(
-          itemCount: listOfReviews.length,
+          itemCount: userCubit.ratings.length,
           itemBuilder: (context, index) {
+            if (userCubit.ratings.isEmpty) return const SizedBox();
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -103,42 +119,43 @@ class _ReviewPageState extends State<ReviewPage> {
                     thickness: 6.7,
                   ),
                   Text(
-                    listOfReviews[index].title!,
+                    userCubit.ratings[index].user!.name!,
                     style: Theme.of(context)
                         .textTheme
                         .headline4!
                         .copyWith(fontSize: 15.0),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.star,
                           color: Color(0xff7ac81e),
                           size: 13,
                         ),
-                        SizedBox(width: 8.0),
-                        Text(listOfReviews[index].rating.toString(),
-                            style: Theme.of(context).textTheme.caption!.copyWith(
-                                  color: Color(0xff7ac81e),
-                                )),
-                        Spacer(),
+                        const SizedBox(width: 8.0),
+                        Text(userCubit.ratings[index].ratings!.star.toString(),
+                            style:
+                                Theme.of(context).textTheme.caption!.copyWith(
+                                      color: const Color(0xff7ac81e),
+                                    )),
+                        const Spacer(),
                         Text(
                           listOfReviews[index].date,
                           style: Theme.of(context).textTheme.caption!.copyWith(
-                              fontSize: 11.7, color: Color(0xffd7d7d7)),
+                              fontSize: 11.7, color: const Color(0xffd7d7d7)),
                         ),
                       ],
                     ),
                   ),
                   Text(
-                    listOfReviews[index].content!,
+                    userCubit.ratings[index].ratings!.description!,
                     textAlign: TextAlign.justify,
                     style: Theme.of(context)
                         .textTheme
                         .caption!
-                        .copyWith(color: Color(0xff6a6c74)),
+                        .copyWith(color: const Color(0xff6a6c74)),
                   )
                 ],
               ),
