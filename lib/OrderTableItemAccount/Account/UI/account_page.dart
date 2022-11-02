@@ -10,6 +10,7 @@ import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
 import 'package:hungerz_store/data/local/prefs.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -40,6 +41,10 @@ class AccountState extends State<Account> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void _launchURL(String url) async {
+    if (!await launch(url)) throw 'Could not launch $url';
   }
 
   @override
@@ -74,7 +79,7 @@ class AccountState extends State<Account> {
         BuildListTile(
             image: 'images/terms_and_conditions_icon.png',
             text: AppLocalizations.of(context)!.tnc,
-            onTap: () => Navigator.pushNamed(context, PageRoutes.tncPage)),
+            onTap: () => _launchURL('https://www.renterii.com/terms')),
         BuildListTile(
             image: 'images/support_icon.png',
             text: AppLocalizations.of(context)!.support,

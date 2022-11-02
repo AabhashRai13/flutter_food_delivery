@@ -34,7 +34,7 @@ class InsightPage extends StatelessWidget {
                     color: Theme.of(context).primaryColor),
               ),
               IconButton(
-                icon: Icon(Icons.arrow_drop_down),
+                icon: const Icon(Icons.arrow_drop_down),
                 color: Theme.of(context).primaryColor,
                 onPressed: () {
                   /*....*/
@@ -53,21 +53,21 @@ class Insight extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       children: <Widget>[
         Divider(
           color: Theme.of(context).cardColor,
           thickness: 8.0,
         ),
         Padding(
-          padding: EdgeInsets.only(left: 40.0, right: 40, top: 10),
+          padding: const EdgeInsets.only(left: 40.0, right: 40, top: 10),
           child: Row(
             children: <Widget>[
               Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
                       '32',
                       textAlign: TextAlign.center,
@@ -75,18 +75,18 @@ class Insight extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    AppLocalizations.of(context)!.orders!,
+                    'Rental Orders',
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                         fontWeight: FontWeight.bold, color: kTextColor),
                   ),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
                       '229',
                       textAlign: TextAlign.center,
@@ -94,18 +94,18 @@ class Insight extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    AppLocalizations.of(context)!.itemSold!,
+                    'Items + Spaces Rented',
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                         fontWeight: FontWeight.bold, color: kTextColor),
                   ),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
                       '\$494.50',
                       textAlign: TextAlign.center,
@@ -117,7 +117,7 @@ class Insight extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                         fontWeight: FontWeight.bold, color: kTextColor),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
@@ -137,7 +137,7 @@ class Insight extends StatelessWidget {
           thickness: 6.7,
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -146,7 +146,7 @@ class Insight extends StatelessWidget {
                       .textTheme
                       .headline4!
                       .copyWith(fontSize: 15.0, letterSpacing: 1.5)),
-              Center(
+              const Center(
                 child: Image(
                   image: AssetImage("images/graph.png"),
                   height: 200.0,
@@ -173,37 +173,42 @@ class Insight extends StatelessWidget {
           thickness: 6.7,
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(AppLocalizations.of(context)!.top!,
+              Text('Top 5 Rented Items',
                   style: Theme.of(context).textTheme.headline6!.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).secondaryHeaderColor,
-                      letterSpacing: 0.77)),
-              Text(AppLocalizations.of(context)!.total!,
+                      letterSpacing: 0.77,
+                      fontSize: 18)),
+              const SizedBox(
+                height: 5,
+              ),
+              Text('Total 112 rentals',
                   style: TextStyle(color: Colors.grey[700], fontSize: 13)),
             ],
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(
             children: <Widget>[
-              Image(
+              const Image(
                 image: AssetImage("images/2.png"),
                 height: 61.3,
                 width: 61.3,
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(AppLocalizations.of(context)!.sandwich!,
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           fontSize: 15.0, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   Text('188 ' + AppLocalizations.of(context)!.sales!,
                       style: Theme.of(context)
                           .textTheme
@@ -215,22 +220,22 @@ class Insight extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Row(
             children: <Widget>[
-              Image(
+              const Image(
                 image: AssetImage("images/4.png"),
                 height: 61.3,
                 width: 61.3,
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(AppLocalizations.of(context)!.chicken!,
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           fontSize: 15.0, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   Text('179 ' + AppLocalizations.of(context)!.sales!,
                       style: Theme.of(context)
                           .textTheme
@@ -242,22 +247,22 @@ class Insight extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(
             children: <Widget>[
-              Image(
+              const Image(
                 image: AssetImage("images/5.png"),
                 height: 61.3,
                 width: 61.3,
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(AppLocalizations.of(context)!.burger!,
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           fontSize: 15.0, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   Text('154 ' + AppLocalizations.of(context)!.sales!,
                       style: Theme.of(context)
                           .textTheme
@@ -269,10 +274,10 @@ class Insight extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Row(
             children: <Widget>[
-              Image(
+              const Image(
                 image: AssetImage("images/4.png"),
                 height: 61.3,
                 width: 61.3,

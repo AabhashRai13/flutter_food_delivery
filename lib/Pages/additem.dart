@@ -302,6 +302,58 @@ class AddState extends State<Add> {
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    child: Text(
+                      "RENTAL VIDEO",
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.67,
+                          color: kHintColor),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.upload_sharp,
+                          color: kMainColor,
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            videoUrl = await Navigator.push(
+                              context,
+                              // Create the SelectionScreen in the next step.
+                              MaterialPageRoute(
+                                  builder: (context) => const VideoUpload()),
+                            );
+                          },
+                          child: Text(
+                            "Upload Video",
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption!
+                                .copyWith(color: kMainColor),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  )
+                ],
+              ),
+              Divider(
+                color: Theme.of(context).cardColor,
+                thickness: 8.0,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -380,86 +432,6 @@ class AddState extends State<Add> {
                           log(_choosenCategory);
                         }),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: EntryField(
-                      textCapitalization: TextCapitalization.words,
-                      // label: "ITEM PRICE",
-                      hint: "Rental Price",
-                      controller: _priceController,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Rental Price is required';
-                        } else {
-                          return null;
-                        }
-                      },
-                      // initialValue: "\$5.00",
-                    ),
-                  ),
-                ],
-              ),
-              Divider(
-                color: Theme.of(context).cardColor,
-                thickness: 8.0,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10.0),
-                    child: Text(
-                      "WAIVER REQUIRED AT PICKUP",
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.67,
-                          color: kHintColor),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Row(
-                        children: [
-                          Radio(
-                            groupValue: pickup,
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                pickup = value;
-                              });
-                            },
-                            activeColor: kMainColor,
-                            value: 0,
-                          ),
-                          Text(
-                            "Yes",
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                            groupValue: pickup,
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                pickup = value;
-                              });
-                            },
-                            activeColor: kMainColor,
-                            value: 1,
-                          ),
-                          Text(
-                            "No",
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        ],
-                      ),
-                    ],
-                  )
                 ],
               ),
               Divider(
@@ -480,9 +452,10 @@ class AddState extends State<Add> {
                           color: kHintColor),
                     ),
                   ),
-                  Row(
+                  Wrap(
                     children: [
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Radio(
                             groupValue: typeOfRental,
@@ -500,10 +473,8 @@ class AddState extends State<Add> {
                           )
                         ],
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Radio(
                             groupValue: typeOfRental,
@@ -521,10 +492,8 @@ class AddState extends State<Add> {
                           )
                         ],
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Radio(
                             groupValue: typeOfRental,
@@ -542,13 +511,166 @@ class AddState extends State<Add> {
                           )
                         ],
                       ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio(
+                            groupValue: typeOfRental,
+                            onChanged: (dynamic value) {
+                              setState(() {
+                                typeOfRental = value;
+                              });
+                            },
+                            activeColor: kMainColor,
+                            value: 3,
+                          ),
+                          Text(
+                            "Monthly",
+                            style: Theme.of(context).textTheme.caption,
+                          )
+                        ],
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
               Divider(
                 color: Theme.of(context).cardColor,
+                thickness: 4.0,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      isDense: true,
+                      prefixStyle: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: Colors.black, fontSize: 12),
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[200]!),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[200]!),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[200]!),
+                      ),
+                    ),
+                    hint: Text(
+                      initalRentalDuration == ""
+                          ? "Rental Duration"
+                          : initalRentalDuration,
+                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(color: Colors.black, fontSize: 15),
+                    value: rentalDuration.isNotEmpty ? rentalDuration : null,
+                    validator: ((value) {
+                      if (rentalDuration.trim().isEmpty) {
+                        return 'Please select Rental Duration';
+                      } else {
+                        return null;
+                      }
+                    }),
+                    items: rentalDurationsList.map((rentDur) {
+                      return DropdownMenuItem<String>(
+                        value: rentDur,
+                        child: Text(rentDur),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      rentalDuration = value!;
+                      _rentalDurationController.text = rentalDuration;
+                      log(rentalDuration);
+                    }),
+              ),
+              Divider(
+                color: Theme.of(context).cardColor,
                 thickness: 8.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            isDense: true,
+                            prefixStyle: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: Colors.black, fontSize: 12),
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey[200]!),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey[200]!),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey[200]!),
+                            ),
+                          ),
+                          hint: Text(
+                            initialrentalFor == ""
+                                ? "Rental For"
+                                : initialrentalFor,
+                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(color: Colors.black, fontSize: 15),
+                          value: rentalFor.isNotEmpty ? rentalFor : null,
+                          validator: ((value) {
+                            if (rentalFor.trim().isEmpty) {
+                              return 'Please select Rental For';
+                            } else {
+                              return null;
+                            }
+                          }),
+                          items: rentalForCategoryList.map((rentFor) {
+                            return DropdownMenuItem<String>(
+                              value: rentFor,
+                              child: Text(rentFor),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            rentalFor = value!;
+                            _rentalForController.text = rentalFor;
+                            log(rentalFor);
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                thickness: 4.0,
+                color: Theme.of(context).cardColor,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: EntryField(
+                  textCapitalization: TextCapitalization.words,
+                  // label: "ITEM PRICE",
+                  hint: "Rental Price",
+                  controller: _priceController,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Rental Price is required';
+                    } else {
+                      return null;
+                    }
+                  },
+                  // initialValue: "\$5.00",
+                ),
+              ),
+              Divider(
+                thickness: 8.0,
+                color: Theme.of(context).cardColor,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -639,44 +761,55 @@ class AddState extends State<Add> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     child: Text(
-                      "RENTAL VIDEO",
+                      "WAIVER REQUIRED AT PICKUP",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.67,
                           color: kHintColor),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 5),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.upload_sharp,
-                          color: kMainColor,
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            videoUrl = await Navigator.push(
-                              context,
-                              // Create the SelectionScreen in the next step.
-                              MaterialPageRoute(
-                                  builder: (context) => const VideoUpload()),
-                            );
-                          },
-                          child: Text(
-                            "Upload Video",
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(color: kMainColor),
+                  Row(
+                    children: [
+                      Row(
+                        children: [
+                          Radio(
+                            groupValue: pickup,
+                            onChanged: (dynamic value) {
+                              setState(() {
+                                pickup = value;
+                              });
+                            },
+                            activeColor: kMainColor,
+                            value: 0,
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
+                          Text(
+                            "Yes",
+                            style: Theme.of(context).textTheme.caption,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Row(
+                        children: [
+                          Radio(
+                            groupValue: pickup,
+                            onChanged: (dynamic value) {
+                              setState(() {
+                                pickup = value;
+                              });
+                            },
+                            activeColor: kMainColor,
+                            value: 1,
+                          ),
+                          Text(
+                            "No",
+                            style: Theme.of(context).textTheme.caption,
+                          )
+                        ],
+                      ),
+                    ],
                   )
                 ],
               ),
@@ -684,144 +817,13 @@ class AddState extends State<Add> {
                 color: Theme.of(context).cardColor,
                 thickness: 8.0,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10.0),
-                    child: Text(
-                      "TYPE OF RENTAL",
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.67,
-                          color: kHintColor),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                isDense: true,
-                                prefixStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                        color: Colors.black, fontSize: 12),
-                                border: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[200]!),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[200]!),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[200]!),
-                                ),
-                              ),
-                              hint: Text(
-                                initialrentalFor == ""
-                                    ? "Rental For"
-                                    : initialrentalFor,
-                              ),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(color: Colors.black, fontSize: 15),
-                              value: rentalFor.isNotEmpty ? rentalFor : null,
-                              validator: ((value) {
-                                if (rentalFor.trim().isEmpty) {
-                                  return 'Please select Rental For';
-                                } else {
-                                  return null;
-                                }
-                              }),
-                              items: rentalForCategoryList.map((rentFor) {
-                                return DropdownMenuItem<String>(
-                                  value: rentFor,
-                                  child: Text(rentFor),
-                                );
-                              }).toList(),
-                              onChanged: (String? value) {
-                                rentalFor = value!;
-                                _rentalForController.text = rentalFor;
-                                log(rentalFor);
-                              }),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                isDense: true,
-                                prefixStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                        color: Colors.black, fontSize: 12),
-                                border: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[200]!),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[200]!),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey[200]!),
-                                ),
-                              ),
-                              hint: Text(
-                                initalRentalDuration == ""
-                                    ? "Rental Duration"
-                                    : initalRentalDuration,
-                              ),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(color: Colors.black, fontSize: 15),
-                              value: rentalDuration.isNotEmpty
-                                  ? rentalDuration
-                                  : null,
-                              validator: ((value) {
-                                if (rentalDuration.trim().isEmpty) {
-                                  return 'Please select Rental Duration';
-                                } else {
-                                  return null;
-                                }
-                              }),
-                              items: rentalDurationsList.map((rentDur) {
-                                return DropdownMenuItem<String>(
-                                  value: rentDur,
-                                  child: Text(rentDur),
-                                );
-                              }).toList(),
-                              onChanged: (String? value) {
-                                rentalDuration = value!;
-                                _rentalDurationController.text = rentalDuration;
-                                log(rentalDuration);
-                              }),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
             ],
           ),
         ),
         Align(
           alignment: Alignment.bottomCenter,
           child: BottomBar(
-            text: AppLocalizations.of(context)!.editt,
+            text: widget.isEditing ? 'Update Listing' : 'Add Listing',
             onTap: loading
                 ? () {}
                 : () async {

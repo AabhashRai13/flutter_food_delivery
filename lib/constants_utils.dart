@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 List<String> listingCategory = [
   'Item',
   'Space',
@@ -31,3 +33,6 @@ List<String> rentalDurationsList = [
   'Weekly (2 Weeks)',
   'Weekly (3 Weeks)',
 ];
+
+const uploadPhotoColor =
+    const Color(0xFFF3CFC6); // Second `const` is optional in assignments.

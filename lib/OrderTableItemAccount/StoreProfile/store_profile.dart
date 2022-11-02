@@ -10,6 +10,7 @@ import 'package:hungerz_store/Maps/UI/location_page.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/app/di.dart';
 import 'package:hungerz_store/bloc/user/user_cubit.dart';
+import 'package:hungerz_store/constants_utils.dart';
 import 'package:hungerz_store/extension.dart';
 import 'package:hungerz_store/models/category.dart';
 import 'package:hungerz_store/models/shop.dart';
@@ -173,9 +174,7 @@ class RegisterFormState extends State<RegisterForm> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
                       child: Text(
-                        AppLocalizations.of(context)!
-                            .featureImage!
-                            .toUpperCase(),
+                        'PROFILE IMAGE',
                         style: Theme.of(context).textTheme.headline6!.copyWith(
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.67,
@@ -195,7 +194,7 @@ class RegisterFormState extends State<RegisterForm> {
                         const SizedBox(width: 24.0),
                         Icon(
                           Icons.camera_alt,
-                          color: kMainColor,
+                          color: uploadPhotoColor,
                           size: 25.0,
                         ),
                         const SizedBox(width: 14.3),
@@ -234,7 +233,7 @@ class RegisterFormState extends State<RegisterForm> {
                               style: Theme.of(context)
                                   .textTheme
                                   .caption!
-                                  .copyWith(color: kMainColor)),
+                                  .copyWith(color: uploadPhotoColor)),
                         ),
                       ],
                     ),
@@ -252,7 +251,7 @@ class RegisterFormState extends State<RegisterForm> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     child: Text(
-                      AppLocalizations.of(context)!.profileInfo!.toUpperCase(),
+                      'SHOP INFO',
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.67,
@@ -304,7 +303,7 @@ class RegisterFormState extends State<RegisterForm> {
                         Row(
                           children: [
                             Text(
-                              "Category",
+                              "Type of shop",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!

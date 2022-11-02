@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 
 class TncPage extends StatelessWidget {
@@ -26,13 +27,12 @@ class TncPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
+                height: MediaQuery.of(context).size.width / 2,
                 padding: EdgeInsets.all(48.0),
                 color: Theme.of(context).cardColor,
-                child: Image(
-                  image: AssetImage("images/logo_restro.png"), //delivoo logo
-                  height: 130.0,
-                  width: 99.7,
-                ),
+                child: SvgPicture.asset("images/renterii_text.svg",
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    semanticsLabel: 'Acme Logo'),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 28.0, horizontal: 20.0),
