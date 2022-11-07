@@ -3,6 +3,7 @@ import 'package:hungerz_store/Pages/additem.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/bloc/products/products_cubit.dart';
 import 'package:hungerz_store/models/product_id.dart';
+import 'package:hungerz_store/widget/switch.dart';
 
 class ItemWidget extends StatefulWidget {
   const ItemWidget(
@@ -14,9 +15,6 @@ class ItemWidget extends StatefulWidget {
 }
 
 class _ItemWidgetState extends State<ItemWidget> {
-  bool inStock = false;
-  String? stock = "Not Available";
-
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -119,21 +117,10 @@ class _ItemWidgetState extends State<ItemWidget> {
                               fontSize: 13.3,
                               fontWeight: FontWeight.bold),
                         ),
-                        Switch(
-                          activeColor: kMainColor,
-                          activeTrackColor: Colors.grey[200],
-                          value: inStock,
-                          onChanged: (value) {
-                            setState(() {
-                              inStock = value;
-                            });
-                            if (inStock == true) {
-                              stock = "Available";
-                            } else if (inStock == false) {
-                              stock = "Not Available";
-                            }
-                            // AppLocalizations.of(context)!.outStock;
-                          },
+                        AvailabilitySwitch(
+                          inStock: productId.product.inStock,
+                          productId: productId.id,
+                          product: productId.product,
                         )
                       ],
                     ),

@@ -71,7 +71,8 @@ class ProductRepository {
       String? rentalDuration,
       String? shopId,
       String? imageUrl,
-      String? videoUrl}) async {
+      String? videoUrl,
+      bool? inStock}) async {
     try {
       var shopName = await _appPreferences.getshopName();
       var shopId = await _appPreferences.getUserID();
@@ -89,7 +90,8 @@ class ProductRepository {
           shopName: shopName,
           shop: firestoreDocRefFromJson("/shops/$shopId"),
           imageUrl: imageUrl,
-          videoUrl: videoUrl);
+          videoUrl: videoUrl,
+          inStock: inStock);
       return success;
     } catch (error) {
       rethrow;
@@ -109,7 +111,8 @@ class ProductRepository {
       String? rentalDuration,
       required String productId,
       String? imageUrl,
-      String? videoUrl}) async {
+      String? videoUrl,
+      bool? inStock}) async {
     try {
       var shopName = await _appPreferences.getshopName();
       var shopId = await _appPreferences.getUserID();
@@ -129,7 +132,8 @@ class ProductRepository {
           productId: productId,
           shop: firestoreDocRefFromJson("/shops/$shopId"),
           imageUrl: imageUrl,
-          videoUrl: videoUrl);
+          videoUrl: videoUrl,
+          inStock: inStock);
       return success;
     } catch (error) {
       rethrow;

@@ -29,7 +29,8 @@ class ProductDataProvider {
       String? shopName,
       String? imageUrl,
       DocumentReference? shop,
-      String? videoUrl}) async {
+      String? videoUrl,
+      bool? inStock}) async {
     try {
       productsCollection.add({
         'listingName': listingName ?? '',
@@ -44,7 +45,8 @@ class ProductDataProvider {
         'shopName': shopName ?? '',
         'shop': shop,
         'imageUrl': imageUrl ?? '',
-        'videoUrl': videoUrl ?? ''
+        'videoUrl': videoUrl ?? '',
+        'inStock': inStock ?? false
       });
       return true;
     } catch (error) {
@@ -67,7 +69,8 @@ class ProductDataProvider {
       String? imageUrl,
       DocumentReference? shop,
       String? videoUrl,
-      required String productId}) async {
+      required String productId,
+      bool? inStock}) async {
     try {
       final DocumentReference product = productsCollection.doc(productId);
 
@@ -84,7 +87,8 @@ class ProductDataProvider {
         'shopName': shopName,
         'shop': shop,
         'imageUrl': imageUrl ?? '',
-        'videoUrl': videoUrl ?? ''
+        'videoUrl': videoUrl ?? '',
+        'inStock': inStock ?? false
       });
       return true;
     } catch (error) {

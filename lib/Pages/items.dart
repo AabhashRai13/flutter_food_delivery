@@ -43,7 +43,7 @@ class ItemsPageState extends State<ItemsPage> {
   @override
   Widget build(BuildContext context) {
     final List<Tab> tabs = <Tab>[
-      const Tab(text: "ITEM"),
+      const Tab(text: "Item"),
       const Tab(text: "Space"),
       const Tab(text: "Lodging"),
       const Tab(text: "Experience"),
