@@ -28,7 +28,7 @@ class Products {
   String? rentingRules;
   String? rentalFor;
   String? rentalDuration;
-  bool? instock;
+  bool? inStock;
   String? imageUrl;
   @JsonKey(
     toJson: firestoreDocRefToJson,
@@ -52,7 +52,7 @@ class Products {
       this.rentingRules,
       this.rentalFor,
       this.rentalDuration,
-      this.instock,
+      this.inStock,
       this.shop,
       this.category,
       this.imageUrl});

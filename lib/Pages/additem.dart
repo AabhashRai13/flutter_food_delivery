@@ -30,6 +30,17 @@ class AddItem extends StatefulWidget {
 }
 
 class AddItemState extends State<AddItem> {
+  @override
+  void initState() {
+    super.initState();
+    inStock = widget.productId!.product.inStock ?? false;
+    if (inStock == true) {
+      stock = "Available";
+    } else if (inStock == false) {
+      stock = "Not Available";
+    }
+  }
+
   bool inStock = false;
   String? stock = "Not Available";
 
@@ -827,7 +838,11 @@ class AddState extends State<Add> {
         Align(
           alignment: Alignment.bottomCenter,
           child: BottomBar(
-            text: widget.isEditing ? 'Update Listing' : 'Add Listing',
+            text: loading
+                ? "Loading.."
+                : widget.isEditing
+                    ? 'Update Listing'
+                    : 'Add Listing',
             onTap: loading
                 ? () {}
                 : () async {
