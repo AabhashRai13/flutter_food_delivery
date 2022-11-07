@@ -10,8 +10,21 @@ extension StringExtension on String {
   }
 
   bool isValidNumber() {
-    bool isValid = RegExp(r'(^[0-9]{10}$)').hasMatch(this);
+    bool isValid = RegExp(r'(^[0-9]$)').hasMatch(this);
     return isValid;
+  }
+
+  Future<void> sendMail({required String body, String? subject}) async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: this,
+      query: <String, String>{"subject": subject ?? "Confirmed", "body": body}
+          .entries
+          .map((e) =>
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+          .join('&'),
+    );
+    await launch(emailLaunchUri.toString());
   }
 }
 

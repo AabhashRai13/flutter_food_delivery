@@ -5,17 +5,27 @@ import 'package:hungerz_store/Components/textfield.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 
 import 'package:hungerz_store/Locale/locales.dart';
+import 'package:hungerz_store/extension.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SupportPage extends StatelessWidget {
+class SupportPage extends StatefulWidget {
   static const String id = 'support_page';
   final String? number;
 
   SupportPage({this.number});
 
+  @override
+  State<SupportPage> createState() => _SupportPageState();
+}
+
+class _SupportPageState extends State<SupportPage> {
   void _launchURL(String url) async {
     if (!await launch(url)) throw 'Could not launch $url';
   }
+
+  GlobalKey<FormState> signupKey = GlobalKey();
+  final TextEditingController _numberController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -72,30 +82,46 @@ class SupportPage extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        children: [
-                          inputField(
-                            AppLocalizations.of(context)!.mobileNumber!,
-                            '+1 987 654 3210',
-                            'images/icons/mobile.png',
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              _launchURL('https://www.renterii.com/chat');
-                            },
-                            child: inputField(
-                              AppLocalizations.of(context)!.message!,
-                              "Enter your message here",
-                              'images/icons/message.png',
-                            ),
-                          ),
-                        ],
+                      child: Form(
+                        key: signupKey,
+                        child: Column(
+                          children: [
+                            inputField(
+                                title:
+                                    AppLocalizations.of(context)!.mobileNumber!,
+                                hint: '+1 987 654 3210',
+                                img: 'images/icons/mobile.png',
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Mobile Number is required';
+                                  } else if (value.isValidNumber()) {
+                                    return 'Please enter valid number';
+                                  }
+                                  {
+                                    return null;
+                                  }
+                                },
+                                controller: _numberController),
+                            inputField(
+                                title: AppLocalizations.of(context)!.message!,
+                                hint: "Enter your message here",
+                                img: 'images/icons/message.png',
+                                validator: (value) {
+                                  if (value!.trim().isEmpty) {
+                                    return 'Message is empty';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                controller: _messageController),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
             ],
@@ -107,8 +133,13 @@ class SupportPage extends StatelessWidget {
             child: BottomBar(
               text: AppLocalizations.of(context)!.submit,
               onTap: () {
-                /*............*/
-                Navigator.pop(context);
+                if (signupKey.currentState!.validate()) {
+                  signupKey.currentState!.save();
+                  'hello@renterii.com'.sendMail(
+                      body:
+                          "Respected sir/Madam,\n\n \nPhone Number - ${_numberController.text}\n\n\n ${_messageController.text}\n\nRegards,\n ",
+                      subject: 'Message about the application');
+                }
               },
             ),
           ),
@@ -117,25 +148,30 @@ class SupportPage extends StatelessWidget {
     );
   }
 
-  Container inputField(String title, String hint, String img) {
+  Container inputField(
+      {String? title,
+      String? hint,
+      String? img,
+      String? Function(String?)? validator,
+      required TextEditingController controller}) {
     return Container(
       child: Column(
         children: [
           Row(
             children: [
-              Container(
+              SizedBox(
                 height: 20,
                 child: Image(
                   image: AssetImage(
-                    img,
+                    img ?? '',
                   ),
                   color: kMainColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 13,
               ),
-              Text(title,
+              Text(title ?? '',
                   style: TextStyle(color: Colors.grey[600], fontSize: 12))
             ],
           ),
@@ -143,8 +179,12 @@ class SupportPage extends StatelessWidget {
             padding: EdgeInsets.only(left: 25),
             child: Column(
               children: [
-                SmallTextFormField(title: hint),
-                SizedBox(
+                SmallTextFormField(
+                  title: hint,
+                  validator: validator,
+                  textEditingController: controller,
+                ),
+                const SizedBox(
                   height: 10,
                 ),
               ],

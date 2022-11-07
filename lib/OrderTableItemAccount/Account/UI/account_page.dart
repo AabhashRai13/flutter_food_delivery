@@ -256,7 +256,7 @@ class _StoreDetailsState extends State<StoreDetails> {
           return Row(
             children: <Widget>[
               const Image(
-                image: AssetImage("images/Layer 1.png"),
+                image: AssetImage("images/account/profile_icon.png"),
                 height: 98.0,
                 width: 98.0,
               ),

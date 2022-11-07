@@ -188,11 +188,11 @@ class RegisterFormState extends State<RegisterForm> {
                           height: 99.0,
                           width: 99.0,
                           child: (imageUrl == null || imageUrl.trim().isEmpty)
-                              ? Image.asset('images/Layer 1.png')
+                              ? Image.asset('images/Lay.png')
                               : Image.network(imageUrl),
                         ),
                         const SizedBox(width: 24.0),
-                        Icon(
+                        const Icon(
                           Icons.camera_alt,
                           color: uploadPhotoColor,
                           size: 25.0,
