@@ -96,7 +96,6 @@ class RegisterFormState extends State<RegisterForm> {
         await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
     var file = File(pickedFile!.path);
     image = file;
-
     setState(() {});
     if (pickedFile != null) {
       final snapshot = await FirebaseStorage.instance
