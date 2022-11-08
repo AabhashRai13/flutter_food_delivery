@@ -1,10 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hungerz_store/Components/bottom_bar.dart';
 import 'package:hungerz_store/Components/textfield.dart';
-
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Maps/UI/location_page.dart';
 import 'package:hungerz_store/Themes/colors.dart';
@@ -62,8 +61,6 @@ class RegisterForm extends StatefulWidget {
 
 class RegisterFormState extends State<RegisterForm> {
   late final TextEditingController _nameEditingController;
-  late final TextEditingController _categoryEditingController =
-      TextEditingController();
 
   late final TextEditingController _phoneNumberEditingController;
 
@@ -104,6 +101,7 @@ class RegisterFormState extends State<RegisterForm> {
           .putFile(file)
           .whenComplete(() {});
       downloadUrl = await snapshot.ref.getDownloadURL();
+      log("url $downloadUrl");
       return downloadUrl;
     } else {
       debugPrint('No image selected.');
@@ -126,6 +124,7 @@ class RegisterFormState extends State<RegisterForm> {
           .putFile(file)
           .whenComplete(() {});
       downloadUrl = await snapshot.ref.getDownloadURL();
+
       return downloadUrl;
     } else {
       debugPrint('No image selected.');
@@ -152,6 +151,12 @@ class RegisterFormState extends State<RegisterForm> {
 
   @override
   void dispose() {
+    _nameEditingController.dispose();
+    _addressController.dispose();
+    _phoneNumberEditingController.dispose();
+    _emailAddressEditingController.dispose();
+    _descriptionEditingController.dispose();
+
     super.dispose();
   }
 
@@ -192,7 +197,7 @@ class RegisterFormState extends State<RegisterForm> {
                           width: 99.0,
                           child: image != null
                               ? Image.file(image!)
-                              : (imageUrl == null || imageUrl.trim().isEmpty)
+                              : (imageUrl.trim().isEmpty)
                                   ? Image.asset('images/Lay.png')
                                   : Image.network(imageUrl),
                         ),
@@ -226,6 +231,7 @@ class RegisterFormState extends State<RegisterForm> {
                                           onTap: () async {
                                             Navigator.pop(context);
                                             imageUrl = await pickFromCamera();
+                                            log("image url $imageUrl");
                                           },
                                         ),
                                       ],
@@ -351,8 +357,8 @@ class RegisterFormState extends State<RegisterForm> {
                             }),
                             items: categoryList.map((CategoryId) {
                               return DropdownMenuItem<String>(
-                                child: Text(CategoryId.name.name),
                                 value: CategoryId.categoryId,
+                                child: Text(CategoryId.name.name),
                               );
                             }).toList(),
                             onChanged: (String? value) {
@@ -550,6 +556,7 @@ class RegisterFormState extends State<RegisterForm> {
                       phoneNumber: _phoneNumberEditingController.text.trim(),
                       imageUrl: imageUrl);
                   if (success) {
+                    _userCubit.fetchShopProfile();
                     if (!mounted) return;
                     context
                         .showSuccessSnack('Shop Profile Updated successfully');

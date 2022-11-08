@@ -36,18 +36,19 @@ class AddItemState extends State<AddItem> {
     checkAvailability();
   }
 
-  checkAvailability() {
-    if (widget.productId == null) return;
-    inStock = widget.productId!.product.inStock ?? false;
-    if (inStock == true) {
-      stock = "Available";
-    } else if (inStock == false) {
-      stock = "Not Available";
-    }
-  }
-
   bool inStock = false;
   String? stock = "Not Available";
+  checkAvailability() {
+    if (widget.productId == null) return;
+    setState(() {
+      inStock = widget.productId!.product.inStock ?? false;
+      if (inStock == true) {
+        stock = "Available";
+      } else if (inStock == false) {
+        stock = "Not Available";
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -848,14 +849,20 @@ class AddState extends State<Add> {
           alignment: Alignment.bottomCenter,
           child: BottomBar(
             text: loading
-                ? "Loading.."
+                ? "Loading..."
                 : widget.isEditing
                     ? 'Update Listing'
                     : 'Add Listing',
             onTap: loading
-                ? () {}
+                ? () {
+                    log("button disabled");
+                  }
                 : () async {
-                    loading = true;
+                    setState(() {
+                      loading = true;
+                    });
+                    log("button enabled");
+
                     if (signupKey.currentState!.validate()) {
                       signupKey.currentState!.save();
                       if (pickup == -1) {
@@ -916,7 +923,9 @@ class AddState extends State<Add> {
                         } else {}
                       }
                     }
-                    loading = false;
+                    setState(() {
+                      loading = false;
+                    });
                   },
           ),
         )
