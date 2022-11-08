@@ -103,6 +103,7 @@ class ItemsPageState extends State<ItemsPage> {
                         .trim()
                         .toLowerCase() ==
                     'item') {
+                      
                   itemList.add(state.products[i]);
                 } else if (state.products[i].product.listingCategory!
                         .trim()

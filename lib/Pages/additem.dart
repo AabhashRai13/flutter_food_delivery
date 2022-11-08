@@ -33,6 +33,11 @@ class AddItemState extends State<AddItem> {
   @override
   void initState() {
     super.initState();
+    checkAvailability();
+  }
+
+  checkAvailability() {
+    if (widget.productId == null) return;
     inStock = widget.productId!.product.inStock ?? false;
     if (inStock == true) {
       stock = "Available";
