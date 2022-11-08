@@ -98,6 +98,11 @@ class ItemsPageState extends State<ItemsPage> {
           bloc: _productCubit,
           builder: (context, state) {
             if (state is ProductsLoaded) {
+              itemList.clear();
+              spaceList.clear();
+              lodgingList.clear();
+              experienceList.clear();
+              packagesList.clear();
               for (var i = 0; i < state.products.length; i++) {
                 if (state.products[i].product.listingCategory!
                         .trim()

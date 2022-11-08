@@ -186,9 +186,13 @@ class AddState extends State<Add> {
           TextEditingController(text: widget.productId!.product.listingName);
       _categoryController = TextEditingController(
           text: widget.productId!.product.listingCategory);
+      _choosenCategory = widget.productId!.product.listingCategory ?? '';
       initialCategory = widget.productId!.product.listingCategory ?? '';
+      rentalDuration = widget.productId!.product.rentalDuration ?? '';
       imageUrl = widget.productId!.product.imageUrl ?? '';
       initialrentalFor = widget.productId!.product.rentalFor ?? '';
+      rentalFor = widget.productId!.product.rentalFor ?? '';
+
       initalRentalDuration = widget.productId!.product.rentalDuration ?? '';
       _descriptionController =
           TextEditingController(text: widget.productId!.product.description);
