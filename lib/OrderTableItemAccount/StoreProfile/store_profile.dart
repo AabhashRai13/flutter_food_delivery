@@ -77,6 +77,7 @@ class RegisterFormState extends State<RegisterForm> {
   double long = 0.0;
   String? _choosenCategory;
   String imageUrl = '';
+  File? image;
 
   List<CategoryId> categoryList = [];
   String? userId;
@@ -94,7 +95,8 @@ class RegisterFormState extends State<RegisterForm> {
     final pickedFile =
         await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
     var file = File(pickedFile!.path);
-
+    image = file;
+    setState(() {});
     if (pickedFile != null) {
       final snapshot = await FirebaseStorage.instance
           .ref()
@@ -115,7 +117,8 @@ class RegisterFormState extends State<RegisterForm> {
     final pickedFile =
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
     var file = File(pickedFile!.path);
-
+    image = file;
+    setState(() {});
     if (pickedFile != null) {
       final snapshot = await FirebaseStorage.instance
           .ref()
@@ -187,9 +190,11 @@ class RegisterFormState extends State<RegisterForm> {
                         SizedBox(
                           height: 99.0,
                           width: 99.0,
-                          child: (imageUrl == null || imageUrl.trim().isEmpty)
-                              ? Image.asset('images/Lay.png')
-                              : Image.network(imageUrl),
+                          child: image != null
+                              ? Image.file(image!)
+                              : (imageUrl == null || imageUrl.trim().isEmpty)
+                                  ? Image.asset('images/Lay.png')
+                                  : Image.network(imageUrl),
                         ),
                         const SizedBox(width: 24.0),
                         const Icon(
