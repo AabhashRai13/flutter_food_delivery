@@ -11,7 +11,7 @@ class OrderCubit extends Cubit<OrderState> {
   OrderCubit(this._orderRepository) : super(OrderInitial());
   Future<void> getAllOrders() async {
     final List<AllData> allData = await _orderRepository.getOrders();
-    
+
     emit(OrdersLoaded(allDatas: allData));
   }
 }

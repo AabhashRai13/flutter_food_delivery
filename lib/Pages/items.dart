@@ -108,7 +108,6 @@ class ItemsPageState extends State<ItemsPage> {
                         .trim()
                         .toLowerCase() ==
                     'item') {
-                      
                   itemList.add(state.products[i]);
                 } else if (state.products[i].product.listingCategory!
                         .trim()
@@ -155,8 +154,18 @@ class ItemsPageState extends State<ItemsPage> {
                 )
               ]);
             } else if (state is ProductLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text("Please wait items are loading..."),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CircularProgressIndicator()
+                  ],
+                ),
               );
             }
             return const SizedBox.shrink();

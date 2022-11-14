@@ -262,7 +262,7 @@ class RegisterFormState extends State<RegisterForm> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     child: Text(
-                      'SHOP INFO',
+                      'SHOP/LENDER INFO',
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.67,
@@ -277,7 +277,7 @@ class RegisterFormState extends State<RegisterForm> {
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: SmallTextFormField(
                         // AppLocalizations.of(context)!.fullName!.toUpperCase(),
-                        label: "Shop Name",
+                        label: "Full Name",
                         title: "Enter name",
                         icon: null,
                         validator: (value) {
@@ -294,7 +294,7 @@ class RegisterFormState extends State<RegisterForm> {
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: SmallTextFormField(
                         // AppLocalizations.of(context)!.fullName!.toUpperCase(),
-                        label: "Description",
+                        label: "Tell us about yourself",
                         title: "Enter decription",
                         icon: null,
                         validator: (value) {
@@ -314,7 +314,7 @@ class RegisterFormState extends State<RegisterForm> {
                         Row(
                           children: [
                             Text(
-                              "Type of shop",
+                              "Rental listing type",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!

@@ -23,12 +23,16 @@ class OrderPageState extends State<OrderPage> {
 
   List<AllData> newRentalList = [];
   List<AllData> pastRentalList = [];
+  List<AllData> ongoingRentalList = [];
 
   @override
   Widget build(BuildContext context) {
     final List<Tab> tabs = <Tab>[
       const Tab(text: "NEW RENTALS"),
       const Tab(text: "PAST RENTALS"),
+      const Tab(
+        text: "ONGOING RENTALS",
+      )
     ];
     return DefaultTabController(
       length: tabs.length,
@@ -56,85 +60,72 @@ class OrderPageState extends State<OrderPage> {
             ),
           ),
         ),
-        body: TabBarView(
-          children: [
-            BlocBuilder<OrderCubit, OrderState>(
-              bloc: _orderCubit,
-              builder: (context, state) {
-                if (state is OrdersLoaded) {
-                  for (var items in state.allDatas) {
-                    if (items.orders!.status == 'pending') {
-                      newRentalList.add(items);
-                    }
-                  }
-                  return ListView(
-                    children: <Widget>[
-                      Divider(
-                        color: Theme.of(context).cardColor,
-                        thickness: 8.0,
-                      ),
-                      Column(
-                        children: [
-                          ...newRentalList.map(
-                              (orderItem) => OrderListWidget(data: orderItem))
-                        ],
-                      )
-                    ],
-                  );
-                } else {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text("Please wait orders are loading..."),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CircularProgressIndicator()
-                    ],
-                  );
-                }
-              },
-            ),
-            BlocBuilder<OrderCubit, OrderState>(
-              bloc: _orderCubit,
-              builder: (context, state) {
-                if (state is OrdersLoaded) {
-                  for (var items in state.allDatas) {
-                    if (items.orders!.status == 'sold') {
-                      pastRentalList.add(items);
-                    }
-                  }
-                  return ListView(
-                    children: <Widget>[
-                      Divider(
-                        color: Theme.of(context).cardColor,
-                        thickness: 8.0,
-                      ),
-                      Column(
-                        children: [
-                          ...pastRentalList.map(
-                              (orderItem) => OrderListWidget(data: orderItem))
-                        ],
-                      )
-                    ],
-                  );
-                } else {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text("Please wait orders are loading..."),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CircularProgressIndicator()
-                    ],
-                  );
-                }
-              },
-            ),
-          ],
+        body: BlocBuilder<OrderCubit, OrderState>(
+          bloc: _orderCubit,
+          builder: (context, state) {
+            if (state is OrdersLoaded) {
+              for (var items in state.allDatas) {
+                if (items.orders!.status!.toLowerCase() == 'pending') {
+                  newRentalList.add(items);
+                } else if (items.orders!.status!.toLowerCase() == 'ongoing') {
+                  ongoingRentalList.add(items);
+                } else if (items.orders!.status!.toLowerCase() == 'sold' ||
+                    items.orders!.status!.toLowerCase() == 'cancelled') {
+                  pastRentalList.add(items);
+                } else {}
+              }
+
+              return TabBarView(children: [
+                OrderItemWidget(newRentalList: newRentalList),
+                OrderItemWidget(newRentalList: pastRentalList),
+                OrderItemWidget(newRentalList: ongoingRentalList),
+              ]);
+            } else if (state is OrdersLoading) {
+              return Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text("Please wait orders are loading..."),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CircularProgressIndicator()
+                  ],
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ),
+    );
+  }
+}
+
+class OrderItemWidget extends StatelessWidget {
+  const OrderItemWidget({
+    Key? key,
+    required this.newRentalList,
+  }) : super(key: key);
+
+  final List<AllData> newRentalList;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: <Widget>[
+        Divider(
+          color: Theme.of(context).cardColor,
+          thickness: 8.0,
+        ),
+        Column(
+          children: [
+            ...newRentalList
+                .map((orderItem) => OrderListWidget(data: orderItem))
+          ],
+        )
+      ],
     );
   }
 }

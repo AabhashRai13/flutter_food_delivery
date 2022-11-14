@@ -13,3 +13,5 @@ class OrdersLoaded extends OrderState {
   final List<AllData> allDatas;
   const OrdersLoaded({required this.allDatas});
 }
+
+class OrdersLoading extends OrderState {}
