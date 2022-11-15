@@ -194,7 +194,11 @@ class _StoreDetailsState extends State<StoreDetails> {
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   Image(
-                    image: NetworkImage(state.shop.imageUrl!),
+                    image: state.shop.imageUrl! == null ||
+                            state.shop.imageUrl!.isEmpty
+                        ? const AssetImage("images/account/profile_icon.png")
+                            as ImageProvider
+                        : NetworkImage(state.shop.imageUrl!),
                     height: 98.0,
                     width: 98.0,
                   ),
@@ -229,7 +233,7 @@ class _StoreDetailsState extends State<StoreDetails> {
                       ),
                       GestureDetector(
                           child: Text(
-                            '\nShop Profile',
+                            '\nShop/Lender Profile',
                             style: TextStyle(
                                 color: kMainColor,
                                 fontSize: 13.3,

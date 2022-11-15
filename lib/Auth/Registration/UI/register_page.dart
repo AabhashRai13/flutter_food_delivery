@@ -160,7 +160,7 @@ class RegisterFormState extends State<RegisterForm> {
                       width: 99.0,
                       child: image != null
                           ? Image.file(image!)
-                          : Image.asset('images/Layer 1.png')),
+                          : Image.asset("images/account/profile_icon.png")),
                   const SizedBox(width: 24.0),
                   Icon(
                     Icons.camera_alt,

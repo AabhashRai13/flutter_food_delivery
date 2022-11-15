@@ -32,6 +32,7 @@ List<String> rentalDurationsList = [
   'Weekly (1 Week)',
   'Weekly (2 Weeks)',
   'Weekly (3 Weeks)',
+  'Monthly',
 ];
 
 const uploadPhotoColor =

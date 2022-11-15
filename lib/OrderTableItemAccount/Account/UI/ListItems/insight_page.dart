@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hungerz_store/Locale/locales.dart';
 import 'package:hungerz_store/Routes/routes.dart';
 import 'package:hungerz_store/Themes/colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InsightPage extends StatelessWidget {
   @override
@@ -51,6 +52,10 @@ class InsightPage extends StatelessWidget {
 
 class Insight extends StatelessWidget {
   @override
+  void _launchURL(String url) async {
+    if (!await launch(url)) throw 'Could not launch $url';
+  }
+
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.only(bottom: 10),
@@ -153,8 +158,9 @@ class Insight extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () =>
-                    Navigator.pushNamed(context, PageRoutes.walletPage),
+                onTap: () {
+                  _launchURL('https://www.renterii.com/lendii');
+                },
                 child: Center(
                   child: Text(
                     AppLocalizations.of(context)!.viewAll!.toUpperCase(),

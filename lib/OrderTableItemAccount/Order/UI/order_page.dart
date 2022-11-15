@@ -74,7 +74,6 @@ class OrderPageState extends State<OrderPage> {
                   pastRentalList.add(items);
                 } else {}
               }
-
               return TabBarView(children: [
                 OrderItemWidget(newRentalList: newRentalList),
                 OrderItemWidget(newRentalList: pastRentalList),
