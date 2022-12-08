@@ -14,7 +14,6 @@ import 'package:hungerz_store/OrderMapBloc/order_map_bloc.dart';
 import 'package:hungerz_store/OrderMapBloc/order_map_state.dart';
 import 'package:hungerz_store/Themes/colors.dart';
 import 'package:hungerz_store/map_utils.dart';
-import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 
@@ -71,10 +70,10 @@ class SetLocationState extends State<SetLocation> {
     rootBundle.loadString('images/map_style.txt').then((string) {
       mapStyle = string;
     });
-    super.initState();
     if (widget.isFromStoreProfile!) {
       startLocation = LatLng(widget.lat!, widget.long!);
     }
+    super.initState();
   }
 
   @override
@@ -179,7 +178,7 @@ class SetLocationState extends State<SetLocation> {
                       setState(() {
                         //get place name from lat and lang
                         lat = cameraPosition!.target.latitude;
-                        lang = cameraPosition!.target.latitude;
+                        lang = cameraPosition!.target.longitude;
                         location =
                             "${placemarks.first.street.toString()},${placemarks.first.subLocality.toString()},${placemarks.first.subAdministrativeArea.toString()},${placemarks.first.administrativeArea.toString()}";
                         Future.delayed(const Duration(milliseconds: 500), () {

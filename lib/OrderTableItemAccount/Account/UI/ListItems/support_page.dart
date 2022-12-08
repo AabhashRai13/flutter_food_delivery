@@ -176,7 +176,7 @@ class _SupportPageState extends State<SupportPage> {
             ],
           ),
           Container(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             child: Column(
               children: [
                 SmallTextFormField(

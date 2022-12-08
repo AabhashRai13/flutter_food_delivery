@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 
-<key>NSLocationAlwaysAndWhenInUsageDescription</key>
+	<key>NSLocationAlwaysAndWhenInUsageDescription</key>
 	<string>App app want's to access your location to get address</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>App app want's to access your location to get address.</string>

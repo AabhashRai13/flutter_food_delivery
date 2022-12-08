@@ -870,6 +870,8 @@ class AddState extends State<Add> {
                             'Please select waiver required at pick up');
                       } else if (typeOfRental == -1) {
                         context.showFailureSnack('Please select Rental Type');
+                      } else if (imageUrl.trim().isEmpty) {
+                        context.showFailureSnack('Please upload image.');
                       } else {
                         if (widget.isEditing == false) {
                           bool success = await ProductRepository().addProducts(
